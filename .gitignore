@@ -1,0 +1,33 @@
+# Dependencies and package caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+credentials*.json
+secrets*.json
+
+# Temporary and system files
+tmp/
+temp/
+.cache/
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated visual previews
+preview-*.png
