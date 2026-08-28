@@ -31,3 +31,5 @@ Desktop.ini
 
 # Generated visual previews
 preview-*.png
+dist/
+*.zip
