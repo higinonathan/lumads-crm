@@ -84,7 +84,6 @@ export async function loadClients() {
   const { data, error } = await supabase
     .from('clients')
     .select(CLIENT_SELECT)
-    .eq('is_active', true)
     .order('company_name', { ascending: true });
 
   if (error) throw error;
