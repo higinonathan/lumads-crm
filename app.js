@@ -1,5 +1,328 @@
+import { supabase } from './supabase.js';
+
 (() => {
   'use strict';
+
+  const roleLabels = { owner: 'Proprietário', admin: 'Administrador', operator: 'Operações' };
+  const authState = {
+    status: 'loading', session: null, user: null, member: null, error: null,
+    memberUserId: null, memberPromise: null, accessUserId: null, accessPromise: null,
+    loginInFlight: false
+  };
+
+  function setAuthMessage(id, message = '', isError = false) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.textContent = message;
+    target.hidden = !message;
+    target.classList.toggle('is-error', isError);
+  }
+
+  function setAuthView(view, message = '', isError = false) {
+    authState.status = view;
+    document.querySelectorAll('[data-auth-view]').forEach(element => {
+      const isActive = element.dataset.authView === view;
+      element.hidden = !isActive;
+      element.style.display = isActive ? '' : 'none';
+    });
+    const authGate = document.getElementById('authGate');
+    const crmApp = document.getElementById('crmApp');
+    authGate.hidden = false;
+    authGate.style.removeProperty('display');
+    crmApp.hidden = true;
+    crmApp.style.display = 'none';
+    if (view === 'login') setAuthMessage('authMessage', message, isError);
+  }
+
+  function resetAuthState() {
+    authState.status = 'login';
+    authState.session = null;
+    authState.user = null;
+    authState.member = null;
+    authState.error = null;
+    authState.memberUserId = null;
+    authState.memberPromise = null;
+    authState.accessUserId = null;
+    authState.accessPromise = null;
+    authState.loginInFlight = false;
+  }
+
+  function setSessionState(session) {
+    authState.session = session || null;
+    authState.user = session?.user || null;
+  }
+
+  function authRedirectUrl() {
+    return window.location.origin;
+  }
+
+  function isRecoveryUrl() {
+    const query = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.slice(1));
+    return query.get('type') === 'recovery' || hash.get('type') === 'recovery';
+  }
+
+  function setSubmitState(form, pending) {
+    const button = form.querySelector('button[type="submit"]');
+    if (!button) return;
+    if (pending) button.dataset.label = button.textContent;
+    button.disabled = pending;
+    button.textContent = pending ? 'Aguarde…' : button.dataset.label;
+  }
+
+  function showCRM() {
+    authState.status = 'authenticated';
+    console.log('[AUTH] liberando CRM');
+    const authGate = document.getElementById('authGate');
+    const crmApp = document.getElementById('crmApp');
+    authGate.hidden = true;
+    authGate.style.display = 'none';
+    crmApp.hidden = false;
+    crmApp.style.removeProperty('display');
+    refreshUserUI();
+    renderDashboard();
+  }
+
+  async function loadMember(user) {
+    if (authState.memberUserId === user.id && authState.member) return { member: authState.member, error: null };
+    if (authState.memberUserId === user.id && authState.memberPromise) return authState.memberPromise;
+
+    authState.memberUserId = user.id;
+    console.log('[AUTH] iniciando validação do membro', user.id);
+    const request = supabase
+      .from('app_members')
+      .select('display_name, role')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!error && data && authState.user?.id === user.id) authState.member = data;
+        return { member: data, error };
+      })
+      .catch(error => ({ member: null, error }));
+
+    authState.memberPromise = request;
+    try {
+      return await request;
+    } finally {
+      if (authState.memberPromise === request) authState.memberPromise = null;
+    }
+  }
+
+  async function authorizeSession(session, user = session?.user) {
+    if (!session || !user) {
+      resetAuthState();
+      return setAuthView('login');
+    }
+    if (authState.accessUserId === user.id && authState.accessPromise) return authState.accessPromise;
+    if (authState.status === 'authenticated' && authState.user?.id === user.id && authState.member) {
+      setSessionState(session);
+      return;
+    }
+
+    setSessionState(session);
+    setAuthView('loading');
+    let accessRequest;
+    accessRequest = (async () => {
+      try {
+        const { member, error } = await loadMember(user);
+        if (authState.user?.id !== user.id) return;
+        if (error) {
+          authState.error = error;
+          console.error('Não foi possível validar o acesso ao LUMADS CRM.', error);
+          return setAuthView('login', 'Não foi possível validar seu acesso. Tente novamente.', true);
+        }
+        if (!member) {
+          setAuthView('login', 'Este e-mail não possui acesso ao LUMADS CRM.', true);
+          await supabase.auth.signOut({ scope: 'local' });
+          return;
+        }
+
+        authState.member = member;
+        console.log('[AUTH] membro validado', member?.role);
+        state.currentUser = {
+          name: member.display_name || user.email || 'Usuário',
+          role: roleLabels[member.role] || 'Operações'
+        };
+        showCRM();
+      } catch (error) {
+        if (authState.user?.id !== user.id) return;
+        authState.error = error;
+        console.error('Não foi possível validar o acesso ao LUMADS CRM.', error);
+        setAuthView('login', 'Não foi possível validar seu acesso. Tente novamente.', true);
+      } finally {
+        if (authState.accessPromise === accessRequest) {
+          authState.accessPromise = null;
+          authState.accessUserId = null;
+        }
+        if (authState.status === 'loading') setAuthView('login', 'Não foi possível validar seu acesso. Tente novamente.', true);
+      }
+    })();
+    authState.accessUserId = user.id;
+    authState.accessPromise = accessRequest;
+    return accessRequest;
+  }
+
+  async function initializeAuthentication() {
+    setAuthView('loading');
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      if (!data.session) {
+        resetAuthState();
+        return setAuthView('login');
+      }
+      setSessionState(data.session);
+      if (isRecoveryUrl()) return setAuthView('update-password');
+      return await authorizeSession(data.session);
+    } catch (error) {
+      authState.error = error;
+      console.error('Não foi possível verificar a sessão do LUMADS CRM.', error);
+      setAuthView('login', 'Não foi possível verificar sua sessão. Tente novamente.', true);
+    }
+  }
+
+  async function logout(message = '') {
+    resetAuthState();
+    setAuthView('login', message);
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
+    if (error) console.error('Não foi possível encerrar a sessão do LUMADS CRM.', error);
+  }
+
+  function setupAuthentication() {
+    document.addEventListener('click', event => {
+      if (!event.target.closest('[data-action="logout"]')) return;
+      event.stopPropagation();
+      toggleUserMenu(false);
+      void logout();
+    }, true);
+
+    document.addEventListener('click', event => {
+      const link = event.target.closest('[data-auth-link]');
+      if (link) {
+        setAuthMessage('authMessage');
+        setAuthMessage('signupMessage');
+        setAuthMessage('recoveryMessage');
+        setAuthMessage('updatePasswordMessage');
+        setAuthView(link.dataset.authLink);
+      }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setSubmitState(form, true);
+      setAuthMessage('authMessage');
+      authState.loginInFlight = true;
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: document.getElementById('loginEmail').value.trim(),
+          password: document.getElementById('loginPassword').value
+        });
+        const user = data?.user || data?.session?.user;
+        if (error || !data.session || !user) return setAuthMessage('authMessage', 'E-mail ou senha incorretos.', true);
+        console.log('[AUTH] signIn concluído');
+        await authorizeSession(data.session, user);
+      } catch (error) {
+        console.error('Não foi possível iniciar a sessão no LUMADS CRM.', error);
+        setAuthMessage('authMessage', 'Não foi possível validar seu acesso. Tente novamente.', true);
+      } finally {
+        authState.loginInFlight = false;
+        setSubmitState(form, false);
+      }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const password = document.getElementById('signupPassword').value;
+      if (password !== document.getElementById('signupPasswordConfirm').value) return setAuthMessage('signupMessage', 'As senhas não coincidem.', true);
+      setSubmitState(form, true);
+      setAuthMessage('signupMessage');
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: document.getElementById('signupEmail').value.trim(),
+          password,
+          options: { emailRedirectTo: authRedirectUrl() }
+        });
+        if (error) return setAuthMessage('signupMessage', 'Não foi possível concluir o cadastro. Tente novamente.', true);
+        if (!data.session) return setAuthMessage('signupMessage', 'Cadastro realizado. Verifique seu e-mail para confirmar sua conta.');
+        await authorizeSession(data.session);
+      } catch (error) {
+        console.error('Não foi possível concluir o cadastro no LUMADS CRM.', error);
+        setAuthMessage('signupMessage', 'Não foi possível concluir o cadastro. Tente novamente.', true);
+      } finally {
+        setSubmitState(form, false);
+      }
+    });
+
+    document.getElementById('recoveryForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setSubmitState(form, true);
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(document.getElementById('recoveryEmail').value.trim(), { redirectTo: authRedirectUrl() });
+        if (error) console.error('Não foi possível solicitar a recuperação de senha.', error);
+        setAuthMessage('recoveryMessage', 'Se este e-mail estiver cadastrado, enviaremos as instruções para redefinir sua senha.');
+      } catch (error) {
+        console.error('Não foi possível solicitar a recuperação de senha.', error);
+        setAuthMessage('recoveryMessage', 'Se este e-mail estiver cadastrado, enviaremos as instruções para redefinir sua senha.');
+      } finally {
+        setSubmitState(form, false);
+      }
+    });
+
+    document.getElementById('updatePasswordForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const password = document.getElementById('newPassword').value;
+      if (password !== document.getElementById('newPasswordConfirm').value) return setAuthMessage('updatePasswordMessage', 'As senhas não coincidem.', true);
+      setSubmitState(form, true);
+      try {
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) {
+          console.error('Não foi possível redefinir a senha.', error);
+          return setAuthMessage('updatePasswordMessage', 'Não foi possível redefinir sua senha. Tente novamente.', true);
+        }
+        await logout('Senha alterada com sucesso. Entre com sua nova senha.');
+      } catch (error) {
+        console.error('Não foi possível redefinir a senha.', error);
+        setAuthMessage('updatePasswordMessage', 'Não foi possível redefinir sua senha. Tente novamente.', true);
+      } finally {
+        setSubmitState(form, false);
+      }
+    });
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      window.setTimeout(() => {
+        if (event === 'INITIAL_SESSION') return;
+        if (event === 'SIGNED_OUT') {
+          resetAuthState();
+          return setAuthView('login');
+        }
+        if (event === 'PASSWORD_RECOVERY' && session) {
+          setSessionState(session);
+          return setAuthView('update-password');
+        }
+        if (event === 'USER_UPDATED' && session) {
+          setSessionState(session);
+          return;
+        }
+        if (event === 'SIGNED_IN' && session) {
+          if (authState.loginInFlight) {
+            setSessionState(session);
+            return;
+          }
+          if (authState.status === 'authenticated' && authState.user?.id === session.user.id) return setSessionState(session);
+          void authorizeSession(session);
+          return;
+        }
+        if (event === 'TOKEN_REFRESHED' && session) {
+          if (authState.status === 'authenticated' && authState.user?.id === session.user.id) return setSessionState(session);
+          void authorizeSession(session);
+        }
+      }, 0);
+    });
+  }
 
   const STORAGE_KEY = 'lumads-crm-frontend-v2';
   const THEME_KEY = 'lumads-theme-preference';
@@ -278,10 +601,12 @@
     if (!event.target.closest('.user-menu-wrap')) toggleUserMenu(false);
     if (!event.target.closest('.theme-control')) toggleThemeMenu(false);
     const trigger = event.target.closest('[data-action]'); if (!trigger) return; const action = trigger.dataset.action, id = trigger.dataset.id, clientId = trigger.dataset.client;
-    if (action === 'modal-close') return closeModal(); if (action === 'theme-select') { setTheme(trigger.dataset.theme); toggleThemeMenu(false); closeModal(); return showToast(`Tema ${ { light: 'claro', dark: 'escuro', system: 'do sistema' }[trigger.dataset.theme] } selecionado.`); } if (action === 'user-profile') return showUserProfile(); if (action === 'user-settings') return navigate('Configurações'); if (action === 'new-approval') return showApprovalForm(null, clientId || ''); if (action === 'new-client') return showClientForm(); if (action === 'client-detail') return renderClientDetail(clientId); if (action === 'back-clients') return navigate('Clientes'); if (action === 'edit-client') return showClientForm(clientId); if (action === 'delete-client') { const linked = state.approvals.filter(a => a.clientId === clientId).length; return showConfirm('Excluir cliente?', linked ? `Este cliente possui ${linked} aprovação(ões) vinculada(s), que também serão excluídas.` : 'Este cliente não possui aprovações vinculadas.', 'delete-client', clientId); } if (action === 'whatsapp-client') return openWhatsAppForClient(clientId); if (action === 'open-post') return openPost(id); if (action === 'whatsapp') return openWhatsAppForApproval(id); if (action === 'approve') return showConfirm('Marcar como aprovado?', 'O status será atualizado e o registro irá para o histórico.', 'approve', id); if (action === 'set-adjustment') return showConfirm('Marcar ajuste solicitado?', 'O conteúdo continuará em acompanhamento até o retorno do cliente.', 'adjustment', id); if (action === 'set-published') return showConfirm('Marcar como publicado?', 'A publicação será registrada no histórico.', 'publish', id); if (action === 'close-approval') return showConfirm('Encerrar acompanhamento?', 'O registro será mantido no histórico como encerrado.', 'close', id); if (action === 'delete-approval') return showConfirm('Excluir aprovação?', 'Esta ação remove o registro deste frontend local.', 'delete-approval', id); if (action === 'edit-approval') return showApprovalForm(id); if (action === 'copy-link') return copyLink(id); if (action === 'approval-menu') return showApprovalMenu(id); if (action === 'all-pending') { pendingApprovalFilters = { query: '', status: '', client: '', deadline: 'late' }; return navigate('Aprovações'); } if (action === 'dashboard-filter') return showDashboardFilter(); if (action === 'dashboard-sort') { dashboardDescending = !dashboardDescending; renderDashboard(); return showToast(dashboardDescending ? 'Ordenado por mais recentes.' : 'Ordenado por mais antigos.'); } if (action === 'notifications') return modalShell('Notificações', 'Resumo local', `<div class="form"><div class="modal-info"><b>${activeApprovals().filter(a => dueDescriptor(a).late).length} aprovações atrasadas</b><p>Use a seção “Precisam de atenção hoje” para tratar as pendências prioritárias.</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); if (action?.startsWith('settings-')) return showSettingsForm(action.replace('settings-', ''));
+    if (action === 'modal-close') return closeModal(); if (action === 'theme-select') { setTheme(trigger.dataset.theme); toggleThemeMenu(false); closeModal(); return showToast(`Tema ${ { light: 'claro', dark: 'escuro', system: 'do sistema' }[trigger.dataset.theme] } selecionado.`); } if (action === 'logout') { toggleUserMenu(false); return supabase.auth.signOut({ scope: 'local' }); } if (action === 'user-profile') return showUserProfile(); if (action === 'user-settings') return navigate('Configurações'); if (action === 'new-approval') return showApprovalForm(null, clientId || ''); if (action === 'new-client') return showClientForm(); if (action === 'client-detail') return renderClientDetail(clientId); if (action === 'back-clients') return navigate('Clientes'); if (action === 'edit-client') return showClientForm(clientId); if (action === 'delete-client') { const linked = state.approvals.filter(a => a.clientId === clientId).length; return showConfirm('Excluir cliente?', linked ? `Este cliente possui ${linked} aprovação(ões) vinculada(s), que também serão excluídas.` : 'Este cliente não possui aprovações vinculadas.', 'delete-client', clientId); } if (action === 'whatsapp-client') return openWhatsAppForClient(clientId); if (action === 'open-post') return openPost(id); if (action === 'whatsapp') return openWhatsAppForApproval(id); if (action === 'approve') return showConfirm('Marcar como aprovado?', 'O status será atualizado e o registro irá para o histórico.', 'approve', id); if (action === 'set-adjustment') return showConfirm('Marcar ajuste solicitado?', 'O conteúdo continuará em acompanhamento até o retorno do cliente.', 'adjustment', id); if (action === 'set-published') return showConfirm('Marcar como publicado?', 'A publicação será registrada no histórico.', 'publish', id); if (action === 'close-approval') return showConfirm('Encerrar acompanhamento?', 'O registro será mantido no histórico como encerrado.', 'close', id); if (action === 'delete-approval') return showConfirm('Excluir aprovação?', 'Esta ação remove o registro deste frontend local.', 'delete-approval', id); if (action === 'edit-approval') return showApprovalForm(id); if (action === 'copy-link') return copyLink(id); if (action === 'approval-menu') return showApprovalMenu(id); if (action === 'all-pending') { pendingApprovalFilters = { query: '', status: '', client: '', deadline: 'late' }; return navigate('Aprovações'); } if (action === 'dashboard-filter') return showDashboardFilter(); if (action === 'dashboard-sort') { dashboardDescending = !dashboardDescending; renderDashboard(); return showToast(dashboardDescending ? 'Ordenado por mais recentes.' : 'Ordenado por mais antigos.'); } if (action === 'notifications') return modalShell('Notificações', 'Resumo local', `<div class="form"><div class="modal-info"><b>${activeApprovals().filter(a => dueDescriptor(a).late).length} aprovações atrasadas</b><p>Use a seção “Precisam de atenção hoje” para tratar as pendências prioritárias.</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); if (action?.startsWith('settings-')) return showSettingsForm(action.replace('settings-', ''));
   });
   $('#modalBackdrop').addEventListener('click', event => { if (event.target === $('#modalBackdrop')) closeModal(); });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeModal(); });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { if (themePreference() === 'system') { document.documentElement.dataset.theme = resolvedTheme('system'); renderThemeUI(); } });
   refreshUserUI(); renderThemeUI(); renderDashboard();
+  setupAuthentication();
+  initializeAuthentication();
 })();

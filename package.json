@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist/client',{recursive:true});fs.mkdirSync('dist/server',{recursive:true});for(const f of ['index.html','app.js','Geist-400.ttf','Geist-500.ttf','Geist-600.ttf','Geist-700.ttf'])fs.copyFileSync(f,'dist/client/'+f);fs.mkdirSync('dist/.openai');fs.copyFileSync('.openai/hosting.json','dist/.openai/hosting.json');fs.writeFileSync('dist/server/index.js','export default { async fetch(request, env) { return env.ASSETS.fetch(request); } };\\n')\""
+    "build": "vite build && node -e \"const fs=require('fs');fs.mkdirSync('dist/.openai',{recursive:true});fs.copyFileSync('.openai/hosting.json','dist/.openai/hosting.json');fs.mkdirSync('dist/server',{recursive:true});fs.writeFileSync('dist/server/index.js','export default { async fetch(request, env) { return env.ASSETS.fetch(request); } };\\n')\""
   },
   "devDependencies": {
     "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.4"
   }
 }
