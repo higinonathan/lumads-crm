@@ -45,8 +45,9 @@ function approvalRowToState(row) {
     statusChangedAt: row.updated_at,
     link: row.approval_url,
     reminders: row.followup_stage,
+    approvedAt: row.approved_at || null,
     finalizedAt: row.approved_at || row.archived_at || row.published_at || null,
-    publishedAt: row.published_at
+    publishedAt: row.published_at || null
   };
 }
 
