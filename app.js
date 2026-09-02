@@ -576,8 +576,8 @@ import { loadClientContactHistory } from './communications-data.js';
     const monday = startOfToday(); monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
     return [
       ['Aguardando aprovação', active.filter(a => a.status === 'waiting_approval').length, 'yellow', 'clock'],
-      ['Lembrete 1 enviado', active.filter(a => a.status === 'reminder_1').length, 'yellow', 'bell'],
-      ['Lembrete 2 enviado', active.filter(a => a.status === 'reminder_2').length, 'pink', 'bellRing'],
+      ['Lembrete 1 enviado', active.filter(a => Number(a.reminders) >= 1).length, 'yellow', 'bell'],
+      ['Lembrete 2 enviado', active.filter(a => Number(a.reminders) >= 2).length, 'pink', 'bellRing'],
       ['Ajustes solicitados', active.filter(a => a.status === 'adjustment_requested').length, 'violet', 'refresh'],
       ['Aprovados esta semana', all.filter(a => a.approvedAt && new Date(a.approvedAt) >= monday).length, 'mint', 'check'],
       ['Prazos próximos', active.filter(a => dueDescriptor(a).days >= 0 && dueDescriptor(a).days <= 7).length, 'blue', 'calendar']
