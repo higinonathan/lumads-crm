@@ -131,6 +131,40 @@ export async function loadMessageTemplates(channel = null) {
   return data || [];
 }
 
+export async function updateCommunicationSettings(values) {
+  const payload = {
+    reminder_1_hours: values.reminder_1_hours,
+    reminder_2_hours: values.reminder_2_hours,
+    final_notice_enabled: values.final_notice_enabled
+  };
+
+  const { data, error } = await supabase
+    .from('agency_settings')
+    .update(payload)
+    .eq('id', 1)
+    .select(SETTINGS_SELECT)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function updateMessageTemplate(templateId, values) {
+  const payload = {};
+  if (Object.hasOwn(values, 'subject')) payload.subject = values.subject;
+  if (Object.hasOwn(values, 'body')) payload.body = values.body;
+
+  const { data, error } = await supabase
+    .from('message_templates')
+    .update(payload)
+    .eq('id', templateId)
+    .select(TEMPLATE_SELECT)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function loadCommunications({ clientId = null, approvalId = null, limit = 50 } = {}) {
   let query = supabase
     .from('message_queue')

@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 import { loadClients, createClient, updateClient, archiveClient } from './clients-data.js';
 import { validateClientLogo, uploadClientLogo, publicClientLogoUrl, deleteClientLogo } from './client-logo-storage.js';
 import { loadApprovals, createApproval, updateApproval, setApprovalStatus, archiveApproval } from './approvals-data.js';
-import { loadClientContactHistory } from './communications-data.js';
+import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplates, updateCommunicationSettings, updateMessageTemplate } from './communications-data.js';
 
 (() => {
   'use strict';
@@ -496,8 +496,7 @@ import { loadClientContactHistory } from './communications-data.js';
         reminder1: 'Olá! Passando para lembrar que os conteúdos ainda estão aguardando sua aprovação no PodePostar. Quando puder, acesse o link enviado para aprovar ou solicitar ajustes.',
         reminder2: 'Olá! Seus conteúdos ainda estão pendentes de aprovação no PodePostar. Precisamos do seu retorno para manter o calendário de publicações previsto.',
         deadline: 'Olá! O conteúdo previsto para publicação ainda está aguardando sua aprovação no PodePostar. Para mantermos a data programada, precisamos da sua aprovação hoje.'
-      },
-      deadlines: { reminder1: 24, reminder2: 48, finalNotice: 'No dia do prazo' }
+      }
     };
   }
 
@@ -506,7 +505,9 @@ import { loadClientContactHistory } from './communications-data.js';
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (saved && saved.currentUser) {
-        return { ...defaultData, ...saved, clients: [], approvals: [] };
+        const { messages, deadlines, ...savedState } = saved;
+        if (messages || deadlines) localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] }));
+        return { ...defaultData, ...savedState, clients: [], approvals: [] };
       }
     } catch (_) { /* use defaults */ }
     return { ...defaultData, clients: [], approvals: [] };
@@ -528,7 +529,7 @@ import { loadClientContactHistory } from './communications-data.js';
   let clientsLoadError = false;
   let approvalsLoading = false;
   let approvalsLoadError = false;
-  const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, clients: [], approvals: [] }));
+  const save = () => { const { messages, ...savedState } = state; localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] })); };
   const clientById = id => state.clients.find(client => client.id === id);
   const activeClients = () => state.clients.filter(client => client.isActive !== false);
   const approvalClientById = id => clientById(id);
@@ -714,8 +715,8 @@ import { loadClientContactHistory } from './communications-data.js';
   function completedWithoutReminder() { const records = validApprovals().filter(isFinal); return records.length ? Math.round(records.filter(record => !record.reminders).length / records.length * 100) : 0; }
   function renderSettings() {
     const selected = { light: 'Claro', dark: 'Escuro', system: 'Sistema' }[themePreference()];
-    const cards = [['appearance', 'appearance', 'Aparência', `Tema atual: ${selected}. Ajuste a preferência visual do CRM.`], ['agency', 'agency', 'Dados da agência', 'Nome de exibição, telefone e e-mail usados no CRM.'], ['user', 'user', 'Usuários', 'Informações do usuário autenticado exibidas no CRM.'], ['messages', 'messages', 'Mensagens rápidas', 'Textos usados nos lembretes de WhatsApp.'], ['deadlines', 'deadlines', 'Prazos padrão', 'Parâmetros de acompanhamento do fluxo.'], ['whatsapp-info', 'whatsapp', 'WhatsApp', 'Status: não conectado. Configuração futura.'], ['email-info', 'email', 'E-mail', 'Status: não conectado. Configuração futura.']];
-    $('#dynamicContent').innerHTML = `<section class="settings-grid">${cards.map(([action, icon, title, description], i) => `<button class="setting-card" data-action="settings-${action}"><span class="setting-icon">${settingIcon(icon)}</span><h3>${title}</h3><p>${description}</p>${i > 3 ? '<span class="future">CONFIGURAÇÃO FUTURA</span>' : '<span class="back-link">Abrir configurações →</span>'}</button>`).join('')}</section>`;
+    const cards = [['appearance', 'appearance', 'Aparência', `Tema atual: ${selected}. Ajuste a preferência visual do CRM.`], ['agency', 'agency', 'Dados da agência', 'Nome de exibição, telefone e e-mail usados no CRM.'], ['user', 'user', 'Usuários', 'Informações do usuário autenticado exibidas no CRM.'], ['messages', 'messages', 'Mensagens rápidas', 'Modelos reais de WhatsApp e e-mail para envios manuais.'], ['deadlines', 'deadlines', 'Prazos padrão', 'Parâmetros reais do fluxo de acompanhamento.'], ['whatsapp-info', 'whatsapp', 'WhatsApp', 'Modo manual ativo. O CRM prepara a mensagem para envio.'], ['email-info', 'email', 'E-mail', 'Modo manual ativo. O CRM prepara o e-mail para envio.']];
+    $('#dynamicContent').innerHTML = `<section class="settings-grid">${cards.map(([action, icon, title, description]) => `<button class="setting-card" data-action="settings-${action}"><span class="setting-icon">${settingIcon(icon)}</span><h3>${title}</h3><p>${description}</p><span class="back-link">Abrir configurações →</span></button>`).join('')}</section>`;
   }
   function navigate(page, { updateHash = true } = {}) {
     const nextPage = Object.values(pageByHash).includes(page) ? page : 'Dashboard';
@@ -882,19 +883,93 @@ import { loadClientContactHistory } from './communications-data.js';
       }
     }
   }
+  const communicationTemplateKeys = ['approval_initial', 'reminder_1', 'reminder_2', 'final_notice'];
+  const communicationTemplateLabels = { approval_initial: 'Mensagem inicial', reminder_1: 'Lembrete 1', reminder_2: 'Lembrete 2', final_notice: 'Aviso final' };
+  function settingsModalOpen(title) { return $('#modalTitle')?.textContent === title; }
+  function messageTemplateFields(channel, templates) {
+    const templatesByKey = new Map(templates.map(template => [template.template_key, template]));
+    return communicationTemplateKeys.map(key => {
+      const template = templatesByKey.get(key);
+      if (!template) return `<div class="modal-info"><b>${communicationTemplateLabels[key]}</b><p>Modelo indisponível.</p></div>`;
+      const label = text(template.label || communicationTemplateLabels[key]);
+      const fields = channel === 'email'
+        ? `<div class="field"><label>Assunto</label><input data-template-id="${template.id}" data-template-field="subject" value="${text(template.subject)}"></div><div class="field"><label>Mensagem</label><textarea rows="4" data-template-id="${template.id}" data-template-field="body">${text(template.body)}</textarea></div>`
+        : `<div class="field"><label>Mensagem</label><textarea rows="4" data-template-id="${template.id}" data-template-field="body">${text(template.body)}</textarea></div>`;
+      return `<div class="modal-info"><b>${label}</b><div class="form-grid" style="margin-top:12px">${fields}</div></div>`;
+    }).join('');
+  }
+  async function showMessageTemplatesForm() {
+    modalShell('Mensagens rápidas', 'Carregando modelos do Supabase…', '<div class="form"><div class="modal-info"><b>Carregando…</b></div></div>', undefined, true);
+    try {
+      const [whatsappTemplates, emailTemplates] = await Promise.all([loadMessageTemplates('whatsapp'), loadMessageTemplates('email')]);
+      if (!settingsModalOpen('Mensagens rápidas')) return;
+      modalShell('Mensagens rápidas', 'Modelos reais usados nos envios manuais.', `<form class="form" data-form="messages"><h3>WhatsApp</h3>${messageTemplateFields('whatsapp', whatsappTemplates)}<h3 style="margin-top:24px">E-mail</h3>${messageTemplateFields('email', emailTemplates)}<p class="form-error" id="modalError" hidden></p>${formFooter('Salvar mensagens')}</form>`, undefined, true);
+    } catch (error) {
+      console.error('Não foi possível carregar os modelos de mensagem.', error);
+      if (settingsModalOpen('Mensagens rápidas')) modalShell('Mensagens rápidas', 'Modelos do Supabase.', '<div class="form"><div class="modal-info"><b>Não foi possível carregar os modelos</b><p>Tente novamente mais tarde.</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>', undefined, true);
+    }
+  }
+  async function showDeadlineSettingsForm() {
+    modalShell('Prazos padrão', 'Carregando configurações do Supabase…', '<div class="form"><div class="modal-info"><b>Carregando…</b></div></div>');
+    try {
+      const settings = await loadCommunicationSettings();
+      if (!settingsModalOpen('Prazos padrão')) return;
+      modalShell('Prazos padrão', 'Parâmetros reais do fluxo de acompanhamento.', `<form class="form" data-form="deadlines"><div class="form-grid"><div class="field"><label>Primeiro lembrete após (horas)</label><input id="deadlineR1" type="number" min="1" value="${settings.reminder_1_hours}" required></div><div class="field"><label>Segundo lembrete após (horas)</label><input id="deadlineR2" type="number" min="1" value="${settings.reminder_2_hours}" required></div><div class="field full"><label>Aviso final</label><select id="deadlineFinal" class="filter-select"><option value="true" ${settings.final_notice_enabled ? 'selected' : ''}>Ativado</option><option value="false" ${settings.final_notice_enabled ? '' : 'selected'}>Desativado</option></select></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar prazos')}</form>`);
+    } catch (error) {
+      console.error('Não foi possível carregar os prazos padrão.', error);
+      if (settingsModalOpen('Prazos padrão')) modalShell('Prazos padrão', 'Configurações do Supabase.', '<div class="form"><div class="modal-info"><b>Não foi possível carregar os prazos</b><p>Tente novamente mais tarde.</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>');
+    }
+  }
+  async function saveMessageTemplatesForm(form) {
+    if (form.dataset.saving === 'true') return;
+    const updates = new Map();
+    form.querySelectorAll('[data-template-id]').forEach(field => {
+      const values = updates.get(field.dataset.templateId) || {};
+      values[field.dataset.templateField] = field.value;
+      updates.set(field.dataset.templateId, values);
+    });
+    form.dataset.saving = 'true'; setSubmitState(form, true);
+    try {
+      await Promise.all([...updates].map(([id, values]) => updateMessageTemplate(id, values)));
+      closeModal();
+      showToast('Mensagens salvas com sucesso.');
+    } catch (error) {
+      console.error('Não foi possível salvar os modelos de mensagem.', error);
+      modalError('Não foi possível salvar as mensagens. Tente novamente.');
+    } finally {
+      form.dataset.saving = 'false'; setSubmitState(form, false);
+    }
+  }
+  async function saveDeadlineSettingsForm(form) {
+    if (form.dataset.saving === 'true') return;
+    const reminder1 = Number($('#deadlineR1').value);
+    const reminder2 = Number($('#deadlineR2').value);
+    if (!Number.isFinite(reminder1) || reminder1 < 1 || !Number.isFinite(reminder2) || reminder2 < 1) return modalError('Informe prazos válidos em horas.');
+    form.dataset.saving = 'true'; setSubmitState(form, true);
+    try {
+      await updateCommunicationSettings({ reminder_1_hours: reminder1, reminder_2_hours: reminder2, final_notice_enabled: $('#deadlineFinal').value === 'true' });
+      closeModal();
+      showToast('Prazos salvos com sucesso.');
+    } catch (error) {
+      console.error('Não foi possível salvar os prazos padrão.', error);
+      modalError('Não foi possível salvar os prazos. Tente novamente.');
+    } finally {
+      form.dataset.saving = 'false'; setSubmitState(form, false);
+    }
+  }
   function showSettingsForm(type) {
     if (type === 'appearance') { const selected = themePreference(); const options = [['light', 'Claro', 'Interface clara, com fundo suave e superfícies brancas.'], ['dark', 'Escuro', 'Interface escura, pensada para conforto visual.'], ['system', 'Sistema', 'Acompanha a preferência do seu dispositivo.']]; return modalShell('Aparência', `Tema atual: ${{ light: 'Claro', dark: 'Escuro', system: 'Sistema' }[selected]}.`, `<div class="form"><div class="appearance-options">${options.map(([value, label, description]) => `<button class="appearance-option ${selected === value ? 'is-selected' : ''}" data-action="theme-select" data-theme="${value}">${themeIcon(value)}<span><b>${label}</b><span>${description}</span></span><i class="selection-dot"></i></button>`).join('')}</div></div>`); }
-    if (type === 'whatsapp-info' || type === 'email-info') { const label = type.startsWith('whatsapp') ? 'WhatsApp' : 'E-mail'; return modalShell(label, 'Integração futura', `<div class="form"><div class="modal-info"><b>Não conectado</b><p>A integração com ${label} será configurada na etapa de automações. Nenhuma mensagem é enviada automaticamente nesta fase.</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
+    if (type === 'whatsapp-info' || type === 'email-info') { const isWhatsApp = type.startsWith('whatsapp'); const label = isWhatsApp ? 'WhatsApp' : 'E-mail'; const description = isWhatsApp ? 'O CRM prepara a mensagem e abre o WhatsApp para envio.' : 'O CRM prepara o e-mail no aplicativo padrão para envio.'; return modalShell(label, 'Modo manual ativo', `<div class="form"><div class="modal-info"><b>Modo manual ativo</b><p>${description}</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
     if (type === 'agency') { const a = state.agency; return modalShell('Dados da agência', 'Informações exibidas no CRM.', `<form class="form" data-form="agency"><div class="form-grid"><div class="field"><label>Nome</label><input id="agencyLegal" value="${text(a.legalName)}" required></div><div class="field"><label>Nome de exibição</label><input id="agencyDisplay" value="${text(a.displayName)}" required></div><div class="field"><label>Telefone</label><input id="agencyPhone" value="${text(a.phone)}" required></div><div class="field"><label>E-mail</label><input id="agencyEmail" type="email" value="${text(a.email)}" required></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar dados')}</form>`); }
     if (type === 'user') { const u = state.currentUser; return modalShell('Usuário atual', 'Informações exibidas para o usuário autenticado nesta sessão.', `<form class="form" data-form="user"><div class="form-grid"><div class="field"><label>Nome</label><input id="userName" value="${text(u.name)}" required></div><div class="field"><label>Função</label><input id="userRole" value="${text(u.role)}" required></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar usuário')}</form>`); }
-    if (type === 'messages') { const m = state.messages; return modalShell('Mensagens rápidas', 'Estes textos alimentam as mensagens abertas no WhatsApp.', `<form class="form" data-form="messages"><div class="field"><label>Mensagem inicial de aprovação</label><textarea id="msgInitial" rows="3">${text(m.initial)}</textarea></div><div class="field"><label>Lembrete 1</label><textarea id="msgReminder1" rows="3">${text(m.reminder1)}</textarea></div><div class="field"><label>Lembrete 2</label><textarea id="msgReminder2" rows="3">${text(m.reminder2)}</textarea></div><div class="field"><label>Prazo final</label><textarea id="msgDeadline" rows="3">${text(m.deadline)}</textarea></div>${formFooter('Salvar mensagens')}</form>`, true); }
-    if (type === 'deadlines') { const d = state.deadlines; return modalShell('Prazos padrão', 'Parâmetros locais do fluxo de acompanhamento.', `<form class="form" data-form="deadlines"><div class="form-grid"><div class="field"><label>Primeiro lembrete após (horas)</label><input id="deadlineR1" type="number" min="1" value="${d.reminder1}" required></div><div class="field"><label>Segundo lembrete após (horas)</label><input id="deadlineR2" type="number" min="1" value="${d.reminder2}" required></div><div class="field full"><label>Aviso final</label><select id="deadlineFinal" class="filter-select"><option ${d.finalNotice === 'No dia do prazo' ? 'selected' : ''}>No dia do prazo</option><option ${d.finalNotice === '12 horas antes' ? 'selected' : ''}>12 horas antes</option><option ${d.finalNotice === '24 horas antes' ? 'selected' : ''}>24 horas antes</option></select></div></div>${formFooter('Salvar prazos')}</form>`); }
+    if (type === 'messages') return void showMessageTemplatesForm();
+    if (type === 'deadlines') return void showDeadlineSettingsForm();
   }
-  function saveSettingsForm(type) { if (type === 'agency') { state.agency = { legalName: $('#agencyLegal').value.trim(), displayName: $('#agencyDisplay').value.trim(), phone: $('#agencyPhone').value.trim(), email: $('#agencyEmail').value.trim() }; } if (type === 'user') { state.currentUser = { name: $('#userName').value.trim(), role: $('#userRole').value.trim() }; } if (type === 'messages') { state.messages = { initial: $('#msgInitial').value.trim(), reminder1: $('#msgReminder1').value.trim(), reminder2: $('#msgReminder2').value.trim(), deadline: $('#msgDeadline').value.trim() }; } if (type === 'deadlines') { state.deadlines = { reminder1: Number($('#deadlineR1').value), reminder2: Number($('#deadlineR2').value), finalNotice: $('#deadlineFinal').value }; } save(); closeModal(); refreshUserUI(); rerender(); showToast('Configurações salvas.'); }
+  function saveSettingsForm(type) { if (type === 'agency') { state.agency = { legalName: $('#agencyLegal').value.trim(), displayName: $('#agencyDisplay').value.trim(), phone: $('#agencyPhone').value.trim(), email: $('#agencyEmail').value.trim() }; } if (type === 'user') { state.currentUser = { name: $('#userName').value.trim(), role: $('#userRole').value.trim() }; } save(); closeModal(); refreshUserUI(); rerender(); showToast('Configurações salvas.'); }
   function showDashboardFilter() { modalShell('Filtrar status', 'Escolha um status para a tabela do dashboard.', `<form class="form" data-form="dashboard-filter"><div class="field"><label>Status</label><select id="dashboardStatusSelect" class="filter-select"><option value="">Todos os pendentes</option>${activeStatuses.map(status => `<option value="${status}" ${dashboardStatus === status ? 'selected' : ''}>${statusLabel(status)}</option>`).join('')}</select></div>${formFooter('Aplicar filtro')}</form>`); }
   function toggleUserMenu(force) { const menu = $('#userPopover'), button = $('#userMenuButton'); const next = typeof force === 'boolean' ? force : menu.hidden; menu.hidden = !next; button.setAttribute('aria-expanded', String(next)); }
   function showUserProfile() { const user = state.currentUser; toggleUserMenu(false); modalShell('Meu perfil', 'Informações do usuário autenticado.', `<div class="form"><div class="profile-identity"><span class="avatar profile-avatar">${text(initials(user.name))}</span><div><b class="profile-identity-name">${text(user.name)}</b><span class="profile-identity-role">${text(user.role)}</span></div></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
-  function handleForm(form) { const type = form.dataset.form; if (type === 'approval') return void saveApprovalForm(form); if (type === 'client') return void saveClientForm(form); if (type === 'confirm') return void handleConfirm(form); if (type === 'agency' || type === 'user' || type === 'messages' || type === 'deadlines') saveSettingsForm(type); if (type === 'dashboard-filter') { dashboardStatus = $('#dashboardStatusSelect').value; closeModal(); renderDashboard(); showToast(dashboardStatus ? 'Filtro de status aplicado.' : 'Filtro removido.'); } }
+  function handleForm(form) { const type = form.dataset.form; if (type === 'approval') return void saveApprovalForm(form); if (type === 'client') return void saveClientForm(form); if (type === 'confirm') return void handleConfirm(form); if (type === 'messages') return void saveMessageTemplatesForm(form); if (type === 'deadlines') return void saveDeadlineSettingsForm(form); if (type === 'agency' || type === 'user') saveSettingsForm(type); if (type === 'dashboard-filter') { dashboardStatus = $('#dashboardStatusSelect').value; closeModal(); renderDashboard(); showToast(dashboardStatus ? 'Filtro de status aplicado.' : 'Filtro removido.'); } }
   document.addEventListener('submit', event => { const form = event.target.closest('form[data-form]'); if (form) { event.preventDefault(); handleForm(form); } });
   document.addEventListener('click', event => {
     const nav = event.target.closest('.nav-item'); if (nav) return navigate(nav.dataset.page);
