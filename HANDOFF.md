@@ -2,19 +2,40 @@
 
 ## Estado atual
 
-O CRM LUMADS está em frontend funcional, com as páginas Dashboard, Aprovações, Clientes, Histórico e Configurações. A navegação funciona entre todas as áreas e os botões e ações principais estão operantes no ambiente local.
+O CRM usa Supabase real para autenticação, clientes e aprovações. Dashboard, Clientes, Aprovações e Histórico foram validados com persistência após recarregar a página.
 
-O protótipo utiliza dados fictícios com persistência local no navegador. O usuário atual é **Luma**. Os temas claro e escuro, além do seletor de tema (Claro, Escuro e Sistema), estão implementados. A tipografia utiliza Geist Sans local.
+## Comunicações
 
-## Pendências e limites atuais
+O Supabase já possui `agency_settings`, `message_templates`, `message_queue` e `message_events`, além dos campos de WhatsApp, e-mail e canal preferido dos clientes.
 
-- O modo escuro ainda precisa de refinamento visual.
-- Não há Supabase.
-- Não há backend.
-- Não há autenticação real.
-- Não há automação de WhatsApp.
-- Não há automação de e-mail.
+Em 02/09/2026 foi aplicada a migration `prepare_manual_communications_backend`.
 
-## Próxima etapa sugerida
+Ela acrescenta:
 
-Refinar visualmente a interface — principalmente o modo escuro — e, depois, iniciar a integração com Supabase e backend.
+- autoria em `message_queue`;
+- sincronização de timestamps de envio;
+- preparação de comunicação manual por WhatsApp ou e-mail;
+- confirmação de envio manual;
+- cancelamento de comunicação manual;
+- avanço de `followup_stage` para lembrete 1, lembrete 2 e aviso final.
+
+O frontend de dados está em `communications-data.js`. A migration está versionada em `supabase/migrations/20260902_prepare_manual_communications_backend.sql`.
+
+## Próxima etapa
+
+Integrar `communications-data.js` à interface sem refazer as funcionalidades já validadas.
+
+A interface deve passar a:
+
+1. mostrar os envios em Últimos contatos;
+2. permitir preparar WhatsApp e e-mail a partir da aprovação;
+3. usar os templates do Supabase;
+4. registrar a confirmação do envio;
+5. refletir lembrete 1 e lembrete 2 no Dashboard;
+6. manter ações indisponíveis quando o cliente não tiver o canal correspondente.
+
+## Limites atuais
+
+- WhatsApp segue em modo manual.
+- E-mail automático por API ainda não está ativado.
+- A regra de Última interação ainda será definida depois.
