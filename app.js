@@ -945,6 +945,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const reminder1 = Number($('#deadlineR1').value);
     const reminder2 = Number($('#deadlineR2').value);
     if (!Number.isFinite(reminder1) || reminder1 < 1 || !Number.isFinite(reminder2) || reminder2 < 1) return modalError('Informe prazos válidos em horas.');
+    if (reminder2 <= reminder1) return modalError('O segundo lembrete precisa ocorrer depois do primeiro.');
     form.dataset.saving = 'true'; setSubmitState(form, true);
     try {
       await updateCommunicationSettings({ reminder_1_hours: reminder1, reminder_2_hours: reminder2, final_notice_enabled: $('#deadlineFinal').value === 'true' });

@@ -300,17 +300,15 @@ async function resolveManualTemplateKey(approvalId, channel) {
     message.channel === channel && SENT_STATUSES.has(message.status)
   );
 
-  if (!sentForChannel.some(message => message.templateKey === 'approval_initial')) {
-    return { approval, templateKey: 'approval_initial' };
-  }
+  const followupStage = Number(approval.followup_stage) || 0;
+  let templateKey;
+  if (followupStage <= 0) templateKey = sentForChannel.some(message => message.templateKey === 'approval_initial') ? 'reminder_1' : 'approval_initial';
+  else if (followupStage === 1) templateKey = sentForChannel.some(message => message.templateKey === 'reminder_1') ? 'reminder_2' : 'reminder_1';
+  else if (followupStage === 2) templateKey = sentForChannel.some(message => message.templateKey === 'reminder_2') ? 'final_notice' : 'reminder_2';
+  else templateKey = 'final_notice';
 
-  const templateKey = nextFollowupTemplateKey(approval.followup_stage);
-  if (sentForChannel.some(message => message.templateKey === templateKey)) {
-    if (templateKey === 'final_notice') {
-      throw new Error('O aviso final deste canal já foi registrado como enviado.');
-    }
-    const stage = templateKey === 'reminder_1' ? 1 : 2;
-    return { approval, templateKey: nextFollowupTemplateKey(stage) };
+  if (templateKey === 'final_notice' && sentForChannel.some(message => message.templateKey === 'final_notice')) {
+    throw new Error('O aviso final deste canal já foi registrado como enviado.');
   }
 
   return { approval, templateKey };
@@ -359,9 +357,10 @@ function communicationErrorMessage(error) {
   const message = String(error?.message || '');
   if (/WhatsApp/i.test(message)) return 'Este cliente não possui WhatsApp cadastrado.';
   if (/e-mail|email/i.test(message)) return 'Este cliente não possui e-mail cadastrado.';
+  if (/aviso final.*já foi registrad[oa] como enviad[oa]/i.test(message)) return 'O aviso final deste canal já foi enviado.';
   if (/já foi registrada como enviada/i.test(message)) return 'Esta mensagem já foi registrada como enviada.';
   if (/finalizada|não está mais aguardando/i.test(message)) return 'Esta aprovação já foi finalizada.';
-  if (/aviso final/i.test(message)) return 'O aviso final deste canal já foi enviado.';
+  if (/dispon[ií]vel|prazo|configuraç/i.test(message)) return message;
   return 'Não foi possível preparar esta comunicação. Tente novamente.';
 }
 
