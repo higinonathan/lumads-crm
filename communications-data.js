@@ -563,12 +563,16 @@ function emailCompanionFor(button) {
   clone.removeAttribute('disabled');
   clone.removeAttribute('aria-disabled');
   clone.classList.remove('whatsapp-action');
+  clone.classList.remove('approval-whatsapp-action');
+  clone.classList.add('approval-email-action');
   clone.dataset.communicationChannel = 'email';
   clone.dataset.id = approvalId;
   clone.dataset.communicationEmailCompanion = 'true';
   clone.setAttribute('aria-label', 'Preparar e-mail');
 
-  if (button.closest('.row-actions')) {
+  if (button.classList.contains('approval-action-icon')) {
+    clone.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>';
+  } else if (button.closest('.row-actions')) {
     clone.textContent = '✉';
     clone.setAttribute('aria-label', 'Preparar e-mail');
   } else if (button.closest('.action-list')) {
