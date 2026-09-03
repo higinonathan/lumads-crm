@@ -1,0 +1,144 @@
+/* LUMADS CRM — responsive refinements loaded after the shared core.
+   Desktop acima de 1280px permanece exatamente no padrão aprovado.
+   Entre 761px e 1280px a sidebar fica compacta para devolver espaço ao conteúdo.
+*/
+
+@media (min-width: 761px) and (max-width: 1280px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+    grid-template-columns: 86px minmax(0, 1fr) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) aside {
+    padding: 24px 10px 18px !important;
+    align-items: stretch !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .workspace {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand {
+    width: 54px !important;
+    height: 54px !important;
+    margin: 4px auto 38px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: visible !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand > * {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand::after {
+    content: "LM";
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: linear-gradient(145deg, #163cff, #0002fd);
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(0,2,253,.20);
+    font-family: var(--lumads-font);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) nav {
+    display: grid !important;
+    gap: 8px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item {
+    width: 54px !important;
+    min-width: 54px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    margin-inline: auto !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item span {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item .sidebar-icon,
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item svg {
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    margin: 0 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-menu-wrap {
+    width: 54px !important;
+    margin: auto auto 0 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom {
+    width: 54px !important;
+    min-width: 54px !important;
+    height: 54px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom > span:nth-child(2),
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-chevron {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom .avatar {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .date {
+    min-width: 205px !important;
+    padding-left: 11px !important;
+    padding-right: 11px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-page-table {
+    min-width: 1020px !important;
+  }
+
+  #crmApp[data-page="Dashboard"] .dashboard-table {
+    min-width: 720px !important;
+  }
+}
+
+/* Com a sidebar compacta há espaço para preservar a topbar em uma linha na faixa de notebook/zoom. */
+@media (min-width: 960px) and (max-width: 1280px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .topbar {
+    display: flex !important;
+    grid-template-columns: none !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions {
+    width: auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+}

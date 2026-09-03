@@ -1,0 +1,912 @@
+/* LUMADS CRM — Shared Design System
+   Dashboard is the visual source of truth. Shared primitives are global;
+   page-specific layouts migrate to this system without redefining them. */
+
+:root {
+  --lumads-font: Outfit, Geist, sans-serif;
+  --lumads-title: #11162a;
+  --lumads-text: #182038;
+  --lumads-body: #4d5670;
+  --lumads-muted: #727a90;
+  --lumads-line: #e7eaf1;
+  --lumads-panel: #ffffff;
+  --lumads-shadow: 0 14px 35px rgba(25,43,92,.08);
+}
+
+/* Global topbar primitive: every CRM page uses the Dashboard date component. */
+#crmApp .date {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 238px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+  border: 1px solid #e5e8ef !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #26304b !important;
+  box-shadow: 0 3px 10px rgba(24,36,69,.05) !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+:root[data-theme="dark"] #crmApp .date {
+  background: #0f1b2e !important;
+  border-color: #263657 !important;
+  color: #dfe6f5 !important;
+}
+
+/* Shared typography */
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) {
+  font-family: var(--lumads-font);
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .title {
+  font-family: var(--lumads-font) !important;
+  font-size: 31px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .eyebrow {
+  font-family: var(--lumads-font) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-metric,.approval-metric-card) .metric-label {
+  font-family: var(--lumads-font) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-text) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-metric,.approval-metric-card) .metric-value {
+  font-family: var(--lumads-font) !important;
+  font-size: 35px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table-head h2,.approval-page-intro h2) {
+  font-family: var(--lumads-font) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table-head p,.approval-page-intro p) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--lumads-muted) !important;
+}
+
+/* Shared table language */
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) th {
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: .05em !important;
+  text-transform: uppercase;
+  color: var(--lumads-text) !important;
+  vertical-align: middle !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) td {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  vertical-align: middle !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) :is(.client-name,.content-title,.deadline) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--lumads-text) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) :is(.client-company,.content-type) {
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  color: var(--lumads-muted) !important;
+}
+
+#crmApp .badge {
+  font-weight: 700 !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) .badge {
+  min-height: 28px;
+  padding: 6px 10px !important;
+  border-radius: 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start;
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+/* Aprovações: exact table geometry and alignment */
+#crmApp[data-page="Aprovações"] .approval-page-table {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table th,
+#crmApp[data-page="Aprovações"] .approval-page-table td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) { width: 15% !important; padding-left: 53px !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(2) { width: 16% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(3) { width: 12% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(4) { width: 9% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(5) { width: 15% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(6) { width: 14% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(7) { width: 19% !important; text-align: center !important; }
+
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5),
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(6) {
+  vertical-align: middle !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5) {
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .client-name {
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .date-cell {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
+  color: var(--lumads-body) !important;
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .next-action {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
+  color: var(--lumads-body) !important;
+}
+
+/* Aprovações: uniform action controls. No button may grow because another is missing. */
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(7) {
+  padding-left: 6px !important;
+  padding-right: 10px !important;
+  text-align: right;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions {
+  display: flex !important;
+  width: max-content !important;
+  max-width: 100%;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap !important;
+  gap: 5px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .text-action {
+  box-sizing: border-box !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  border-radius: 9px !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-open-action {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  padding: 0 !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-action-icon,
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  padding: 0 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-action-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-whatsapp-action svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  letter-spacing: .6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+/* Aprovações: refined tracking metric icon, same 3D language as Dashboard. */
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon {
+  position: relative;
+  width: 74px !important;
+  height: 74px !important;
+  display: grid !important;
+  place-items: center !important;
+  filter: none !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon svg {
+  display: none !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 72px;
+  background: center / contain no-repeat url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImcxIiB4MT0iOCIgeTE9IjgiIHgyPSI2OCIgeTI9IjcwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNBOUM4RkYiLz48c3RvcCBvZmZzZXQ9IjAuNTIiIHN0b3AtY29sb3I9IiM1QThDRkYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMyNDU3RDgiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJnMiIgeDE9IjUxIiB5MT0iNDgiIHgyPSI3MiIgeTI9IjcwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QjdDRkYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNzNGQUUiLz4KPC9saW5lYXJHcmFkaWVudD4KPGZpbHRlciBpZD0icyIgeD0iLTI1JSIgeT0iLTI1JSIgd2lkdGg9IjE1MCUiIGhlaWdodD0iMTYwJSI+CjxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSI2IiBzdGREZXZpYXRpb249IjQiIGZsb29kLWNvbG9yPSIjMTczQzk2IiBmbG9vZC1vcGFjaXR5PSIuMjIiLz4KPC9maWx0ZXI+CjwvZGVmcz4KPGcgZmlsdGVyPSJ1cmwoI3MpIj4KPGNpcmNsZSBjeD0iMzciIGN5PSIzNyIgcj0iMjkiIGZpbGw9InVybCgjZzEpIi8+CjxjaXJjbGUgY3g9IjM3IiBjeT0iMzciIHI9IjIxLjUiIGZpbGw9IiNGOEZBRkYiLz4KPGNpcmNsZSBjeD0iMzciIGN5PSIzNyIgcj0iMi44IiBmaWxsPSIjMkE1M0IwIi8+CjxwYXRoIGQ9Ik0zNyAyNHYxM2w5LjUgNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE1M0IwIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSI2MCIgY3k9IjU4IiByPSIxMS41IiBmaWxsPSJ1cmwoI2cyKSIgc3Ryb2tlPSIjRjhGQUZGIiBzdHJva2Utd2lkdGg9IjMiLz4KPHBhdGggZD0ibTU0LjUgNTggMy41IDMuNSA3LTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L2c+PC9zdmc+");
+}
+
+/* Filters are part of the same Dashboard typography system. */
+#crmApp[data-page="Aprovações"] :is(.search-input,.filter-select) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-text) !important;
+}
+
+/* Approval actions modal: same visual language as the approved CRM shell. */
+#modalContent.modal:has(.action-list) {
+  width: min(560px, calc(100vw - 32px));
+  max-width: 560px;
+  border-radius: 20px !important;
+  border: 1px solid #e1e6f0;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(18, 31, 65, .22);
+  overflow: hidden;
+  font-family: var(--lumads-font);
+}
+
+#modalContent.modal:has(.action-list) .modal-head {
+  padding: 22px 24px 18px !important;
+  border-bottom: 1px solid #e7eaf1;
+  background: #fff;
+}
+
+#modalContent.modal:has(.action-list) .modal-head h2 {
+  margin: 0 0 6px;
+  font-family: var(--lumads-font);
+  font-size: 21px;
+  line-height: 1.1;
+  font-weight: 600;
+  color: #11162a;
+}
+
+#modalContent.modal:has(.action-list) .modal-head p {
+  margin: 0;
+  font-family: var(--lumads-font);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #7b8498;
+}
+
+#modalContent.modal:has(.action-list) .close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #e4e8f1;
+  background: #f7f9fd;
+  color: #667085;
+}
+
+#modalContent.modal:has(.action-list) > .form {
+  padding: 18px 24px 24px !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item {
+  position: relative;
+  min-height: 54px;
+  margin: 0 !important;
+  padding: 10px 12px 10px 52px !important;
+  border: 1px solid #e4e8f1 !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  color: #182038 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease, box-shadow .16s ease;
+  box-shadow: 0 6px 16px rgba(25,43,92,.04);
+}
+
+#modalContent.modal:has(.action-list) .action-list-item::before {
+  content: "•";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: #eef3ff;
+  color: #244cff;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item:hover:not(:disabled) {
+  border-color: #b9c8ff !important;
+  background: #f7f9ff !important;
+  box-shadow: 0 9px 20px rgba(28, 57, 150, .09);
+  transform: translateY(-1px);
+}
+
+#modalContent.modal:has(.action-list) .action-list-item[data-action="edit-approval"]::before { content: "✎"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="set-adjustment"]::before { content: "↻"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="approve"]::before { content: "✓"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="set-published"]::before { content: "↗"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="copy-link"]::before { content: "⧉"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="whatsapp"]::before { content: "☎"; background: #e4fbec; color: #14a64a; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action*="email"]::before { content: "✉"; background: #e8f0ff; color: #1262e9; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="close-approval"]::before { content: "✓"; background: #f0f3f8; color: #5c667a; }
+
+#modalContent.modal:has(.action-list) .action-list-item.danger,
+#modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+  grid-column: 1 / -1;
+  color: #d63f4c !important;
+  border-color: #f2d7db !important;
+  background: #fffafa !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item.danger::before,
+#modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"]::before {
+  content: "×";
+  background: #fff0f2;
+  color: #d63f4c;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item:disabled,
+#modalContent.modal:has(.action-list) .action-list-item[aria-disabled="true"] {
+  opacity: .46;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none;
+}
+
+/* Dark mode uses Dashboard equivalents, not a second palette. */
+:root[data-theme="dark"] {
+  --lumads-title: #f4f7ff;
+  --lumads-text: #f4f7ff;
+  --lumads-body: #b9c2d6;
+  --lumads-muted: #96a1b8;
+  --lumads-line: #22304c;
+  --lumads-panel: #0f1b2e;
+}
+
+:root[data-theme="dark"] #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) th {
+  color: #f4f7ff !important;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Aprovações"] :is(.search-input,.filter-select) {
+  color: #eef2fa !important;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  background: #1d2430 !important;
+  border-color: #315fe7 !important;
+  color: #aab9ff !important;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) {
+  border-color: #2a3955;
+  background: #0f1b2e;
+  box-shadow: 0 30px 80px rgba(0,0,0,.42);
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head {
+  border-bottom-color: #25344f;
+  background: #0f1b2e;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head h2 {
+  color: #f4f7ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head p {
+  color: #96a1b8;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .close {
+  border-color: #2a3955;
+  background: #142238;
+  color: #c4cee1;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item {
+  border-color: #263752 !important;
+  background: #111f34 !important;
+  color: #f4f7ff !important;
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item::before {
+  background: #182d57;
+  color: #82a3ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item:hover:not(:disabled) {
+  border-color: #496ed8 !important;
+  background: #16263f !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="whatsapp"]::before {
+  background: #123824;
+  color: #54df8b;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action*="email"]::before {
+  background: #142f5a;
+  color: #62a1ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item.danger,
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+  border-color: #55303a !important;
+  background: #241820 !important;
+  color: #ff8791 !important;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item.danger::before,
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"]::before {
+  background: #3b1e28;
+  color: #ff8791;
+}
+
+@media (max-width: 1100px) {
+  #crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) {
+    padding-left: 48px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #crmApp[data-page="Aprovações"] .approval-page-table {
+    min-width: 920px !important;
+  }
+
+  #modalContent.modal:has(.action-list) .action-list {
+    grid-template-columns: 1fr;
+  }
+
+  #modalContent.modal:has(.action-list) .action-list-item.danger,
+  #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+    grid-column: auto;
+  }
+}
+
+/* Responsive system: zoom-safe desktop, tablet and mobile without page-level horizontal overflow. */
+body:has(#crmApp:not([hidden])) {
+  overflow-x: hidden;
+}
+
+#crmApp,
+#crmApp .shell,
+#crmApp main,
+#crmApp .topbar,
+#crmApp .top-actions,
+#crmApp .dashboard-table-section,
+#crmApp .approval-page-section,
+#crmApp .table-wrap,
+#crmApp .approval-table-wrap {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#crmApp .table-wrap,
+#crmApp .approval-table-wrap,
+#crmApp .dashboard-table-section .table-wrap {
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 1280px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+    grid-template-columns: 210px minmax(0, 1fr) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions {
+    gap: 8px !important;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .date {
+    min-width: 210px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-table-wrap {
+    overflow-x: auto !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-page-table {
+    min-width: 1040px !important;
+    table-layout: fixed !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-page-table th,
+  #crmApp[data-page="Aprovações"] .approval-page-table td {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) {
+    padding-left: 45px !important;
+  }
+}
+
+@media (max-width: 1080px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+    grid-template-columns: 180px minmax(0, 1fr) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+    padding: 20px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+    align-items: start !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions {
+    width: 100%;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .date {
+    min-width: 220px !important;
+  }
+
+  #crmApp[data-page="Dashboard"] .dashboard-table {
+    min-width: 760px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-overview {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-filter-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-filter-panel .search-input {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+    grid-template-columns: 165px minmax(0, 1fr) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  #crmApp[data-page="Dashboard"] .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-overview .approval-metric-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+    width: 100% !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) aside {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 14px 14px 12px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "brand user"
+      "nav nav" !important;
+    gap: 11px 10px !important;
+    align-items: center !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--lumads-line) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand {
+    grid-area: brand;
+    width: auto !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .dashboard-brand-lumads {
+    font-size: 24px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .dashboard-brand-crm {
+    font-size: 11px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) nav {
+    grid-area: nav;
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px;
+    padding: 8px !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item span {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item .sidebar-icon,
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item svg {
+    width: 22px !important;
+    height: 22px !important;
+    margin: 0 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-menu-wrap {
+    grid-area: user;
+    margin: 0 !important;
+    justify-self: end;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom > span:nth-child(2),
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-chevron {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom .avatar {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 20px 14px 28px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+    margin-bottom: 20px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .title {
+    font-size: clamp(26px, 8vw, 31px) !important;
+    line-height: 1.05 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 40px) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    justify-content: stretch !important;
+    align-items: center !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .date {
+    display: none !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .icon-btn {
+    display: grid !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .primary {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 40px !important;
+    padding: 0 12px !important;
+    justify-content: center !important;
+    white-space: nowrap;
+    font-size: 12px !important;
+  }
+
+  #crmApp[data-page="Dashboard"] .dashboard-metrics,
+  #crmApp[data-page="Aprovações"] .approval-overview {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-overview .approval-metric-card:last-child {
+    grid-column: auto !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-filter-panel {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-filter-panel .search-input {
+    grid-column: auto !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-table-wrap,
+  #crmApp[data-page="Dashboard"] .dashboard-table-section .table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+
+  #crmApp[data-page="Aprovações"] .approval-page-table {
+    min-width: 920px !important;
+  }
+
+  #crmApp[data-page="Dashboard"] .dashboard-table {
+    min-width: 760px !important;
+  }
+
+  #modalContent.modal,
+  #modalContent.approval-modal,
+  #modalContent.modal:has(.action-list) {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 24px) !important;
+    border-radius: 16px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  #modalContent.modal .modal-head,
+  #modalContent.approval-modal .modal-head,
+  #modalContent.modal:has(.action-list) .modal-head,
+  #modalContent.modal > .form,
+  #modalContent.approval-modal .approval-form,
+  #modalContent.modal:has(.action-list) > .form {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  #modalContent.modal .form-grid,
+  #modalContent.approval-modal .form-grid,
+  #modalContent.modal:has(.action-list) .action-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  #modalContent.modal .field.full,
+  #modalContent.approval-modal .field.full,
+  #modalContent.modal:has(.action-list) .action-list-item.danger,
+  #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+    grid-column: auto !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions {
+    grid-template-columns: repeat(3, 40px) !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .top-actions .primary {
+    grid-column: 1 / -1 !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .eyebrow {
+    font-size: 11px !important;
+  }
+
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .title {
+    font-size: 28px !important;
+  }
+}
