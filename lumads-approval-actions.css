@@ -4,14 +4,23 @@
 #crmApp[data-page="Aprovações"] .approval-row-actions {
   display: grid !important;
   grid-template-columns: 52px 32px 32px 32px 32px !important;
+  grid-template-rows: 32px !important;
   column-gap: 5px !important;
   width: 200px !important;
   min-width: 200px !important;
   max-width: 200px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
   align-items: center !important;
   justify-content: start !important;
   margin-left: auto !important;
   margin-right: 0 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions > * {
+  grid-row: 1 !important;
+  align-self: center !important;
 }
 
 #crmApp[data-page="Aprovações"] .approval-row-actions .approval-open-action {
@@ -32,10 +41,12 @@
 }
 
 /* Se a aprovação já foi finalizada e não existe mais o botão Aprovar,
-   mostra um indicador OK no mesmo slot, mantendo o padrão visual. */
+   mostra um indicador OK exatamente no mesmo slot e na mesma linha. */
 #crmApp[data-page="Aprovações"] .approval-row-actions:not(:has(.approval-approve-action))::before {
   content: "OK";
   grid-column: 4 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
   width: 32px;
   height: 32px;
   min-width: 32px;
