@@ -130,6 +130,10 @@
   color: var(--lumads-muted) !important;
 }
 
+#crmApp .badge {
+  font-weight: 700 !important;
+}
+
 #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
 :is(.dashboard-table,.approval-page-table) .badge {
   min-height: 28px;
@@ -141,7 +145,6 @@
   font-family: var(--lumads-font) !important;
   font-size: 11px !important;
   line-height: 1 !important;
-  font-weight: 500 !important;
   vertical-align: middle !important;
 }
 
