@@ -1,6 +1,6 @@
 /* Aprovações — mantém os canais no mesmo eixo em todas as linhas.
-   A ausência do botão Aprovar reserva o espaço dele, evitando deslocar
-   WhatsApp, E-mail e menu nas aprovações finalizadas. */
+   Quando a aprovação já está finalizada, o espaço do botão Aprovar vira um
+   indicador visual "OK", preservando o mesmo número de posições e o alinhamento. */
 #crmApp[data-page="Aprovações"] .approval-row-actions {
   display: grid !important;
   grid-template-columns: 52px 32px 32px 32px 32px !important;
@@ -29,6 +29,30 @@
 
 #crmApp[data-page="Aprovações"] .approval-row-actions .approval-approve-action {
   grid-column: 4 !important;
+}
+
+/* Se a aprovação já foi finalizada e não existe mais o botão Aprovar,
+   mostra um indicador OK no mesmo slot, mantendo o padrão visual. */
+#crmApp[data-page="Aprovações"] .approval-row-actions:not(:has(.approval-approve-action))::before {
+  content: "OK";
+  grid-column: 4 !important;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #48d484 0%, #23b967 100%);
+  color: #ffffff;
+  font-family: var(--lumads-font, Outfit, Geist, sans-serif);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(35,185,103,.24);
+  pointer-events: none;
+  user-select: none;
 }
 
 #crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
