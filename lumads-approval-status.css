@@ -1,4 +1,4 @@
-/* Dashboard + Aprovações — badges de status com largura uniforme e conteúdo centralizado. */
+/* Dashboard + Aprovações — badges de status com largura uniforme e coluna centralizada. */
 #crmApp[data-page="Dashboard"] .dashboard-table .badge,
 #crmApp[data-page="Aprovações"] .approval-page-table .badge {
   width: 148px !important;
@@ -7,6 +7,15 @@
   justify-content: center !important;
   text-align: center !important;
   white-space: nowrap !important;
+  margin-inline: auto !important;
+}
+
+/* Centraliza o título STATUS no mesmo eixo dos badges. */
+#crmApp[data-page="Dashboard"] .dashboard-table th:nth-child(4),
+#crmApp[data-page="Dashboard"] .dashboard-table td:nth-child(4),
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(5),
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5) {
+  text-align: center !important;
 }
 
 @media (max-width: 720px) {
