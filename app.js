@@ -234,7 +234,8 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
         console.log('[AUTH] membro validado', member?.role);
         state.currentUser = {
           name: member.display_name || user.email || 'Usuário',
-          role: roleLabels[member.role] || 'Operações'
+          role: roleLabels[member.role] || 'Operações',
+          email: user.email || ''
         };
         clientsLoading = true;
         approvalsLoading = true;
@@ -503,9 +504,9 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   function loadState() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved && saved.currentUser) {
-        const { agency, messages, deadlines, ...savedState } = saved;
-        if (agency || messages || deadlines) localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] }));
+      if (saved) {
+        const { agency, currentUser, messages, deadlines, ...savedState } = saved;
+        if (agency || currentUser || messages || deadlines) localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] }));
         return { ...defaultData, ...savedState, clients: [], approvals: [] };
       }
     } catch (_) { /* use defaults */ }
@@ -528,7 +529,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   let clientsLoadError = false;
   let approvalsLoading = false;
   let approvalsLoadError = false;
-  const save = () => { const { agency, messages, ...savedState } = state; localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] })); };
+  const save = () => { const { agency, currentUser, messages, ...savedState } = state; localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...savedState, clients: [], approvals: [] })); };
   const clientById = id => state.clients.find(client => client.id === id);
   const activeClients = () => state.clients.filter(client => client.isActive !== false);
   const approvalClientById = id => clientById(id);
@@ -986,15 +987,35 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     if (type === 'appearance') { const selected = themePreference(); const options = [['light', 'Claro', 'Interface clara, com fundo suave e superfícies brancas.'], ['dark', 'Escuro', 'Interface escura, pensada para conforto visual.'], ['system', 'Sistema', 'Acompanha a preferência do seu dispositivo.']]; return modalShell('Aparência', `Tema atual: ${{ light: 'Claro', dark: 'Escuro', system: 'Sistema' }[selected]}.`, `<div class="form"><div class="appearance-options">${options.map(([value, label, description]) => `<button class="appearance-option ${selected === value ? 'is-selected' : ''}" data-action="theme-select" data-theme="${value}">${themeIcon(value)}<span><b>${label}</b><span>${description}</span></span><i class="selection-dot"></i></button>`).join('')}</div></div>`); }
     if (type === 'whatsapp-info' || type === 'email-info') { const isWhatsApp = type.startsWith('whatsapp'); const label = isWhatsApp ? 'WhatsApp' : 'E-mail'; const description = isWhatsApp ? 'O CRM prepara a mensagem e abre o WhatsApp para envio.' : 'O CRM prepara o e-mail no aplicativo padrão para envio.'; return modalShell(label, 'Modo manual ativo', `<div class="form"><div class="modal-info"><b>Modo manual ativo</b><p>${description}</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
     if (type === 'agency') return void showAgencySettingsForm();
-    if (type === 'user') { const u = state.currentUser; return modalShell('Usuário atual', 'Informações exibidas para o usuário autenticado nesta sessão.', `<form class="form" data-form="user"><div class="form-grid"><div class="field"><label>Nome</label><input id="userName" value="${text(u.name)}" required></div><div class="field"><label>Função</label><input id="userRole" value="${text(u.role)}" required></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar usuário')}</form>`); }
+    if (type === 'user') { const u = state.currentUser; return modalShell('Usuário atual', 'Informações do usuário autenticado nesta sessão.', `<form class="form" data-form="user"><div class="form-grid"><div class="field"><label>Nome</label><input id="userName" value="${text(u.name)}" required></div><div class="field"><label>E-mail</label><input value="${text(u.email || authState.user?.email)}" readonly></div><div class="field"><label>Função</label><input value="${text(u.role)}" readonly></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar usuário')}</form>`); }
     if (type === 'messages') return void showMessageTemplatesForm();
     if (type === 'deadlines') return void showDeadlineSettingsForm();
   }
-  function saveSettingsForm(type) { if (type === 'user') { state.currentUser = { name: $('#userName').value.trim(), role: $('#userRole').value.trim() }; } save(); closeModal(); refreshUserUI(); rerender(); showToast('Configurações salvas.'); }
+  async function saveSettingsForm(type, form) {
+    if (type !== 'user' || form.dataset.saving === 'true') return;
+    const user = authState.user;
+    if (!user) return modalError('Não foi possível identificar o usuário autenticado.');
+    form.dataset.saving = 'true'; setSubmitState(form, true);
+    try {
+      const { data, error } = await supabase.from('app_members').update({ display_name: $('#userName').value.trim() }).eq('user_id', user.id).select('display_name, role').single();
+      if (error) throw error;
+      authState.member = data;
+      state.currentUser = { name: data.display_name || user.email || 'Usuário', role: roleLabels[data.role] || 'Operações', email: user.email || '' };
+      closeModal();
+      refreshUserUI();
+      rerender();
+      showToast('Configurações salvas.');
+    } catch (error) {
+      console.error('Não foi possível salvar o usuário atual.', error);
+      modalError('Não foi possível salvar o usuário. Tente novamente.');
+    } finally {
+      form.dataset.saving = 'false'; setSubmitState(form, false);
+    }
+  }
   function showDashboardFilter() { modalShell('Filtrar status', 'Escolha um status para a tabela do dashboard.', `<form class="form" data-form="dashboard-filter"><div class="field"><label>Status</label><select id="dashboardStatusSelect" class="filter-select"><option value="">Todos os pendentes</option>${activeStatuses.map(status => `<option value="${status}" ${dashboardStatus === status ? 'selected' : ''}>${statusLabel(status)}</option>`).join('')}</select></div>${formFooter('Aplicar filtro')}</form>`); }
   function toggleUserMenu(force) { const menu = $('#userPopover'), button = $('#userMenuButton'); const next = typeof force === 'boolean' ? force : menu.hidden; menu.hidden = !next; button.setAttribute('aria-expanded', String(next)); }
-  function showUserProfile() { const user = state.currentUser; toggleUserMenu(false); modalShell('Meu perfil', 'Informações do usuário autenticado.', `<div class="form"><div class="profile-identity"><span class="avatar profile-avatar">${text(initials(user.name))}</span><div><b class="profile-identity-name">${text(user.name)}</b><span class="profile-identity-role">${text(user.role)}</span></div></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
-  function handleForm(form) { const type = form.dataset.form; if (type === 'approval') return void saveApprovalForm(form); if (type === 'client') return void saveClientForm(form); if (type === 'confirm') return void handleConfirm(form); if (type === 'messages') return void saveMessageTemplatesForm(form); if (type === 'deadlines') return void saveDeadlineSettingsForm(form); if (type === 'agency') return void saveAgencySettingsForm(form); if (type === 'user') saveSettingsForm(type); if (type === 'dashboard-filter') { dashboardStatus = $('#dashboardStatusSelect').value; closeModal(); renderDashboard(); showToast(dashboardStatus ? 'Filtro de status aplicado.' : 'Filtro removido.'); } }
+  function showUserProfile() { const user = state.currentUser; toggleUserMenu(false); modalShell('Meu perfil', 'Informações do usuário autenticado.', `<div class="form"><div class="profile-identity"><span class="avatar profile-avatar">${text(initials(user.name))}</span><div><b class="profile-identity-name">${text(user.name)}</b><span class="profile-identity-role">${text(user.role)}</span><span class="profile-identity-role">${text(user.email || authState.user?.email)}</span></div></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
+  function handleForm(form) { const type = form.dataset.form; if (type === 'approval') return void saveApprovalForm(form); if (type === 'client') return void saveClientForm(form); if (type === 'confirm') return void handleConfirm(form); if (type === 'messages') return void saveMessageTemplatesForm(form); if (type === 'deadlines') return void saveDeadlineSettingsForm(form); if (type === 'agency') return void saveAgencySettingsForm(form); if (type === 'user') return void saveSettingsForm(type, form); if (type === 'dashboard-filter') { dashboardStatus = $('#dashboardStatusSelect').value; closeModal(); renderDashboard(); showToast(dashboardStatus ? 'Filtro de status aplicado.' : 'Filtro removido.'); } }
   document.addEventListener('submit', event => { const form = event.target.closest('form[data-form]'); if (form) { event.preventDefault(); handleForm(form); } });
   document.addEventListener('click', event => {
     const nav = event.target.closest('.nav-item'); if (nav) return navigate(nav.dataset.page);
