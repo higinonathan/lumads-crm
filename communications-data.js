@@ -43,6 +43,9 @@ const TEMPLATE_SELECT = [
 const SETTINGS_SELECT = [
   'id',
   'agency_name',
+  'agency_display_name',
+  'agency_phone',
+  'agency_email',
   'reminder_1_hours',
   'reminder_2_hours',
   'final_notice_enabled',
@@ -136,6 +139,25 @@ export async function updateCommunicationSettings(values) {
     reminder_1_hours: values.reminder_1_hours,
     reminder_2_hours: values.reminder_2_hours,
     final_notice_enabled: values.final_notice_enabled
+  };
+
+  const { data, error } = await supabase
+    .from('agency_settings')
+    .update(payload)
+    .eq('id', 1)
+    .select(SETTINGS_SELECT)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function updateAgencySettings(values) {
+  const payload = {
+    agency_name: values.agency_name,
+    agency_display_name: values.agency_display_name,
+    agency_phone: values.agency_phone,
+    agency_email: values.agency_email
   };
 
   const { data, error } = await supabase
