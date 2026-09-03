@@ -1,4 +1,5 @@
-/* Aprovações — badges de status com largura uniforme e conteúdo centralizado. */
+/* Dashboard + Aprovações — badges de status com largura uniforme e conteúdo centralizado. */
+#crmApp[data-page="Dashboard"] .dashboard-table .badge,
 #crmApp[data-page="Aprovações"] .approval-page-table .badge {
   width: 148px !important;
   min-width: 148px !important;
@@ -9,6 +10,7 @@
 }
 
 @media (max-width: 720px) {
+  #crmApp[data-page="Dashboard"] .dashboard-table .badge,
   #crmApp[data-page="Aprovações"] .approval-page-table .badge {
     width: 148px !important;
     min-width: 148px !important;
