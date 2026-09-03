@@ -1,3 +1,4 @@
+import './lumads-design-system.css';
 import { supabase } from './supabase.js';
 
 const APPROVAL_SELECT = [

@@ -1,0 +1,305 @@
+/* LUMADS CRM — Shared Design System
+   Dashboard is the visual source of truth. This layer keeps equivalent
+   components on Dashboard and Aprovações visually identical. */
+
+:root {
+  --lumads-font: Outfit, Geist, sans-serif;
+  --lumads-title: #11162a;
+  --lumads-text: #182038;
+  --lumads-body: #4d5670;
+  --lumads-muted: #727a90;
+  --lumads-line: #e7eaf1;
+  --lumads-panel: #ffffff;
+  --lumads-shadow: 0 14px 35px rgba(25,43,92,.08);
+}
+
+/* Shared typography */
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) {
+  font-family: var(--lumads-font);
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .title {
+  font-family: var(--lumads-font) !important;
+  font-size: 31px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .eyebrow {
+  font-family: var(--lumads-font) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-metric,.approval-metric-card) .metric-label {
+  font-family: var(--lumads-font) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-text) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-metric,.approval-metric-card) .metric-value {
+  font-family: var(--lumads-font) !important;
+  font-size: 35px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table-head h2,.approval-page-intro h2) {
+  font-family: var(--lumads-font) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-title) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table-head p,.approval-page-intro p) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--lumads-muted) !important;
+}
+
+/* Shared table language */
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) th {
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: .05em !important;
+  text-transform: uppercase;
+  color: var(--lumads-text) !important;
+  vertical-align: middle !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) td {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  vertical-align: middle !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) :is(.client-name,.content-title,.deadline) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--lumads-text) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) :is(.client-company,.content-type) {
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  color: var(--lumads-muted) !important;
+}
+
+#crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) .badge {
+  min-height: 28px;
+  padding: 6px 10px !important;
+  border-radius: 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start;
+  font-family: var(--lumads-font) !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 500 !important;
+  vertical-align: middle !important;
+}
+
+/* Aprovações: exact table geometry and alignment */
+#crmApp[data-page="Aprovações"] .approval-page-table {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table th,
+#crmApp[data-page="Aprovações"] .approval-page-table td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) { width: 15% !important; padding-left: 53px !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(2) { width: 16% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(3) { width: 12% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(4) { width: 9% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(5) { width: 15% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(6) { width: 14% !important; }
+#crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(7) { width: 19% !important; text-align: center !important; }
+
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5),
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(6) {
+  vertical-align: middle !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5) {
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .client-name {
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .date-cell {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
+  color: var(--lumads-body) !important;
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Aprovações"] .approval-page-table .next-action {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
+  color: var(--lumads-body) !important;
+}
+
+/* Aprovações: uniform action controls. No button may grow because another is missing. */
+#crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(7) {
+  padding-left: 6px !important;
+  padding-right: 10px !important;
+  text-align: right;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions {
+  display: flex !important;
+  width: max-content !important;
+  max-width: 100%;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap !important;
+  gap: 5px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .text-action {
+  box-sizing: border-box !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  border-radius: 9px !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-open-action {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  padding: 0 !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-action-icon,
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  padding: 0 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-action-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-whatsapp-action svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  letter-spacing: .6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+/* Aprovações: refined tracking metric icon, same 3D language as Dashboard. */
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon {
+  position: relative;
+  width: 74px !important;
+  height: 74px !important;
+  display: grid !important;
+  place-items: center !important;
+  filter: none !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon svg {
+  display: none !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-metric-card:first-child .approval-metric-icon::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 72px;
+  background: center / contain no-repeat url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImcxIiB4MT0iOCIgeTE9IjgiIHgyPSI2OCIgeTI9IjcwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNBOUM4RkYiLz48c3RvcCBvZmZzZXQ9IjAuNTIiIHN0b3AtY29sb3I9IiM1QThDRkYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMyNDU3RDgiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJnMiIgeDE9IjUxIiB5MT0iNDgiIHgyPSI3MiIgeTI9IjcwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QjdDRkYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNzNGQUUiLz4KPC9saW5lYXJHcmFkaWVudD4KPGZpbHRlciBpZD0icyIgeD0iLTI1JSIgeT0iLTI1JSIgd2lkdGg9IjE1MCUiIGhlaWdodD0iMTYwJSI+CjxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSI2IiBzdGREZXZpYXRpb249IjQiIGZsb29kLWNvbG9yPSIjMTczQzk2IiBmbG9vZC1vcGFjaXR5PSIuMjIiLz4KPC9maWx0ZXI+CjwvZGVmcz4KPGcgZmlsdGVyPSJ1cmwoI3MpIj4KPGNpcmNsZSBjeD0iMzciIGN5PSIzNyIgcj0iMjkiIGZpbGw9InVybCgjZzEpIi8+CjxjaXJjbGUgY3g9IjM3IiBjeT0iMzciIHI9IjIxLjUiIGZpbGw9IiNGOEZBRkYiLz4KPGNpcmNsZSBjeD0iMzciIGN5PSIzNyIgcj0iMi44IiBmaWxsPSIjMkE1M0IwIi8+CjxwYXRoIGQ9Ik0zNyAyNHYxM2w5LjUgNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkE1M0IwIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSI2MCIgY3k9IjU4IiByPSIxMS41IiBmaWxsPSJ1cmwoI2cyKSIgc3Ryb2tlPSIjRjhGQUZGIiBzdHJva2Utd2lkdGg9IjMiLz4KPHBhdGggZD0ibTU0LjUgNTggMy41IDMuNSA3LTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L2c+PC9zdmc+");
+}
+
+/* Filters are part of the same Dashboard typography system. */
+#crmApp[data-page="Aprovações"] :is(.search-input,.filter-select) {
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--lumads-text) !important;
+}
+
+/* Dark mode uses Dashboard equivalents, not a second palette. */
+:root[data-theme="dark"] {
+  --lumads-title: #f4f7ff;
+  --lumads-text: #f4f7ff;
+  --lumads-body: #b9c2d6;
+  --lumads-muted: #96a1b8;
+  --lumads-line: #22304c;
+  --lumads-panel: #0f1b2e;
+}
+
+:root[data-theme="dark"] #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"])
+:is(.dashboard-table,.approval-page-table) th {
+  color: #f4f7ff !important;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Aprovações"] :is(.search-input,.filter-select) {
+  color: #eef2fa !important;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  background: #1d2430 !important;
+  border-color: #315fe7 !important;
+  color: #aab9ff !important;
+}
+
+@media (max-width: 1100px) {
+  #crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) {
+    padding-left: 48px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #crmApp[data-page="Aprovações"] .approval-page-table {
+    min-width: 920px !important;
+  }
+}
