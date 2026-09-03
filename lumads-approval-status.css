@@ -7,15 +7,22 @@
   justify-content: center !important;
   text-align: center !important;
   white-space: nowrap !important;
-  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-/* Centraliza o título STATUS no mesmo eixo dos badges. */
+/*
+   STATUS precisa compartilhar exatamente o mesmo eixo horizontal no cabeçalho
+   e nas linhas. Removemos o padding lateral herdado somente desta coluna para
+   que o centro visual do TH seja o mesmo centro usado pelo badge fixo de 148px.
+*/
 #crmApp[data-page="Dashboard"] .dashboard-table th:nth-child(4),
 #crmApp[data-page="Dashboard"] .dashboard-table td:nth-child(4),
 #crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(5),
 #crmApp[data-page="Aprovações"] .approval-page-table td:nth-child(5) {
   text-align: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 @media (max-width: 720px) {
