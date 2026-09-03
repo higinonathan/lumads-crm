@@ -1,6 +1,6 @@
 /* LUMADS CRM — Shared Design System
-   Dashboard is the visual source of truth. This layer keeps equivalent
-   components on Dashboard and Aprovações visually identical. */
+   Dashboard is the visual source of truth. Shared primitives are global;
+   page-specific layouts migrate to this system without redefining them. */
 
 :root {
   --lumads-font: Outfit, Geist, sans-serif;
@@ -11,6 +11,33 @@
   --lumads-line: #e7eaf1;
   --lumads-panel: #ffffff;
   --lumads-shadow: 0 14px 35px rgba(25,43,92,.08);
+}
+
+/* Global topbar primitive: every CRM page uses the Dashboard date component. */
+#crmApp .date {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 238px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+  border: 1px solid #e5e8ef !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #26304b !important;
+  box-shadow: 0 3px 10px rgba(24,36,69,.05) !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+:root[data-theme="dark"] #crmApp .date {
+  background: #0f1b2e !important;
+  border-color: #263657 !important;
+  color: #dfe6f5 !important;
 }
 
 /* Shared typography */
