@@ -267,6 +267,141 @@
   color: var(--lumads-text) !important;
 }
 
+/* Approval actions modal: same visual language as the approved CRM shell. */
+#modalContent.modal:has(.action-list) {
+  width: min(560px, calc(100vw - 32px));
+  max-width: 560px;
+  border-radius: 20px !important;
+  border: 1px solid #e1e6f0;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(18, 31, 65, .22);
+  overflow: hidden;
+  font-family: var(--lumads-font);
+}
+
+#modalContent.modal:has(.action-list) .modal-head {
+  padding: 22px 24px 18px !important;
+  border-bottom: 1px solid #e7eaf1;
+  background: #fff;
+}
+
+#modalContent.modal:has(.action-list) .modal-head h2 {
+  margin: 0 0 6px;
+  font-family: var(--lumads-font);
+  font-size: 21px;
+  line-height: 1.1;
+  font-weight: 600;
+  color: #11162a;
+}
+
+#modalContent.modal:has(.action-list) .modal-head p {
+  margin: 0;
+  font-family: var(--lumads-font);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #7b8498;
+}
+
+#modalContent.modal:has(.action-list) .close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #e4e8f1;
+  background: #f7f9fd;
+  color: #667085;
+}
+
+#modalContent.modal:has(.action-list) > .form {
+  padding: 18px 24px 24px !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item {
+  position: relative;
+  min-height: 54px;
+  margin: 0 !important;
+  padding: 10px 12px 10px 52px !important;
+  border: 1px solid #e4e8f1 !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  color: #182038 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  font-family: var(--lumads-font) !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease, box-shadow .16s ease;
+  box-shadow: 0 6px 16px rgba(25,43,92,.04);
+}
+
+#modalContent.modal:has(.action-list) .action-list-item::before {
+  content: "•";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: #eef3ff;
+  color: #244cff;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item:hover:not(:disabled) {
+  border-color: #b9c8ff !important;
+  background: #f7f9ff !important;
+  box-shadow: 0 9px 20px rgba(28, 57, 150, .09);
+  transform: translateY(-1px);
+}
+
+#modalContent.modal:has(.action-list) .action-list-item[data-action="edit-approval"]::before { content: "✎"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="set-adjustment"]::before { content: "↻"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="approve"]::before { content: "✓"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="set-published"]::before { content: "↗"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="copy-link"]::before { content: "⧉"; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="whatsapp"]::before { content: "☎"; background: #e4fbec; color: #14a64a; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action*="email"]::before { content: "✉"; background: #e8f0ff; color: #1262e9; }
+#modalContent.modal:has(.action-list) .action-list-item[data-action="close-approval"]::before { content: "✓"; background: #f0f3f8; color: #5c667a; }
+
+#modalContent.modal:has(.action-list) .action-list-item.danger,
+#modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+  grid-column: 1 / -1;
+  color: #d63f4c !important;
+  border-color: #f2d7db !important;
+  background: #fffafa !important;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item.danger::before,
+#modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"]::before {
+  content: "×";
+  background: #fff0f2;
+  color: #d63f4c;
+}
+
+#modalContent.modal:has(.action-list) .action-list-item:disabled,
+#modalContent.modal:has(.action-list) .action-list-item[aria-disabled="true"] {
+  opacity: .46;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none;
+}
+
 /* Dark mode uses Dashboard equivalents, not a second palette. */
 :root[data-theme="dark"] {
   --lumads-title: #f4f7ff;
@@ -292,6 +427,72 @@
   color: #aab9ff !important;
 }
 
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) {
+  border-color: #2a3955;
+  background: #0f1b2e;
+  box-shadow: 0 30px 80px rgba(0,0,0,.42);
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head {
+  border-bottom-color: #25344f;
+  background: #0f1b2e;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head h2 {
+  color: #f4f7ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .modal-head p {
+  color: #96a1b8;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .close {
+  border-color: #2a3955;
+  background: #142238;
+  color: #c4cee1;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item {
+  border-color: #263752 !important;
+  background: #111f34 !important;
+  color: #f4f7ff !important;
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item::before {
+  background: #182d57;
+  color: #82a3ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item:hover:not(:disabled) {
+  border-color: #496ed8 !important;
+  background: #16263f !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="whatsapp"]::before {
+  background: #123824;
+  color: #54df8b;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action*="email"]::before {
+  background: #142f5a;
+  color: #62a1ff;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item.danger,
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+  border-color: #55303a !important;
+  background: #241820 !important;
+  color: #ff8791 !important;
+}
+
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item.danger::before,
+:root[data-theme="dark"] #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"]::before {
+  background: #3b1e28;
+  color: #ff8791;
+}
+
 @media (max-width: 1100px) {
   #crmApp[data-page="Aprovações"] .approval-page-table th:nth-child(1) {
     padding-left: 48px !important;
@@ -301,5 +502,14 @@
 @media (max-width: 720px) {
   #crmApp[data-page="Aprovações"] .approval-page-table {
     min-width: 920px !important;
+  }
+
+  #modalContent.modal:has(.action-list) .action-list {
+    grid-template-columns: 1fr;
+  }
+
+  #modalContent.modal:has(.action-list) .action-list-item.danger,
+  #modalContent.modal:has(.action-list) .action-list-item[data-action="delete-approval"] {
+    grid-column: auto;
   }
 }
