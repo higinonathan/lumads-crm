@@ -623,7 +623,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   }
   function dashboardRow(approval) {
     const client = approvalClientById(approval.clientId); const due = dueDescriptor(approval);
-    const channel = '<div class="dashboard-channel-cell"><span class="dashboard-round-icon manual" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3"/><path d="M6 20c.4-4 2.6-6 6-6s5.6 2 6 6"/></svg></span><span>Não informado</span></div>';
+    const channel = '<div class="dashboard-channel-cell"><span class="dashboard-round-icon manual" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2.25"/><path d="M9 4V3h6v1"/><path d="m9.4 11.8 1.8 1.8 3.7-3.7"/><path d="M9.5 16.5h5"/></svg></span><span>Não informado</span></div>';
     return `<tr><td>${clientCell(client)}</td><td><div class="content-title">${text(approval.content)}</div><div class="content-type">${text(approval.type)}</div></td><td class="deadline ${due.late ? 'late' : ''}">${due.label}</td><td>${badge(approval.status)}</td><td>${channel}</td><td><button class="dashboard-action" data-action="open-post" data-id="${approval.id}">Abrir</button></td></tr>`;
   }
   function nextAction(approval) {
