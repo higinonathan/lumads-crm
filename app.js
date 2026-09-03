@@ -451,11 +451,17 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.3 2.3 4.8-5"/></svg>',
     calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4m8-4v4M4 10h16m-9 5 1.6 1.6L16 13"/></svg>'
   }[name] || '');
+  const dashboardMetricIcon = name => ({
+    clock: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricPlane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#72A8FF"/><stop offset="1" stop-color="#0040D8"/></linearGradient><filter id="metricPlaneShadow"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#1A4AC8" flood-opacity=".35"/></filter></defs><path filter="url(#metricPlaneShadow)" fill="url(#metricPlane)" d="M67 14 13 37c-4 1.7-3.6 7.5.6 8.7l19.7 5.5 7.8 15.4c1.7 3.4 6.5 3.7 8.6.5L72 20.7c2.1-4.3-.6-8.7-5-6.7Z"/><path d="m34 51 27-25-20 31" fill="#91BBFF" opacity=".55"/></svg>',
+    bell: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricBell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#73A9FF"/><stop offset="1" stop-color="#0044DF"/></linearGradient></defs><path fill="url(#metricBell)" d="M17 17h46a9 9 0 0 1 9 9v27a9 9 0 0 1-9 9H41l-12 9 2-9H17a9 9 0 0 1-9-9V26a9 9 0 0 1 9-9Z"/><circle cx="28" cy="40" r="4" fill="#fff"/><circle cx="40" cy="40" r="4" fill="#d8e7ff"/><circle cx="52" cy="40" r="4" fill="#fff"/></svg>',
+    bellRing: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricMail" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#D5B3FF"/><stop offset="1" stop-color="#7C45E8"/></linearGradient></defs><rect x="9" y="18" width="62" height="44" rx="11" fill="url(#metricMail)"/><path d="m15 25 25 21 25-21" fill="none" stroke="#eddfff" stroke-width="4"/><circle cx="65" cy="17" r="12" fill="#8F47F2"/><path d="M65 12v10m-5-5h10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>',
+    refresh: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricDoc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFE3A6"/><stop offset="1" stop-color="#F0A838"/></linearGradient></defs><rect x="14" y="10" width="48" height="58" rx="8" fill="url(#metricDoc)"/><path d="M24 25h26M24 34h22M24 43h18" stroke="#C87B1F" stroke-width="4" stroke-linecap="round"/><path d="m48 54 18-19 6 6-18 19-9 3z" fill="#2D6BFF"/></svg>',
+    check: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricCheck" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7FE4A1"/><stop offset="1" stop-color="#26A558"/></linearGradient></defs><path fill="url(#metricCheck)" d="M40 8 68 20v19c0 16-11 27-28 33C23 66 12 55 12 39V20Z"/><path d="m26 39 9 9 19-20" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    calendar: '<svg viewBox="0 0 80 80"><defs><linearGradient id="metricCalendar" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9FC0FF"/><stop offset="1" stop-color="#316AE8"/></linearGradient></defs><rect x="8" y="18" width="56" height="48" rx="8" fill="url(#metricCalendar)"/><rect x="8" y="18" width="56" height="14" rx="8" fill="#1455E8"/><path d="M22 10v15M50 10v15" stroke="#0F3EAA" stroke-width="5" stroke-linecap="round"/><circle cx="61" cy="58" r="14" fill="#F7F9FF" stroke="#2D65E6" stroke-width="4"/><path d="M61 50v8l6 3" fill="none" stroke="#244CA7" stroke-width="3" stroke-linecap="round"/></svg>'
+  }[name] || '');
   const themeIcon = name => ({
     light: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>',
-    dark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"/></svg>',
-    system: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>',
-    check: '<svg class="theme-check" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 4 4L19 6"/></svg>'
+    dark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"/></svg>'
   }[name] || '');
   const settingIcon = name => ({
     appearance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2M5.6 5.6l1.4 1.4m9.9 9.9 1.5 1.5M3 12h2m14 0h2M5.6 18.4l1.4-1.4m9.9-9.9 1.5-1.5"/></svg>',
@@ -471,20 +477,20 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   const shift = (days, hour = 10) => { const d = new Date(); d.setDate(d.getDate() + days); d.setHours(hour, 0, 0, 0); return d.toISOString(); };
   const initials = name => name.split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase();
 
-  function themePreference() { const value = localStorage.getItem(THEME_KEY); return ['light', 'dark', 'system'].includes(value) ? value : 'system'; }
-  function resolvedTheme(preference = themePreference()) { return preference === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : preference; }
+  function themePreference() { const saved = localStorage.getItem(THEME_KEY); const value = saved === 'dark' ? 'dark' : 'light'; if (saved !== value) localStorage.setItem(THEME_KEY, value); return value; }
+  function resolvedTheme(preference = themePreference()) { return preference === 'dark' ? 'dark' : 'light'; }
   function renderThemeUI() {
-    const preference = themePreference(); const button = $('#themeButton'); const menu = $('#themeMenu');
-    if (!button || !menu) return;
-    button.innerHTML = themeIcon(preference); button.title = `Tema: ${{ light: 'Claro', dark: 'Escuro', system: 'Sistema' }[preference]}`;
-    menu.innerHTML = [['light', 'Claro'], ['dark', 'Escuro'], ['system', 'Sistema']].map(([value, label]) => `<button data-action="theme-select" data-theme="${value}" class="${preference === value ? 'is-selected' : ''}">${themeIcon(value)}<span>${label}</span>${preference === value ? themeIcon('check') : ''}</button>`).join('');
+    const preference = themePreference(); const button = $('#themeButton');
+    if (!button) return;
+    const target = preference === 'light' ? 'dark' : 'light';
+    button.innerHTML = themeIcon(target); button.title = `Ativar modo ${{ light: 'claro', dark: 'escuro' }[target]}`; button.setAttribute('aria-label', button.title);
   }
   function setTheme(preference) {
-    const value = ['light', 'dark', 'system'].includes(preference) ? preference : 'system';
+    const value = preference === 'dark' ? 'dark' : 'light';
     localStorage.setItem(THEME_KEY, value); document.documentElement.dataset.themePreference = value; document.documentElement.dataset.theme = resolvedTheme(value);
     renderThemeUI(); if (currentPage === 'Configurações') renderSettings();
   }
-  function toggleThemeMenu(force) { const menu = $('#themeMenu'), button = $('#themeButton'); if (!menu || !button) return; const open = typeof force === 'boolean' ? force : menu.hidden; menu.hidden = !open; button.setAttribute('aria-expanded', String(open)); }
+  function toggleTheme() { setTheme(themePreference() === 'light' ? 'dark' : 'light'); }
 
   function seedState() {
     return {
@@ -545,6 +551,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   const formatDate = value => new Intl.DateTimeFormat('pt-BR').format(new Date(value));
   const formatDateTime = value => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value));
   const formatLongDate = value => new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' }).format(new Date(value));
+  const formatDashboardDate = value => { const date = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(value)); return date.charAt(0).toUpperCase() + date.slice(1); };
   const inputDateTime = value => { const d = new Date(value); const offset = d.getTimezoneOffset() * 60000; return new Date(d - offset).toISOString().slice(0, 16); };
   const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'; };
   const statusLabel = status => statusMeta[status]?.label || status;
@@ -565,8 +572,8 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const placeholder = approvalsLoading || clientsLoading ? '…' : (approvalsLoadError || clientsLoadError ? '—' : null);
     const labels = [
       ['Aguardando aprovação', 'yellow', 'clock'],
-      ['Lembrete 1 enviado', 'yellow', 'bell'],
-      ['Lembrete 2 enviado', 'pink', 'bellRing'],
+      ['Após 1º lembrete', 'yellow', 'bell'],
+      ['Após 2º lembrete', 'pink', 'bellRing'],
       ['Ajustes solicitados', 'violet', 'refresh'],
       ['Aprovados esta semana', 'mint', 'check'],
       ['Prazos próximos', 'blue', 'calendar']
@@ -577,8 +584,8 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const monday = startOfToday(); monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
     return [
       ['Aguardando aprovação', active.filter(a => a.status === 'waiting_approval').length, 'yellow', 'clock'],
-      ['Lembrete 1 enviado', active.filter(a => Number(a.reminders) >= 1).length, 'yellow', 'bell'],
-      ['Lembrete 2 enviado', active.filter(a => Number(a.reminders) >= 2).length, 'pink', 'bellRing'],
+      ['Após 1º lembrete', active.filter(a => Number(a.reminders) >= 1).length, 'yellow', 'bell'],
+      ['Após 2º lembrete', active.filter(a => Number(a.reminders) >= 2).length, 'pink', 'bellRing'],
       ['Ajustes solicitados', active.filter(a => a.status === 'adjustment_requested').length, 'violet', 'refresh'],
       ['Aprovados esta semana', all.filter(a => a.approvedAt && new Date(a.approvedAt) >= monday).length, 'mint', 'check'],
       ['Prazos próximos', active.filter(a => dueDescriptor(a).days >= 0 && dueDescriptor(a).days <= 7).length, 'blue', 'calendar']
@@ -596,12 +603,17 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const map = { Dashboard: ['Visão geral', `${greeting()}, ${state.currentUser.name}.`], Aprovações: ['Fluxo de aprovação', 'Aprovações'], Clientes: ['Base de clientes', 'Clientes'], Histórico: ['Resultados concluídos', 'Histórico'], Configurações: ['Administração', 'Configurações'] };
     $('#pageEyebrow').textContent = map[page][0]; $('#pageTitle').textContent = map[page][1];
     const action = page === 'Clientes' ? '<button class="primary" data-action="new-client">+ Novo cliente</button>' : page === 'Configurações' ? '' : '<button class="primary" data-action="new-approval">+ Nova aprovação</button>';
-    $('#headerActions').innerHTML = `<span class="date" id="currentDate">${formatLongDate(new Date())}</span><div class="theme-control"><button class="icon-btn theme-button" id="themeButton" aria-label="Alterar tema" aria-expanded="false" aria-controls="themeMenu"></button><div class="theme-menu" id="themeMenu" hidden></div></div><button class="icon-btn" data-action="notifications" aria-label="Notificações">◌</button>${action}`;
+    const dashboardTools = page === 'Dashboard' ? '<button class="icon-btn" data-action="dashboard-filter" aria-label="Pesquisar aprovações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="6.25"/><path d="m16 16 4.25 4.25"/></svg></button>' : '';
+    const notifications = '<button class="icon-btn" data-action="notifications" aria-label="Notificações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>';
+    const themeControl = '<button class="icon-btn theme-button" id="themeButton" aria-label="Alterar tema"></button>';
+    const date = page === 'Dashboard' ? `<span class="date" id="currentDate">${formatDashboardDate(new Date())}</span>` : `<span class="date" id="currentDate">${formatLongDate(new Date())}</span>`;
+    $('#headerActions').innerHTML = page === 'Dashboard' ? `${dashboardTools}${notifications}${themeControl}${date}${action}` : `${date}${themeControl}${notifications}${action}`;
     renderThemeUI();
   }
   function dashboardRow(approval) {
     const client = approvalClientById(approval.clientId); const due = dueDescriptor(approval);
-    return `<tr><td>${clientCell(client)}</td><td><div class="content-title">${text(approval.content)}</div><div class="content-type">${text(approval.type)}</div></td><td class="date-cell">${formatDateTime(approval.createdAt)}</td><td class="deadline ${due.late ? 'late' : ''}">${due.label}</td><td>${badge(approval.status)}</td><td class="next-action">${text(nextAction(approval))}</td><td><button class="post-link button-link" data-action="open-post" data-id="${approval.id}">Abrir ↗</button></td><td><div class="row-actions"><button class="row-action whatsapp-action" data-action="whatsapp" data-id="${approval.id}" aria-label="Abrir WhatsApp"${whatsappActionState(client)}>◌</button><button class="row-action" data-action="approval-menu" data-id="${approval.id}" aria-label="Mais opções">•••</button></div></td></tr>`;
+    const channel = '<div class="dashboard-channel-cell"><span class="dashboard-round-icon manual" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="3"/><path d="M6 20c.4-4 2.6-6 6-6s5.6 2 6 6"/></svg></span><span>Não informado</span></div>';
+    return `<tr><td>${clientCell(client)}</td><td><div class="content-title">${text(approval.content)}</div><div class="content-type">${text(approval.type)}</div></td><td class="deadline ${due.late ? 'late' : ''}">${due.label}</td><td>${badge(approval.status)}</td><td>${channel}</td><td><button class="dashboard-action" data-action="open-post" data-id="${approval.id}">Abrir</button></td></tr>`;
   }
   function nextAction(approval) {
     if (approval.status === 'waiting_approval') return dueDescriptor(approval).late ? 'Enviar lembrete hoje' : 'Aguardar retorno';
@@ -612,24 +624,25 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   }
   function renderDashboard() {
     refreshUserUI(); setHeader('Dashboard');
-    $('#dashboardMetrics').innerHTML = metrics().map(([label, value, tone, icon]) => `<div class="metric"><div class="metric-label">${label}</div><div class="metric-line"><strong class="metric-value">${value}</strong><span class="mini ${tone}">${iconSvg(icon)}</span></div></div>`).join('');
+    $('#dashboardMetrics').innerHTML = metrics().map(([label, value, tone, icon]) => `<div class="dashboard-metric"><div><div class="metric-label">${label}</div><strong class="metric-value">${value}</strong></div><span class="dashboard-icon3d ${tone}">${dashboardMetricIcon(icon)}</span></div>`).join('');
     const empty = $('#emptyNote');
     if (clientsLoading || approvalsLoading) {
-      $('#attentionList').innerHTML = '<div class="empty-note" style="display:block">Carregando dados do CRM…</div>';
       $('#tableBody').innerHTML = '';
       empty.textContent = 'Carregando aprovações…'; empty.style.display = 'block';
       $('#dashboardTableSub').textContent = 'Sincronizando com o Supabase…';
       return;
     }
     if (clientsLoadError || approvalsLoadError) {
-      $('#attentionList').innerHTML = '<div class="empty-note" style="display:block">Não foi possível carregar os dados agora. <button class="secondary" data-action="retry-data">Tentar novamente</button></div>';
       $('#tableBody').innerHTML = '';
       empty.textContent = 'Os dados não puderam ser carregados.'; empty.style.display = 'block';
       $('#dashboardTableSub').textContent = 'Falha na sincronização com o Supabase.';
       return;
     }
-    const attention = activeApprovals().sort((a, b) => new Date(a.dueAt || 0) - new Date(b.dueAt || 0)).slice(0, 3);
-    $('#attentionList').innerHTML = attention.map(approval => { const client = approvalClientById(approval.clientId); const due = dueDescriptor(approval); return `<article class="attention-card"><div class="attention-top">${clientMark(client)}<div class="company-name">${text(client.name)}</div></div><div class="alert-line ${due.late ? 'late' : ''}">${due.late ? due.label : statusLabel(approval.status) + ' · prazo ' + due.label}</div><div class="attention-actions"><button data-action="open-post" data-id="${approval.id}">Abrir aprovação</button><button class="whatsapp-action" data-action="whatsapp" data-id="${approval.id}"${whatsappActionState(client)}>WhatsApp</button><button data-action="approve" data-id="${approval.id}">Marcar aprovado</button></div></article>`; }).join('') || '<div class="empty-note" style="display:block">Nenhuma pendência prioritária.</div>';
+    const attention = activeApprovals().filter(approval => dueDescriptor(approval).days <= 7 || approval.status !== 'waiting_approval');
+    $('#dashboardAttentionCount').textContent = attention.length;
+    const durations = validApprovals().filter(approval => approval.approvedAt && approval.createdAt).map(approval => (new Date(approval.approvedAt) - new Date(approval.createdAt)) / 86400000).filter(value => Number.isFinite(value) && value >= 0);
+    const average = durations.length ? durations.reduce((total, value) => total + value, 0) / durations.length : null;
+    $('#dashboardAverageValue').textContent = average === null ? '—' : `${average.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} dias`;
     let records = activeApprovals(); if (dashboardStatus) records = records.filter(approval => approval.status === dashboardStatus); records.sort((a, b) => dashboardDescending ? new Date(b.createdAt) - new Date(a.createdAt) : new Date(a.createdAt) - new Date(b.createdAt));
     $('#tableBody').innerHTML = records.map(dashboardRow).join('');
     empty.textContent = 'Nenhuma aprovação com este status.'; empty.style.display = records.length ? 'none' : 'block';
@@ -714,14 +727,14 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   function averageApprovalTime() { const records = validApprovals().filter(isFinal); if (!records.length) return '0,0'; const days = records.reduce((total, record) => total + (new Date(record.finalizedAt || record.statusChangedAt) - new Date(record.createdAt)) / 86400000, 0) / records.length; return days.toFixed(1).replace('.', ','); }
   function completedWithoutReminder() { const records = validApprovals().filter(isFinal); return records.length ? Math.round(records.filter(record => !record.reminders).length / records.length * 100) : 0; }
   function renderSettings() {
-    const selected = { light: 'Claro', dark: 'Escuro', system: 'Sistema' }[themePreference()];
+    const selected = { light: 'Claro', dark: 'Escuro' }[themePreference()];
     const cards = [['appearance', 'appearance', 'Aparência', `Tema atual: ${selected}. Ajuste a preferência visual do CRM.`], ['agency', 'agency', 'Dados da agência', 'Nome de exibição, telefone e e-mail usados no CRM.'], ['user', 'user', 'Usuários', 'Informações do usuário autenticado exibidas no CRM.'], ['messages', 'messages', 'Mensagens rápidas', 'Modelos reais de WhatsApp e e-mail para envios manuais.'], ['deadlines', 'deadlines', 'Prazos padrão', 'Parâmetros reais do fluxo de acompanhamento.'], ['whatsapp-info', 'whatsapp', 'WhatsApp', 'Modo manual ativo. O CRM prepara a mensagem para envio.'], ['email-info', 'email', 'E-mail', 'Modo manual ativo. O CRM prepara o e-mail para envio.']];
     $('#dynamicContent').innerHTML = `<section class="settings-grid">${cards.map(([action, icon, title, description]) => `<button class="setting-card" data-action="settings-${action}"><span class="setting-icon">${settingIcon(icon)}</span><h3>${title}</h3><p>${description}</p><span class="back-link">Abrir configurações →</span></button>`).join('')}</section>`;
   }
   function navigate(page, { updateHash = true } = {}) {
     const nextPage = Object.values(pageByHash).includes(page) ? page : 'Dashboard';
     if (updateHash && window.location.hash !== `#${hashByPage[nextPage]}`) window.location.hash = hashByPage[nextPage];
-    toggleUserMenu(false); currentPage = nextPage; $$('.nav-item').forEach(button => button.classList.toggle('active', button.dataset.page === nextPage)); setHeader(nextPage); $('#dashboardContent').hidden = nextPage !== 'Dashboard'; $('#dynamicContent').hidden = nextPage === 'Dashboard';
+    toggleUserMenu(false); currentPage = nextPage; $('#crmApp').dataset.page = nextPage; $$('.nav-item').forEach(button => button.classList.toggle('active', button.dataset.page === nextPage)); setHeader(nextPage); $('#dashboardContent').hidden = nextPage !== 'Dashboard'; $('#dynamicContent').hidden = nextPage === 'Dashboard';
     if (nextPage === 'Dashboard') renderDashboard(); if (nextPage === 'Aprovações') renderApprovals(); if (nextPage === 'Clientes') renderClients(); if (nextPage === 'Histórico') renderHistory(); if (nextPage === 'Configurações') renderSettings(); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   async function updateApprovalStatus(id, status) {
@@ -984,7 +997,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     }
   }
   function showSettingsForm(type) {
-    if (type === 'appearance') { const selected = themePreference(); const options = [['light', 'Claro', 'Interface clara, com fundo suave e superfícies brancas.'], ['dark', 'Escuro', 'Interface escura, pensada para conforto visual.'], ['system', 'Sistema', 'Acompanha a preferência do seu dispositivo.']]; return modalShell('Aparência', `Tema atual: ${{ light: 'Claro', dark: 'Escuro', system: 'Sistema' }[selected]}.`, `<div class="form"><div class="appearance-options">${options.map(([value, label, description]) => `<button class="appearance-option ${selected === value ? 'is-selected' : ''}" data-action="theme-select" data-theme="${value}">${themeIcon(value)}<span><b>${label}</b><span>${description}</span></span><i class="selection-dot"></i></button>`).join('')}</div></div>`); }
+    if (type === 'appearance') { toggleTheme(); return showToast(`Tema ${{ light: 'claro', dark: 'escuro' }[themePreference()]} selecionado.`); }
     if (type === 'whatsapp-info' || type === 'email-info') { const isWhatsApp = type.startsWith('whatsapp'); const label = isWhatsApp ? 'WhatsApp' : 'E-mail'; const description = isWhatsApp ? 'O CRM prepara a mensagem e abre o WhatsApp para envio.' : 'O CRM prepara o e-mail no aplicativo padrão para envio.'; return modalShell(label, 'Modo manual ativo', `<div class="form"><div class="modal-info"><b>Modo manual ativo</b><p>${description}</p></div><div class="modal-foot"><button class="primary" data-action="modal-close">Entendi</button></div></div>`); }
     if (type === 'agency') return void showAgencySettingsForm();
     if (type === 'user') { const u = state.currentUser; return modalShell('Usuário atual', 'Informações do usuário autenticado nesta sessão.', `<form class="form" data-form="user"><div class="form-grid"><div class="field"><label>Nome</label><input id="userName" value="${text(u.name)}" required></div><div class="field"><label>E-mail</label><input value="${text(u.email || authState.user?.email)}" readonly></div><div class="field"><label>Função</label><input value="${text(u.role)}" readonly></div></div><p class="form-error" id="modalError" hidden></p>${formFooter('Salvar usuário')}</form>`); }
@@ -1021,12 +1034,10 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const nav = event.target.closest('.nav-item'); if (nav) return navigate(nav.dataset.page);
     if (event.target.closest('#brandHome')) return navigate('Dashboard');
     if (event.target.closest('#userMenuButton')) return toggleUserMenu();
-    if (event.target.closest('#themeButton')) return toggleThemeMenu();
+    if (event.target.closest('#themeButton')) return toggleTheme();
     if (!event.target.closest('.user-menu-wrap')) toggleUserMenu(false);
-    if (!event.target.closest('.theme-control')) toggleThemeMenu(false);
     const trigger = event.target.closest('[data-action]'); if (!trigger) return; const action = trigger.dataset.action, id = trigger.dataset.id, clientId = trigger.dataset.client;
     if (action === 'modal-close') return closeModal();
-    if (action === 'theme-select') { setTheme(trigger.dataset.theme); toggleThemeMenu(false); closeModal(); return showToast(`Tema ${{ light: 'claro', dark: 'escuro', system: 'do sistema' }[trigger.dataset.theme]} selecionado.`); }
     if (action === 'logout') { toggleUserMenu(false); return supabase.auth.signOut({ scope: 'local' }); }
     if (action === 'user-profile') return showUserProfile();
     if (action === 'user-settings') return navigate('Configurações');
@@ -1057,7 +1068,6 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
   $('#modalBackdrop').addEventListener('click', event => { if (event.target === $('#modalBackdrop')) closeModal(); });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeModal(); });
   window.addEventListener('hashchange', () => { const page = pageFromHash(); if (page !== currentPage) navigate(page, { updateHash: false }); });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { if (themePreference() === 'system') { document.documentElement.dataset.theme = resolvedTheme('system'); renderThemeUI(); } });
   refreshUserUI(); renderThemeUI(); navigate(currentPage, { updateHash: false });
   setupAuthentication();
   initializeAuthentication();
