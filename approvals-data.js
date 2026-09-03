@@ -1,4 +1,5 @@
 import './lumads-design-system.css';
+import './lumads-approval-status.css';
 import { supabase } from './supabase.js';
 
 const APPROVAL_SELECT = [
