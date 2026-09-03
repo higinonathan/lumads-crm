@@ -1,0 +1,36 @@
+/* Aprovações — mantém os canais no mesmo eixo em todas as linhas.
+   A ausência do botão Aprovar reserva o espaço dele, evitando deslocar
+   WhatsApp, E-mail e menu nas aprovações finalizadas. */
+#crmApp[data-page="Aprovações"] .approval-row-actions {
+  display: grid !important;
+  grid-template-columns: 52px 32px 32px 32px 32px !important;
+  column-gap: 5px !important;
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+  align-items: center !important;
+  justify-content: start !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-open-action {
+  grid-column: 1 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-whatsapp-action {
+  grid-column: 2 !important;
+}
+
+/* O botão de E-mail é o canal que fica entre WhatsApp e Aprovar. */
+#crmApp[data-page="Aprovações"] .approval-row-actions > :not(.approval-open-action):not(.approval-whatsapp-action):not(.approval-approve-action):not(.approval-more-action) {
+  grid-column: 3 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-approve-action {
+  grid-column: 4 !important;
+}
+
+#crmApp[data-page="Aprovações"] .approval-row-actions .approval-more-action {
+  grid-column: 5 !important;
+}
