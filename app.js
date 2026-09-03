@@ -594,10 +594,10 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const monday = startOfToday(); monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
     return [
       ['Aguardando aprovação', active.filter(a => a.status === 'waiting_approval').length, 'yellow', 'clock'],
-      ['Após 1º lembrete', active.filter(a => Number(a.reminders) >= 1).length, 'yellow', 'bell'],
-      ['Após 2º lembrete', active.filter(a => Number(a.reminders) >= 2).length, 'pink', 'bellRing'],
+      ['Após 1º lembrete', all.filter(a => Number(a.reminders) >= 1).length, 'yellow', 'bell'],
+      ['Após 2º lembrete', all.filter(a => Number(a.reminders) >= 2).length, 'pink', 'bellRing'],
       ['Ajustes solicitados', active.filter(a => a.status === 'adjustment_requested').length, 'violet', 'refresh'],
-      ['Aprovados esta semana', all.filter(a => a.approvedAt && new Date(a.approvedAt) >= monday).length, 'mint', 'check'],
+      ['Aprovados esta semana', all.filter(a => { const approvalDate = a.approvedAt || (a.status === 'published' ? a.publishedAt : null); return approvalDate && new Date(approvalDate) >= monday; }).length, 'mint', 'check'],
       ['Prazos próximos', active.filter(a => dueDescriptor(a).days >= 0 && dueDescriptor(a).days <= 7).length, 'blue', 'calendar']
     ];
   }
@@ -860,7 +860,7 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
       form.dataset.saving = 'false'; setSubmitState(form, false);
     }
   }
-  function showApprovalMenu(id) { const approval = approvalById(id); if (!approval) return; const client = approvalClientById(approval.clientId); const options = [['edit-approval', 'Editar aprovação'], ['set-adjustment', 'Marcar ajuste solicitado'], ['approve', 'Marcar como aprovado'], ['set-published', 'Marcar como publicado'], ['copy-link', 'Copiar link PodePostar'], ['whatsapp', 'Abrir WhatsApp'], ['close-approval', 'Encerrar acompanhamento'], ['delete-approval', 'Arquivar aprovação']]; const body = `<div class="form"><div class="action-list">${options.map(([action, label]) => `<button class="action-list-item ${action === 'delete-approval' ? 'danger' : ''}${action === 'whatsapp' ? ' whatsapp-action' : ''}" data-action="${action}" data-id="${id}"${action === 'whatsapp' ? whatsappActionState(client) : ''}>${label}</button>`).join('')}</div></div>`; modalShell('Ações da aprovação', text(approval.content), body); }
+  function showApprovalMenu(id) { const approval = approvalById(id); if (!approval) return; const client = approvalClientById(approval.clientId); const options = [['edit-approval', 'Editar aprovação'], ...(approval.status === 'approved' ? [['set-published', 'Marcar como publicado']] : approval.status === 'published' ? [] : [['set-adjustment', 'Marcar ajuste solicitado'], ['approve', 'Marcar como aprovado']]), ['copy-link', 'Copiar link PodePostar'], ['whatsapp', 'Abrir WhatsApp'], ...(approval.status === 'published' ? [] : [['close-approval', 'Encerrar acompanhamento']]), ['delete-approval', 'Arquivar aprovação']]; const body = `<div class="form"><div class="action-list">${options.map(([action, label]) => `<button class="action-list-item ${action === 'delete-approval' ? 'danger' : ''}${action === 'whatsapp' ? ' whatsapp-action' : ''}" data-action="${action}" data-id="${id}"${action === 'whatsapp' ? whatsappActionState(client) : ''}>${label}</button>`).join('')}</div></div>`; modalShell('Ações da aprovação', text(approval.content), body); }
   function showConfirm(title, description, action, id) { modalShell(title, description, `<form class="form" data-form="confirm"><input type="hidden" id="confirmAction" value="${action}"><input type="hidden" id="confirmId" value="${id}"><p class="confirmation-copy">Esta ação será confirmada nesta etapa.</p>${formFooter('Confirmar')}</form>`); }
   async function handleConfirm(form) {
     const action = $('#confirmAction').value, id = $('#confirmId').value;
@@ -882,6 +882,19 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     }
     const statusByAction = { approve: 'approved', publish: 'published', adjustment: 'adjustment_requested', close: 'closed' };
     if (statusByAction[action]) {
+      const approval = approvalById(id);
+      if ((action === 'approve' && approval?.status === 'published') || (action === 'adjustment' && (approval?.status === 'approved' || approval?.status === 'published'))) {
+        showToast('Esta alteração de status não é permitida no estágio atual da aprovação.', 'error');
+        closeModal();
+        return;
+      }
+      if (action === 'publish') {
+        if (!approval || approval.status !== 'approved') {
+          showToast('A aprovação precisa estar aprovada antes de ser marcada como publicada.', 'error');
+          closeModal();
+          return;
+        }
+      }
       if (form.dataset.saving === 'true') return;
       form.dataset.saving = 'true'; setSubmitState(form, true);
       try {
@@ -1063,9 +1076,21 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     if (action === 'whatsapp-client') return openWhatsAppForClient(clientId);
     if (action === 'open-post') return openPost(id);
     if (action === 'whatsapp') return openWhatsAppForApproval(id);
-    if (action === 'approve') return showConfirm('Marcar como aprovado?', 'O status será atualizado e o registro irá para o histórico.', 'approve', id);
-    if (action === 'set-adjustment') return showConfirm('Marcar ajuste solicitado?', 'O conteúdo continuará em acompanhamento até o retorno do cliente.', 'adjustment', id);
-    if (action === 'set-published') return showConfirm('Marcar como publicado?', 'A publicação será registrada no histórico.', 'publish', id);
+    if (action === 'approve') {
+      const approval = approvalById(id);
+      if (approval?.status === 'published') return showToast('Esta alteração de status não é permitida no estágio atual da aprovação.', 'error');
+      return showConfirm('Marcar como aprovado?', 'O status será atualizado e o registro irá para o histórico.', 'approve', id);
+    }
+    if (action === 'set-adjustment') {
+      const approval = approvalById(id);
+      if (approval?.status === 'approved' || approval?.status === 'published') return showToast('Esta alteração de status não é permitida no estágio atual da aprovação.', 'error');
+      return showConfirm('Marcar ajuste solicitado?', 'O conteúdo continuará em acompanhamento até o retorno do cliente.', 'adjustment', id);
+    }
+    if (action === 'set-published') {
+      const approval = approvalById(id);
+      if (!approval || approval.status !== 'approved') return showToast('A aprovação precisa estar aprovada antes de ser marcada como publicada.', 'error');
+      return showConfirm('Marcar como publicado?', 'A publicação será registrada no histórico.', 'publish', id);
+    }
     if (action === 'close-approval') return showConfirm('Encerrar acompanhamento?', 'O registro será mantido no histórico como encerrado.', 'close', id);
     if (action === 'delete-approval') return showConfirm('Arquivar aprovação?', 'A aprovação será arquivada e permanecerá disponível no histórico como encerrada.', 'delete-approval', id);
     if (action === 'edit-approval') return showApprovalForm(id);
