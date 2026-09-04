@@ -75,24 +75,37 @@
     }
 
     localStorage.setItem(THEME_KEY, desired);
-    document.documentElement.dataset.themePreference = desired;
     document.documentElement.dataset.theme = desired;
     renderAppearance();
   }
+
+  function isSettingsAppearanceTrigger(target) {
+    const crm = app();
+    if (!crm || crm.dataset.page !== 'Configurações') return false;
+    return Boolean(target.closest?.('[data-action="settings-appearance"]'));
+  }
+
+  // Intercepta antes do click legado do app-core, que ainda alterna o tema diretamente.
+  // O pointerdown remove esse conflito e abre a subtela aprovada primeiro.
+  window.addEventListener('pointerdown', event => {
+    if (!isSettingsAppearanceTrigger(event.target)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    renderAppearance();
+  }, true);
 
   window.addEventListener('click', event => {
     const crm = app();
     if (!crm) return;
 
-    const appearanceTrigger = event.target.closest('[data-action="settings-appearance"]');
-    if (appearanceTrigger && crm.dataset.page === 'Configurações') {
+    if (isSettingsAppearanceTrigger(event.target)) {
       event.preventDefault();
       event.stopImmediatePropagation();
       renderAppearance();
       return;
     }
 
-    const back = event.target.closest('[data-settings-appearance-back]');
+    const back = event.target.closest?.('[data-settings-appearance-back]');
     if (back && crm.dataset.page === 'Configurações') {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -100,7 +113,7 @@
       return;
     }
 
-    const themeChoice = event.target.closest('[data-settings-theme]');
+    const themeChoice = event.target.closest?.('[data-settings-theme]');
     if (themeChoice && crm.dataset.page === 'Configurações' && crm.dataset.settingsView === 'appearance') {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -108,11 +121,11 @@
       return;
     }
 
-    if (crm.dataset.page === 'Configurações' && crm.dataset.settingsView === 'appearance' && event.target.closest('#themeButton')) {
+    if (crm.dataset.page === 'Configurações' && crm.dataset.settingsView === 'appearance' && event.target.closest?.('#themeButton')) {
       setTimeout(renderAppearance, 0);
       return;
     }
 
-    if (event.target.closest('.nav-item')) delete crm.dataset.settingsView;
+    if (event.target.closest?.('.nav-item')) delete crm.dataset.settingsView;
   }, true);
 })();
