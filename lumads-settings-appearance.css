@@ -1,22 +1,27 @@
-/* LUMADS CRM — Configurações > Aparência
-   Conteúdo interno da subtela. O shell global continua pertencendo ao Design System atual. */
+/* Configurações > Aparência
+   Referência literal: lumads_config_aparencia_preview_v1.html.
+   Apenas o conteúdo interno é reproduzido; sidebar/topbar continuam no shell atual. */
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-back{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] #settingsAppearanceHeaderBack{
   display:inline-flex;
   align-items:center;
-  gap:7px;
+  gap:6px;
   margin:0 0 14px;
   padding:0;
   border:0;
   background:transparent;
-  color:var(--lumads-accent);
+  color:#0002FD;
   font:700 12px/1 Outfit,Geist,sans-serif;
+  text-decoration:none;
   cursor:pointer;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel{
-  max-width:1100px;
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-content{
+  max-width:980px;
   margin:0 auto;
+}
+
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel{
   overflow:hidden;
   border:1px solid #e4e9f2;
   border-radius:20px;
@@ -24,23 +29,22 @@
   box-shadow:0 10px 26px rgba(20,35,80,.07);
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:18px;
+  gap:20px;
   padding:20px 22px;
   border-bottom:1px solid #e4e9f2;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-title-wrap{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-title-wrap{
   display:flex;
   align-items:center;
   gap:14px;
-  min-width:0;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-icon{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head-icon{
   width:54px;
   height:54px;
   flex:0 0 54px;
@@ -48,27 +52,26 @@
   place-items:center;
   border-radius:17px;
   background:linear-gradient(145deg,#eef3ff,#d8e5ff);
-  color:#2454da;
   box-shadow:0 14px 24px rgba(45,92,210,.12),inset 0 1px 0 rgba(255,255,255,.95);
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-icon svg{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head-icon svg{
   width:28px;
   height:28px;
   fill:none;
-  stroke:currentColor;
+  stroke:#2454da;
   stroke-width:1.9;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head h2{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head h2{
   margin:0 0 5px;
-  color:var(--lumads-light-title);
+  color:#111827;
   font:700 18px/1.2 Outfit,Geist,sans-serif;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head p{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head p{
   margin:0;
   color:#73809a;
   font:500 12px/1.45 Outfit,Geist,sans-serif;
@@ -83,18 +86,18 @@
   white-space:nowrap;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-body{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-body{
   padding:22px;
 }
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-section-title{
-  margin:0 0 6px;
+  margin-bottom:6px;
   color:#1d2942;
   font:700 14px/1.25 Outfit,Geist,sans-serif;
 }
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-section-sub{
-  margin:0 0 16px;
+  margin-bottom:16px;
   color:#7e8aa0;
   font:500 12px/1.45 Outfit,Geist,sans-serif;
 }
@@ -106,13 +109,14 @@
 }
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card{
+  position:relative;
   padding:16px;
   border:1px solid #dfe5ef;
   border-radius:18px;
   background:#fff;
   text-align:left;
   cursor:pointer;
-  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+  transition:.2s ease;
 }
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card:hover{
@@ -128,65 +132,73 @@
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview{
   position:relative;
-  display:block;
   height:170px;
   margin-bottom:14px;
   overflow:hidden;
   border:1px solid #e4e8ef;
   border-radius:14px;
-  background:#f6f8fc;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark{
-  border-color:#243854;
-  background:#091321;
-}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.light{background:#f6f8fc}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark{background:#091321;border-color:#243854}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview>i{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-sidebar{
   position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
+  left:0;top:0;bottom:0;
   width:28%;
   border-right:1px solid #e3e8f0;
   background:#fff;
 }
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-sidebar{background:#07111f;border-color:#1b2b45}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark>i{
-  border-color:#1b2b45;
-  background:#07111f;
-}
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview>b{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-top{
   position:absolute;
-  left:28%;
-  right:0;
-  top:0;
+  left:28%;right:0;top:0;
   height:22%;
   border-bottom:1px solid #e4e9f1;
   background:#fff;
 }
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-top{background:#0d1b31;border-color:#243854}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark>b{
-  border-color:#243854;
-  background:#0d1b31;
-}
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview em{
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-card{
   position:absolute;
   border:1px solid #e4e9f1;
   border-radius:8px;
   background:#fff;
 }
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-card{background:#10213a;border-color:#263a58}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-card.a{left:34%;top:31%;width:27%;height:26%}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-card.b{left:65%;top:31%;width:27%;height:26%}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-card.c{left:34%;top:63%;width:58%;height:19%}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark em{
-  border-color:#263a58;
-  background:#10213a;
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-accent{
+  position:absolute;
+  left:7%;top:26%;
+  width:14%;height:9%;
+  border-radius:5px;
+  background:#0002FD;
 }
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-accent{background:#18366d}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview .a{left:34%;top:31%;width:27%;height:26%}
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview .b{left:65%;top:31%;width:27%;height:26%}
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview .c{left:34%;top:63%;width:58%;height:19%}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-line{
+  position:absolute;
+  height:4px;
+  border-radius:999px;
+  background:#ccd5e4;
+}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-line{background:#435572}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-line.l1{left:36%;top:36%;width:18%}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-line.l2{left:67%;top:36%;width:18%}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-line.l3{left:36%;top:68%;width:36%}
+
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-preview-dot{
+  position:absolute;
+  right:8%;top:8%;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:#0002FD;
+}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview.dark .settings-preview-dot{background:#5d78ff}
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-meta{
   display:flex;
@@ -195,146 +207,73 @@
   gap:12px;
 }
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-meta strong{
-  display:block;
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-name{
   color:#1f2b45;
   font:700 14px/1.2 Outfit,Geist,sans-serif;
 }
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-meta small{
-  display:block;
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-desc{
   margin-top:3px;
   color:#8590a4;
   font:500 11px/1.4 Outfit,Geist,sans-serif;
 }
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-radio{
-  width:24px;
-  height:24px;
+  width:24px;height:24px;
   flex:0 0 24px;
   display:grid;
   place-items:center;
   border:2px solid #cfd7e5;
   border-radius:50%;
+  transition:.18s ease;
 }
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected .settings-theme-radio{
-  border-color:var(--lumads-accent);
-  background:var(--lumads-accent);
-}
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected .settings-theme-radio::after{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#fff;
-}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected .settings-theme-radio{border-color:#0002FD;background:#0002FD}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-radio::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;opacity:0}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected .settings-theme-radio::after{opacity:1}
 
 #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note{
   display:flex;
   align-items:flex-start;
   gap:11px;
-  margin-top:16px;
+  margin-top:18px;
   padding:14px 16px;
   border:1px solid #dfe6f3;
   border-radius:16px;
   background:#f8faff;
 }
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note>span{
-  width:34px;
-  height:34px;
-  flex:0 0 34px;
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note-icon{
+  width:34px;height:34px;
+  flex:0 0 auto;
   display:grid;
   place-items:center;
   border-radius:11px;
   background:#eaf0ff;
   color:#2454da;
 }
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note strong{display:block;margin-bottom:4px;color:#25314a;font:700 12px/1.25 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note span{color:#7b879e;font:500 11px/1.5 Outfit,Geist,sans-serif}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note svg{
-  width:18px;
-  height:18px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.9;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] #settingsAppearanceHeaderBack{color:#cfd9ee}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel{background:linear-gradient(180deg,#10213a 0%,#0d1c33 100%);border-color:#263a58;box-shadow:0 16px 34px rgba(0,0,0,.16)}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head{border-color:#263957}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head h2,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-section-title{color:#fff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel-head p,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-section-sub{color:#9cafc9}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-status{background:#17366f;color:#c8d6ff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card{background:#0f1d33;border-color:#2a3d5b}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card:hover{border-color:#3b5c99;box-shadow:0 18px 34px rgba(0,0,0,.18)}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected{border-color:#6f89ff;box-shadow:0 0 0 3px rgba(111,137,255,.12)}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-name{color:#fff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-desc{color:#9cafc9}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-radio{border-color:#51617a}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected .settings-theme-radio{border-color:#6f89ff;background:#6f89ff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note{background:#0f1d33;border-color:#2a3d5b}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note-icon{background:#14294c;color:#8ca6ff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note strong{color:#e8eef8}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note span{color:#9cafc9}
 
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note strong{
-  display:block;
-  margin-bottom:4px;
-  color:#25314a;
-  font:700 12px/1.25 Outfit,Geist,sans-serif;
-}
-
-#crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note p{
-  margin:0;
-  color:#7b879e;
-  font:500 11px/1.5 Outfit,Geist,sans-serif;
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel{
-  border-color:var(--lumads-dark-panel-line);
-  background:var(--lumads-dark-panel);
-  box-shadow:0 16px 34px rgba(0,0,0,.16);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head{
-  border-color:var(--lumads-dark-inner-line);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-icon{
-  background:#152947;
-  color:#8eaeff;
-  box-shadow:none;
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] :is(.settings-appearance-head h2,.settings-appearance-section-title,.settings-theme-meta strong,.settings-appearance-note strong){
-  color:var(--lumads-dark-title);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] :is(.settings-appearance-head p,.settings-appearance-section-sub,.settings-theme-meta small,.settings-appearance-note p){
-  color:var(--lumads-dark-muted);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-status{
-  background:#16294a;
-  color:#9bb6ff;
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card{
-  border-color:var(--lumads-dark-panel-line);
-  background:var(--lumads-dark-field);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card:hover{
-  border-color:#3d5d89;
-  box-shadow:0 14px 26px rgba(0,0,0,.18);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-card.is-selected{
-  border-color:#6888d8;
-  box-shadow:0 0 0 3px rgba(95,129,221,.12);
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note{
-  border-color:var(--lumads-dark-panel-line);
-  background:#0c1a2e;
-}
-
-:root[data-theme="dark"] #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-note>span{
-  background:#152947;
-  color:#8eaeff;
-}
-
-@media(max-width:760px){
-  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-panel{max-width:none}
-  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-head{align-items:flex-start;padding:18px}
-  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-status{margin-top:4px}
-  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-body{padding:18px}
+@media(max-width:820px){
+  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-appearance-content{max-width:none}
   #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-grid{grid-template-columns:1fr}
-  #crmApp[data-page="Configurações"][data-settings-view="appearance"] .settings-theme-preview{height:145px}
 }
