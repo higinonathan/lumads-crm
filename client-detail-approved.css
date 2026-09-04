@@ -1,0 +1,386 @@
+/* LUMADS CRM — Detalhe do cliente
+   Escopo estritamente interno da tela de detalhe.
+   Sidebar, topbar, tipografia global, tema e shell continuam herdados do baseline aprovado. */
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved{
+  --detail-surface:#fff;
+  --detail-surface-soft:#fbfcff;
+  --detail-border:#e7eaf1;
+  --detail-title:#11162a;
+  --detail-text:#4d5670;
+  --detail-muted:#8792a8;
+  --detail-shadow:0 14px 35px rgba(25,43,92,.08);
+  font-family:Outfit,Geist,ui-sans-serif,system-ui,sans-serif;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-back-approved{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin:0 0 14px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#0002FD;
+  font-size:12px;
+  font-weight:600;
+  text-decoration:none;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-layout-approved{
+  display:grid;
+  grid-template-columns:300px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved{
+  position:sticky;
+  top:0;
+  align-self:start;
+  padding:20px;
+  background:var(--detail-surface);
+  border:1px solid var(--detail-border);
+  border-radius:18px;
+  box-shadow:var(--detail-shadow);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-logo-approved{
+  width:76px;
+  height:76px;
+  margin:0 0 16px;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:linear-gradient(145deg,#eef3ff,#d9e5ff);
+  color:#1b46c7;
+  font-size:20px;
+  font-weight:700;
+  box-shadow:0 14px 24px rgba(34,78,210,.12),inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-logo-approved.has-logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved>h2{
+  margin:0 0 6px;
+  color:var(--detail-title);
+  font-size:22px;
+  line-height:1.15;
+  font-weight:600;
+  letter-spacing:-.02em;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved>p{
+  margin:0 0 20px;
+  color:var(--detail-muted);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .detail-list{
+  display:grid;
+  gap:13px;
+  margin:0;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .detail-list>div{
+  color:var(--detail-text);
+  font-size:13px;
+  line-height:1.4;
+  font-weight:500;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .detail-list>div>b{
+  display:block;
+  margin:0 0 5px;
+  color:var(--detail-muted);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-actions-approved{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:18px 0 0;
+  padding:18px 0 0;
+  border-top:1px solid var(--detail-border);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-actions-approved .primary,
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-actions-approved .secondary{
+  width:100%;
+  min-height:42px;
+  justify-content:center;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved>.back-link[data-action="new-approval"]{
+  width:100%;
+  min-height:42px;
+  margin:8px 0 0;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--detail-border);
+  border-radius:12px;
+  background:var(--detail-surface-soft);
+  color:#0002FD;
+  font-size:13px;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved>.text-destructive{
+  width:100%;
+  min-height:38px;
+  margin:6px 0 0;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  background:transparent;
+  color:#d4384b;
+  font-size:12px;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-content-approved{
+  min-width:0;
+  display:grid;
+  gap:18px;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-summary-approved{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-approved{
+  min-width:0;
+  min-height:112px;
+  padding:17px 18px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  background:var(--detail-surface);
+  border:1px solid var(--detail-border);
+  border-radius:18px;
+  box-shadow:var(--detail-shadow);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-label{
+  margin:0 0 8px;
+  color:var(--detail-text);
+  font-size:13px;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-value{
+  color:var(--detail-title);
+  font-size:25px;
+  line-height:1;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-sub{
+  margin-top:6px;
+  color:var(--detail-muted);
+  font-size:11px;
+  font-weight:500;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon{
+  width:50px;
+  height:50px;
+  flex:0 0 50px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  box-shadow:0 10px 20px rgba(45,92,210,.11),inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon svg{
+  width:26px;
+  height:26px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.blue{background:linear-gradient(145deg,#eef3ff,#d8e5ff);color:#2454da}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.green{background:linear-gradient(145deg,#eafff0,#d5ffe2);color:#16a34a}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.purple{background:linear-gradient(145deg,#f6efff,#eadcff);color:#7c3aed}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved{
+  overflow:hidden;
+  margin:0;
+  background:var(--detail-surface);
+  border:1px solid var(--detail-border);
+  border-radius:18px;
+  box-shadow:var(--detail-shadow);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .detail-heading{
+  min-height:62px;
+  margin:0;
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  border-bottom:1px solid var(--detail-border);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .detail-heading h3{
+  margin:0;
+  color:var(--detail-title);
+  font-size:17px;
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .detail-heading .next-action{
+  color:var(--detail-muted);
+  font-size:12px;
+  font-weight:500;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .table-wrap{
+  overflow:auto;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .page-table{
+  width:100%;
+  min-width:650px;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .page-table th{
+  padding:12px 16px;
+  background:var(--detail-surface-soft);
+  border-bottom:1px solid var(--detail-border);
+  color:var(--detail-title);
+  font-size:11px;
+  font-weight:600;
+  text-align:left;
+  white-space:nowrap;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .page-table td{
+  padding:14px 16px;
+  border-bottom:1px solid var(--detail-border);
+  color:var(--detail-text);
+  font-size:13px;
+  font-weight:500;
+  vertical-align:middle;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .page-table tbody tr:last-child td{
+  border-bottom:0;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .content-title,
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .strong{
+  color:var(--detail-title);
+  font-weight:600;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .content-type,
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-panel-approved .sub{
+  color:var(--detail-muted);
+  font-size:11px;
+  font-weight:500;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-contacts-approved{
+  padding:8px 20px 18px;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-row{
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid var(--detail-border);
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-row:last-child{border-bottom:0}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-icon{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-icon svg{
+  width:19px;
+  height:19px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-icon.whatsapp{background:linear-gradient(145deg,#d9ffe5,#bff7d2);color:#0fa54a}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-icon.email{background:linear-gradient(145deg,#e2ebff,#cfdcff);color:#2454da}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-title{color:var(--detail-title);font-size:13px;font-weight:600}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-sub{margin-top:4px;color:var(--detail-muted);font-size:11px;font-weight:500}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-status{padding:6px 9px;border-radius:999px;background:#eaf8ee;color:#188449;font-size:11px;font-weight:600}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-empty-approved{padding:22px 20px;color:var(--detail-muted);font-size:12px;font-weight:500}
+#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-empty-approved b{display:block;margin-bottom:4px;color:var(--detail-title);font-size:13px;font-weight:600}
+
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved{
+  --detail-surface:#0f1b2e;
+  --detail-surface-soft:#0d182a;
+  --detail-border:#263657;
+  --detail-title:#f4f7ff;
+  --detail-text:#d9e2f0;
+  --detail-muted:#9aa9c2;
+  --detail-shadow:0 16px 34px rgba(0,0,0,.18);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved>.back-link[data-action="new-approval"]{
+  background:#0d182a;
+  border-color:#263657;
+  color:#7da0ff;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-back-approved{color:#7da0ff}
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-logo-approved{background:linear-gradient(145deg,#172a4c,#12213c);color:#9bb5ff;box-shadow:none}
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.blue{background:linear-gradient(145deg,#203b6d,#17305e);color:#8eb0ff}
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.green{background:linear-gradient(145deg,#163d2c,#103324);color:#72dda0}
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.purple{background:linear-gradient(145deg,#30234c,#271d40);color:#b99cff}
+:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-contact-status{background:#173828;color:#7ee3a3}
+
+@media(max-width:1100px){
+  #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-layout-approved{grid-template-columns:1fr}
+  #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-approved{position:relative;top:auto}
+}
+
+@media(max-width:820px){
+  #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-summary-approved{grid-template-columns:1fr}
+  #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-layout-approved{gap:14px}
+  #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-profile-actions-approved{grid-template-columns:1fr}
+}

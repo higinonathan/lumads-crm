@@ -1,4 +1,241 @@
-/* LUMADS CRM — Design System entrypoint.
-   Core visual rules + responsive overrides are kept modular to avoid page-level fixes. */
+/* LUMADS CRM — Design System canônico.
+   Fonte visual de verdade: Dashboard aprovado.
+   Este arquivo deve carregar por último e impedir que páginas criem shell/paleta próprios. */
 @import url("./lumads-design-system-core.css");
 @import url("./lumads-responsive-overrides.css");
+
+:root{
+  --lumads-accent:#0002FD;
+  --lumads-light-canvas:#f6f8fc;
+  --lumads-light-main-top:#fbfbfd;
+  --lumads-light-panel:#ffffff;
+  --lumads-light-line:#e7eaf1;
+  --lumads-light-title:#11162a;
+  --lumads-light-text:#182038;
+  --lumads-light-body:#4d5670;
+  --lumads-light-muted:#727a90;
+  --lumads-dark-canvas:#081120;
+  --lumads-dark-sidebar:#0b1424;
+  --lumads-dark-panel:#0f1b2e;
+  --lumads-dark-field:#0c182a;
+  --lumads-dark-panel-line:#21314f;
+  --lumads-dark-inner-line:#22304c;
+  --lumads-dark-control-line:#263657;
+  --lumads-dark-title:#f4f7ff;
+  --lumads-dark-body:#b9c2d6;
+  --lumads-dark-muted:#96a1b8;
+}
+
+/* SHELL GLOBAL — cópia direta do Dashboard aprovado. */
+#crmApp .shell{
+  width:100vw!important;
+  height:100vh!important;
+  min-height:0!important;
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:245px minmax(0,1fr)!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+#crmApp .shell>aside{
+  position:static!important;
+  height:auto!important;
+  padding:28px 18px 22px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  background:rgba(255,255,255,.98)!important;
+  border-right:1px solid var(--lumads-light-line)!important;
+}
+#crmApp .brand{
+  display:flex!important;
+  width:100%!important;
+  justify-content:center!important;
+  margin:8px 0 50px!important;
+  padding:10px 0 12px!important;
+  gap:0!important;
+  background:transparent!important;
+  border:0!important;
+  color:var(--lumads-accent)!important;
+  text-align:center!important;
+}
+#crmApp .brand-mark,#crmApp .brand-name,#crmApp .workspace{display:none!important}
+#crmApp .dashboard-brand-name{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:8px!important;
+  color:var(--lumads-accent)!important;
+  font-family:Sora,Outfit,Geist,sans-serif!important;
+  line-height:1.05!important;
+}
+#crmApp .dashboard-brand-lumads{font-size:34px!important;font-weight:800!important;letter-spacing:-.02em!important;line-height:1.05!important}
+#crmApp .dashboard-brand-crm{font-size:16px!important;font-weight:700!important;letter-spacing:.08em!important;line-height:1!important}
+#crmApp nav{display:grid!important;gap:8px!important}
+#crmApp .nav-item{
+  width:100%!important;
+  height:52px!important;
+  padding:0 14px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  border:0!important;
+  border-radius:13px!important;
+  background:transparent!important;
+  color:#515b76!important;
+  font:500 15px Outfit,Geist,sans-serif!important;
+  text-align:left!important;
+  transition:.2s ease!important;
+}
+#crmApp .nav-item .sidebar-icon,#crmApp .nav-item svg{width:24px!important;height:24px!important;flex:0 0 24px!important}
+#crmApp .nav-item:hover{transform:translateX(3px)!important;background:#f5f7ff!important;color:var(--lumads-accent)!important}
+#crmApp .nav-item.active{background:linear-gradient(90deg,#edf2ff,#f5f7ff)!important;color:var(--lumads-accent)!important;box-shadow:inset 3px 0 var(--lumads-accent)!important}
+#crmApp .user-menu-wrap{margin-top:auto!important}
+#crmApp .sidebar-bottom{
+  margin:0!important;
+  padding:10px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  border:1px solid var(--lumads-light-line)!important;
+  border-radius:14px!important;
+  background:#fbfcff!important;
+  transition:.2s!important;
+}
+#crmApp .sidebar-bottom:hover{margin:0!important;padding:10px!important;background:#fff!important;transform:translateY(-2px)!important;box-shadow:0 14px 35px rgba(25,43,92,.08)!important}
+#crmApp .avatar{width:38px!important;height:38px!important;flex:0 0 38px!important;background:linear-gradient(145deg,#1e2d4f,#101522)!important;color:#fff!important;font:600 13px Outfit,Geist,sans-serif!important}
+#crmApp .profile-name{color:var(--lumads-light-title)!important;font:600 14px Outfit,Geist,sans-serif!important}
+#crmApp .profile-role{color:#8b92a6!important;font:400 12px Outfit,Geist,sans-serif!important}
+#crmApp .user-chevron{color:#5c6782!important}
+#crmApp main{
+  min-width:0!important;
+  padding:28px 32px 26px!important;
+  background:linear-gradient(180deg,var(--lumads-light-main-top),var(--lumads-light-canvas) 70%)!important;
+  overflow:auto!important;
+}
+#crmApp .topbar{margin-bottom:24px!important;align-items:center!important}
+#crmApp .eyebrow{margin:0!important;color:#667085!important;font:600 12px Outfit,Geist,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+#crmApp .title{margin:8px 0 0!important;color:var(--lumads-light-title)!important;font:600 31px/1 Outfit,Geist,sans-serif!important;letter-spacing:0!important}
+#crmApp .top-actions{gap:12px!important}
+#crmApp .date,#crmApp .icon-btn,#crmApp .primary{height:44px!important;border-radius:12px!important;font-family:Outfit,Geist,sans-serif!important}
+#crmApp .date{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:238px!important;margin:0!important;padding:0 15px!important;background:#fff!important;border:1px solid #e5e8ef!important;color:#26304b!important;box-shadow:0 3px 10px rgba(24,36,69,.05)!important;font-size:13px!important;font-weight:600!important;white-space:nowrap!important}
+#crmApp .icon-btn{width:44px!important;background:#fff!important;border:1px solid #e5e8ef!important;color:#20283b!important;box-shadow:0 3px 10px rgba(24,36,69,.05)!important}
+#crmApp .primary{padding:0 15px!important;border:0!important;background:linear-gradient(135deg,#0002FD,#1754ff)!important;color:#fff!important;box-shadow:0 10px 20px rgba(0,2,253,.20)!important;font-size:14px!important;font-weight:600!important}
+
+/* HIERARQUIA TIPOGRÁFICA GLOBAL — Dashboard como referência. */
+#crmApp :is(.dashboard-table-head h2,.approval-page-intro h2,.page-intro h2,.lumads-clients-heading h2){
+  margin-top:0!important;
+  font-family:Outfit,Geist,sans-serif!important;
+  font-size:18px!important;
+  line-height:1.2!important;
+  font-weight:600!important;
+  color:var(--lumads-light-title)!important;
+}
+#crmApp :is(.dashboard-table-head p,.approval-page-intro p,.page-intro p,.lumads-clients-heading p){
+  font-family:Outfit,Geist,sans-serif!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+  font-weight:500!important;
+  color:var(--lumads-light-muted)!important;
+}
+
+/* DARK MODE GLOBAL — somente a paleta aprovada do Dashboard. */
+:root[data-theme="dark"] body:has(#crmApp:not([hidden])){background:var(--lumads-dark-canvas)!important}
+:root[data-theme="dark"] #crmApp .shell{background:var(--lumads-dark-canvas)!important}
+:root[data-theme="dark"] #crmApp .shell>aside{background:var(--lumads-dark-sidebar)!important;border-right-color:#1f2c45!important}
+:root[data-theme="dark"] #crmApp .brand,:root[data-theme="dark"] #crmApp .dashboard-brand-name{color:#fff!important}
+:root[data-theme="dark"] #crmApp main{background:linear-gradient(180deg,var(--lumads-dark-sidebar),#08111f)!important}
+:root[data-theme="dark"] #crmApp .eyebrow{color:#8B95A7!important}
+:root[data-theme="dark"] #crmApp .title,:root[data-theme="dark"] #crmApp .profile-name{color:var(--lumads-dark-title)!important}
+:root[data-theme="dark"] #crmApp .profile-role{color:var(--lumads-dark-muted)!important}
+:root[data-theme="dark"] #crmApp .nav-item{color:#aeb7cb!important}
+:root[data-theme="dark"] #crmApp .nav-item:hover{background:#102650!important;color:#7fa4ff!important}
+:root[data-theme="dark"] #crmApp .nav-item.active{background:#102a61!important;color:#7da0ff!important;box-shadow:inset 3px 0 #4c72ff!important}
+:root[data-theme="dark"] #crmApp .sidebar-bottom,:root[data-theme="dark"] #crmApp .icon-btn,:root[data-theme="dark"] #crmApp .date{background:var(--lumads-dark-panel)!important;border-color:var(--lumads-dark-control-line)!important;color:#dfe6f5!important}
+:root[data-theme="dark"] #crmApp .sidebar-bottom:hover{background:var(--lumads-dark-panel)!important;border-color:var(--lumads-dark-control-line)!important;box-shadow:0 14px 35px rgba(0,0,0,.18)!important}
+
+/* Mesma família visual de ícones do Dashboard no modo escuro. */
+:root[data-theme="dark"] #crmApp .nav-item .sidebar-icon{filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))!important}
+:root[data-theme="dark"] #crmApp .nav-item.active .sidebar-icon{filter:drop-shadow(0 2px 3px rgba(0,2,253,.32))!important}
+:root[data-theme="dark"] #crmApp .nav-item:hover .sidebar-icon{filter:drop-shadow(0 2px 2px rgba(0,2,253,.2))!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon [fill^="url(#nav"]{fill:#E8EDF7!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon [fill="#000186"]{fill:#0002FD!important;opacity:.3!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon :is([fill="#edf1ff"],[fill="#dbe4ff"],[fill="#eaf0ff"]){fill:#fff!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon [fill="#0001af"]{fill:#0002FD!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon :is([stroke="#dbe4ff"],[stroke="#eaf0ff"]){stroke:#fff!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon [stroke="#0001af"]{stroke:#0002FD!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon-approvals [stroke="#eaf0ff"]{stroke:#0002FD!important}
+:root[data-theme="dark"] #crmApp .sidebar-icon-approvals [stroke="#dbe4ff"]{stroke:#5265c7!important}
+
+/* Superfícies estruturais: nunca introduzir faixa preta #12161e. */
+:root[data-theme="dark"] #crmApp :is(.dashboard-metric,.approval-metric-card,.dashboard-panel,.dashboard-table-section,.approval-page-section,.page-section,.metric,.detail-card,.sub-card,.setting-card,.lumads-clients-shell,.lumads-client-card){
+  background:var(--lumads-dark-panel)!important;
+  border-color:var(--lumads-dark-panel-line)!important;
+}
+:root[data-theme="dark"] #crmApp :is(.dashboard-table-head,.approval-page-intro,.approval-filter-panel,.page-intro,.filter-panel,.lumads-clients-head,.lumads-clients-grid,.lumads-clients-empty-space){
+  background:transparent!important;
+  border-color:var(--lumads-dark-inner-line)!important;
+}
+:root[data-theme="dark"] #crmApp :is(.approval-page-table,.page-table,.dashboard-table) th{
+  background:transparent!important;
+  border-color:var(--lumads-dark-inner-line)!important;
+  color:var(--lumads-dark-title)!important;
+}
+:root[data-theme="dark"] #crmApp :is(.approval-page-table,.page-table,.dashboard-table) td{border-color:#182641!important;color:var(--lumads-dark-body)!important}
+:root[data-theme="dark"] #crmApp :is(.dashboard-table-head h2,.approval-page-intro h2,.page-intro h2,.lumads-clients-heading h2,.lumads-client-name,.setting-card h3,.detail-heading h3){color:var(--lumads-dark-title)!important}
+:root[data-theme="dark"] #crmApp :is(.dashboard-table-head p,.approval-page-intro p,.page-intro p,.lumads-clients-heading p,.lumads-client-contact,.lumads-client-pending,.setting-card p,.next-action,.date-cell){color:var(--lumads-dark-muted)!important}
+:root[data-theme="dark"] #crmApp :is(.search-input,.filter-select,.lumads-clients-search,.lumads-clients-sort,.lumads-client-more){background:var(--lumads-dark-field)!important;border-color:#2b3b5b!important;color:#eef2fa!important}
+:root[data-theme="dark"] #crmApp .lumads-clients-tip{background:var(--lumads-dark-field)!important;border-color:#2b3b5b!important;color:var(--lumads-dark-muted)!important}
+:root[data-theme="dark"] #crmApp .lumads-clients-tip strong{color:var(--lumads-dark-title)!important}
+
+/* Responsividade do shell, compartilhada por todas as páginas. */
+@media (min-width:761px) and (max-width:1280px){
+  #crmApp .shell{grid-template-columns:86px minmax(0,1fr)!important}
+  #crmApp .shell>aside{padding:24px 10px 18px!important;align-items:stretch!important}
+  #crmApp .brand{width:54px!important;height:54px!important;margin:4px auto 38px!important;padding:0!important;display:grid!important;place-items:center!important;overflow:visible!important}
+  #crmApp .brand>*{display:none!important}
+  #crmApp .brand::after{content:"LM";width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(145deg,#163cff,#0002fd);color:#fff;box-shadow:0 8px 18px rgba(0,2,253,.20);font:700 12px Outfit,Geist,sans-serif;letter-spacing:.02em}
+  #crmApp nav{gap:8px!important}
+  #crmApp .nav-item{width:54px!important;min-width:54px!important;height:50px!important;min-height:50px!important;margin-inline:auto!important;padding:0!important;justify-content:center!important;gap:0!important;border-radius:12px!important}
+  #crmApp .nav-item span{display:none!important}
+  #crmApp .nav-item .sidebar-icon,#crmApp .nav-item svg{width:24px!important;height:24px!important;flex:0 0 24px!important;margin:0!important}
+  #crmApp .user-menu-wrap{width:54px!important;margin:auto auto 0!important}
+  #crmApp .sidebar-bottom{width:54px!important;min-width:54px!important;height:54px!important;min-height:54px!important;margin:0!important;padding:8px!important;justify-content:center!important;gap:0!important}
+  #crmApp .sidebar-bottom>span:nth-child(2),#crmApp .user-chevron{display:none!important}
+  #crmApp .sidebar-bottom .avatar{width:36px!important;height:36px!important;flex:0 0 36px!important}
+  #crmApp main{padding-left:18px!important;padding-right:18px!important}
+  #crmApp .date{min-width:205px!important;padding-left:11px!important;padding-right:11px!important}
+}
+@media (min-width:960px) and (max-width:1280px){
+  #crmApp .topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important}
+  #crmApp .top-actions{width:auto!important;min-width:0!important;display:flex!important;justify-content:flex-end!important;flex-wrap:nowrap!important;gap:8px!important}
+}
+@media (max-width:760px){
+  #crmApp .shell{width:100%!important;min-height:100dvh!important;height:auto!important;display:block!important;overflow:visible!important}
+  #crmApp .shell>aside{position:relative!important;width:100%!important;height:auto!important;padding:14px 14px 12px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-areas:"brand user" "nav nav"!important;gap:11px 10px!important;align-items:center!important;border-right:0!important;border-bottom:1px solid var(--lumads-light-line)!important}
+  #crmApp .brand{grid-area:brand!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;justify-content:flex-start!important;display:flex!important}
+  #crmApp .brand>*{display:none!important}
+  #crmApp .dashboard-brand-name{display:flex!important}
+  #crmApp .dashboard-brand-lumads{font-size:24px!important}
+  #crmApp .dashboard-brand-crm{font-size:11px!important}
+  #crmApp nav{grid-area:nav!important;width:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important}
+  #crmApp .nav-item{width:100%!important;height:44px!important;min-height:44px!important;padding:0 8px!important;justify-content:center!important;gap:6px!important;border-radius:10px!important;font-size:11px!important}
+  #crmApp .nav-item:hover{transform:none!important}
+  #crmApp .nav-item span{display:none!important}
+  #crmApp .nav-item .sidebar-icon,#crmApp .nav-item svg{width:19px!important;height:19px!important;flex:0 0 19px!important}
+  #crmApp .user-menu-wrap{grid-area:user!important;width:auto!important;margin:0!important}
+  #crmApp .sidebar-bottom{width:auto!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:4px 6px!important;border:0!important;background:transparent!important}
+  #crmApp .sidebar-bottom>span:nth-child(2),#crmApp .user-chevron{display:none!important}
+  #crmApp .sidebar-bottom .avatar{width:34px!important;height:34px!important;flex:0 0 34px!important}
+  #crmApp main{height:auto!important;min-height:calc(100dvh - 130px)!important;padding:20px 14px 28px!important;overflow:visible!important}
+  #crmApp .topbar{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important;margin-bottom:20px!important;align-items:start!important}
+  #crmApp .title{font-size:26px!important}
+  #crmApp .top-actions{width:100%!important;display:grid!important;grid-template-columns:repeat(3,40px) minmax(0,1fr)!important;gap:8px!important}
+  #crmApp .top-actions .date{display:none!important}
+  #crmApp .icon-btn{width:40px!important;height:40px!important}
+  #crmApp .top-actions .primary{min-width:0!important;height:40px!important;padding:0 10px!important;font-size:12px!important}
+  :root[data-theme="dark"] #crmApp .shell>aside{border-bottom-color:#1f2c45!important}
+}
