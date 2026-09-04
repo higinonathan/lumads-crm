@@ -1,0 +1,240 @@
+/* LUMADS CRM — Configurações
+   Conteúdo interno reconstruído a partir do HTML aprovado.
+   O shell global continua pertencendo ao Design System do Dashboard. */
+
+#crmApp[data-page="Configurações"] .settings-grid{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+
+#crmApp[data-page="Configurações"] .settings-grid::before{
+  content:"Central de configurações";
+  grid-column:1/-1;
+  min-height:84px;
+  padding:20px 96px 20px 22px;
+  display:block;
+  box-sizing:border-box;
+  border:1px solid #dfe6f3;
+  border-radius:18px;
+  color:var(--lumads-light-title);
+  font:700 18px/1.25 Outfit,Geist,sans-serif;
+  letter-spacing:0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='62' viewBox='0 0 62 62'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23edf2ff'/%3E%3Cstop offset='1' stop-color='%23d7e2ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='62' height='62' rx='20' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%232454da' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='31' cy='31' r='8'/%3E%3Cpath d='M31 12v5m0 28v5M17.6 17.6l3.6 3.6m19.6 19.6 3.6 3.6M12 31h5m28 0h5M17.6 44.4l3.6-3.6m19.6-19.6 3.6-3.6'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg,#f7f9ff 0%,#fff 60%,#f4f7ff 100%);
+  background-repeat:no-repeat,no-repeat;
+  background-position:right 22px center,center;
+  background-size:62px 62px,100% 100%;
+  box-shadow:0 10px 26px rgba(20,35,80,.07);
+}
+
+#crmApp[data-page="Configurações"] .settings-grid::after{
+  content:"Personalize o CRM, mantenha os dados da agência atualizados e ajuste o fluxo de acompanhamento.";
+  position:absolute;
+  left:22px;
+  top:48px;
+  right:104px;
+  color:var(--lumads-light-muted);
+  font:500 13px/1.4 Outfit,Geist,sans-serif;
+  pointer-events:none;
+}
+
+#crmApp[data-page="Configurações"] .setting-card{
+  position:relative;
+  min-width:0;
+  min-height:205px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  text-align:left;
+  overflow:hidden;
+  cursor:pointer;
+  border:1px solid #e4e9f2;
+  border-radius:19px;
+  background:linear-gradient(180deg,#fff 0%,#fcfdff 100%);
+  box-shadow:0 10px 26px rgba(20,35,80,.07);
+  color:var(--lumads-light-title);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+
+#crmApp[data-page="Configurações"] .setting-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto auto 0;
+  width:100%;
+  height:3px;
+  background:linear-gradient(90deg,var(--lumads-accent),#648cff);
+  opacity:0;
+  transition:opacity .2s ease;
+}
+
+#crmApp[data-page="Configurações"] .setting-card:hover{
+  transform:translateY(-4px);
+  border-color:#ced8ff;
+  box-shadow:0 18px 40px rgba(20,35,80,.10);
+}
+
+#crmApp[data-page="Configurações"] .setting-card:hover::before{opacity:1}
+
+#crmApp[data-page="Configurações"] .setting-icon{
+  width:54px;
+  height:54px;
+  flex:0 0 54px;
+  margin-bottom:18px;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  box-shadow:0 14px 24px rgba(45,92,210,.12),inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+#crmApp[data-page="Configurações"] .setting-icon svg{
+  width:28px;
+  height:28px;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+#crmApp[data-page="Configurações"] .setting-card:nth-child(1) .setting-icon{background:linear-gradient(145deg,#eef3ff,#d8e5ff);color:#2454da}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(2) .setting-icon{background:linear-gradient(145deg,#f6efff,#eadcff);color:#7c3aed}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(3) .setting-icon{background:linear-gradient(145deg,#e8fbff,#cdeff8);color:#1686a6}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(4) .setting-icon{background:linear-gradient(145deg,#fff3df,#ffe0ad);color:#d98212}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(5) .setting-icon{background:linear-gradient(145deg,#eef0ff,#dcdfff);color:#4f46e5}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(6) .setting-icon{background:linear-gradient(145deg,#eafff0,#d5ffe2);color:#16a34a}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(7) .setting-icon{background:linear-gradient(145deg,#fff0f7,#ffd8eb);color:#d94487}
+
+#crmApp[data-page="Configurações"] .setting-card h3{
+  margin:0 0 7px;
+  color:var(--lumads-light-title);
+  font:700 16px/1.25 Outfit,Geist,sans-serif;
+}
+
+#crmApp[data-page="Configurações"] .setting-card p{
+  min-height:56px;
+  margin:0;
+  color:var(--lumads-light-muted);
+  font:500 12px/1.55 Outfit,Geist,sans-serif;
+}
+
+#crmApp[data-page="Configurações"] .setting-card .back-link{
+  width:100%;
+  margin-top:auto;
+  padding-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #edf0f5;
+  color:#68758e;
+  font-size:0;
+  font-weight:700;
+}
+
+#crmApp[data-page="Configurações"] .setting-card .back-link::before{
+  color:#68758e;
+  font:700 11px/1 Outfit,Geist,sans-serif;
+}
+
+#crmApp[data-page="Configurações"] .setting-card .back-link::after{
+  content:"→";
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  display:grid;
+  place-items:center;
+  border:1px solid #e1e6ef;
+  border-radius:10px;
+  background:#f5f7fc;
+  color:#40506e;
+  font:700 17px/1 Outfit,Geist,sans-serif;
+  transition:transform .18s ease,color .18s ease,background .18s ease,border-color .18s ease;
+}
+
+#crmApp[data-page="Configurações"] .setting-card:nth-child(1) .back-link::before{content:"Tema atual"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(2) .back-link::before{content:"Dados institucionais"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(3) .back-link::before{content:"Perfil do usuário"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(4) .back-link::before{content:"8 modelos ativos"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(5) .back-link::before{content:"48h · 96h"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(6) .back-link::before{content:"Modo manual"}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(7) .back-link::before{content:"Modo manual"}
+
+#crmApp[data-page="Configurações"] .setting-card:hover .back-link::after{
+  transform:translateX(2px);
+  border-color:#cdd8ff;
+  background:#eef2ff;
+  color:var(--lumads-accent);
+}
+
+#crmApp[data-page="Configurações"] .setting-card:last-child{grid-column:span 2}
+
+/* Modo escuro: mesma paleta estrutural do Design System global. */
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-grid::before{
+  border-color:var(--lumads-dark-panel-line);
+  color:var(--lumads-dark-title);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='62' viewBox='0 0 62 62'%3E%3Crect width='62' height='62' rx='20' fill='%23152947'/%3E%3Cg fill='none' stroke='%238eaeff' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='31' cy='31' r='8'/%3E%3Cpath d='M31 12v5m0 28v5M17.6 17.6l3.6 3.6m19.6 19.6 3.6 3.6M12 31h5m28 0h5M17.6 44.4l3.6-3.6m19.6-19.6 3.6-3.6'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg,var(--lumads-dark-panel) 0%,#101d31 58%,var(--lumads-dark-field) 100%);
+  box-shadow:0 16px 34px rgba(0,0,0,.16);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-grid::after{color:var(--lumads-dark-muted)}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card{
+  border-color:var(--lumads-dark-panel-line);
+  background:var(--lumads-dark-panel);
+  box-shadow:0 16px 34px rgba(0,0,0,.16);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card:hover{
+  border-color:#34517b;
+  box-shadow:0 18px 40px rgba(0,0,0,.22);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card h3{color:var(--lumads-dark-title)}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card p{color:var(--lumads-dark-muted)}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card .back-link{
+  border-color:var(--lumads-dark-inner-line);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card .back-link::before{color:#aab7cc}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card .back-link::after{
+  border-color:var(--lumads-dark-control-line);
+  background:var(--lumads-dark-field);
+  color:#cbd6e7;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card:hover .back-link::after{
+  border-color:#486a9b;
+  background:#142644;
+  color:#8fb0ff;
+}
+
+@media(max-width:1180px){
+  #crmApp[data-page="Configurações"] .settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #crmApp[data-page="Configurações"] .setting-card:last-child{grid-column:span 1}
+}
+
+@media(max-width:760px){
+  #crmApp[data-page="Configurações"] .settings-grid{grid-template-columns:1fr;gap:12px}
+  #crmApp[data-page="Configurações"] .settings-grid::before{
+    min-height:112px;
+    padding:18px 20px;
+    background-image:linear-gradient(135deg,#f7f9ff 0%,#fff 60%,#f4f7ff 100%);
+    background-size:100% 100%;
+    background-position:center;
+  }
+  #crmApp[data-page="Configurações"] .settings-grid::after{
+    top:51px;
+    left:20px;
+    right:20px;
+  }
+  :root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-grid::before{
+    background-image:linear-gradient(135deg,var(--lumads-dark-panel),var(--lumads-dark-field));
+  }
+  #crmApp[data-page="Configurações"] .setting-card{min-height:190px}
+}
