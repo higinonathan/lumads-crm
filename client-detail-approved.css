@@ -3,17 +3,17 @@
    Sidebar, topbar, tipografia global, tema e shell continuam herdados do baseline aprovado. */
 
 #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved{
-  --detail-surface:#fff;
-  --detail-surface-soft:#fbfcff;
-  --detail-border:#e7eaf1;
-  --detail-title:#11162a;
-  --detail-text:#4d5670;
-  --detail-muted:#8792a8;
+  --detail-surface:var(--lumads-light-panel);
+  --detail-surface-soft:var(--lumads-light-panel);
+  --detail-border:var(--lumads-light-line);
+  --detail-title:var(--lumads-light-title);
+  --detail-text:var(--lumads-light-body);
+  --detail-muted:var(--lumads-light-muted);
   --detail-shadow:0 14px 35px rgba(25,43,92,.08);
   font-family:Outfit,Geist,ui-sans-serif,system-ui,sans-serif;
 }
 
-#crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-back-approved{
+#crmApp[data-page="Clientes"] .topbar .client-detail-back-approved{
   display:inline-flex;
   align-items:center;
   gap:7px;
@@ -21,7 +21,7 @@
   padding:0;
   border:0;
   background:transparent;
-  color:#0002FD;
+  color:var(--lumads-muted);
   font-size:12px;
   font-weight:600;
   text-decoration:none;
@@ -352,12 +352,12 @@
 #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-empty-approved b{display:block;margin-bottom:4px;color:var(--detail-title);font-size:13px;font-weight:600}
 
 :root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved{
-  --detail-surface:#0f1b2e;
-  --detail-surface-soft:#0d182a;
-  --detail-border:#263657;
-  --detail-title:#f4f7ff;
-  --detail-text:#d9e2f0;
-  --detail-muted:#9aa9c2;
+  --detail-surface:var(--lumads-dark-panel);
+  --detail-surface-soft:var(--lumads-dark-field);
+  --detail-border:var(--lumads-dark-control-line);
+  --detail-title:var(--lumads-dark-title);
+  --detail-text:var(--lumads-dark-secondary);
+  --detail-muted:var(--lumads-dark-muted);
   --detail-shadow:0 16px 34px rgba(0,0,0,.18);
 }
 
@@ -367,7 +367,6 @@
   color:#7da0ff;
 }
 
-:root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-back-approved{color:#7da0ff}
 :root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-logo-approved{background:linear-gradient(145deg,#172a4c,#12213c);color:#9bb5ff;box-shadow:none}
 :root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.blue{background:linear-gradient(145deg,#203b6d,#17305e);color:#8eb0ff}
 :root[data-theme="dark"] #crmApp[data-page="Clientes"] #dynamicContent.client-detail-approved .client-detail-mini-icon.green{background:linear-gradient(145deg,#163d2c,#103324);color:#72dda0}
