@@ -51,7 +51,7 @@
     const title = document.querySelector('#pageTitle');
     removeAppearanceBack();
     if (eyebrow) {
-      eyebrow.insertAdjacentHTML('beforebegin', '<button type="button" id="settingsAppearanceHeaderBack" data-settings-appearance-back>← Voltar para configurações</button>');
+      eyebrow.insertAdjacentHTML('beforebegin', '<button type="button" id="settingsAppearanceHeaderBack" data-settings-appearance-back style="color:var(--lumads-muted)">← Voltar para configurações</button>');
       eyebrow.textContent = 'APARÊNCIA';
     }
     if (title) title.textContent = 'Preferências visuais';
