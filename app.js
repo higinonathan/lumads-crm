@@ -5,4 +5,5 @@ import './lumads-clients-page.css';
 import './client-detail-approved.css';
 import './lumads-history-page.css';
 import './lumads-settings-page.css';
+import './lumads-ui-cleanup.css';
 import './app-core.js';

@@ -1,0 +1,6 @@
+/* LUMADS CRM — limpeza visual aprovada.
+   Mantém buscas internas e remove apenas a lupa global do topo. */
+
+#crmApp .top-actions [data-action="dashboard-filter"]{
+  display:none!important;
+}
