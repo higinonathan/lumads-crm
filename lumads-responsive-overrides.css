@@ -5,20 +5,20 @@
 */
 
 @media (min-width: 761px) and (max-width: 1280px) {
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .shell {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .shell {
     grid-template-columns: 86px minmax(0, 1fr) !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) aside {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) aside {
     padding: 24px 10px 18px !important;
     align-items: stretch !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .workspace {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .workspace {
     display: none !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .brand {
     width: 54px !important;
     height: 54px !important;
     margin: 4px auto 38px !important;
@@ -28,11 +28,11 @@
     overflow: visible !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand > * {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .brand > * {
     display: none !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .brand::after {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .brand::after {
     content: "LM";
     width: 40px;
     height: 40px;
@@ -48,12 +48,12 @@
     letter-spacing: .02em;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) nav {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) nav {
     display: grid !important;
     gap: 8px !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .nav-item {
     width: 54px !important;
     min-width: 54px !important;
     height: 50px !important;
@@ -65,24 +65,24 @@
     border-radius: 12px !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item span {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .nav-item span {
     display: none !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item .sidebar-icon,
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .nav-item svg {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .nav-item .sidebar-icon,
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .nav-item svg {
     width: 24px !important;
     height: 24px !important;
     flex: 0 0 24px !important;
     margin: 0 !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-menu-wrap {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .user-menu-wrap {
     width: 54px !important;
     margin: auto auto 0 !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .sidebar-bottom {
     width: 54px !important;
     min-width: 54px !important;
     height: 54px !important;
@@ -93,18 +93,18 @@
     border-radius: 14px !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom > span:nth-child(2),
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .user-chevron {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .sidebar-bottom > span:nth-child(2),
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .user-chevron {
     display: none !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) .sidebar-bottom .avatar {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) .sidebar-bottom .avatar {
     width: 36px !important;
     height: 36px !important;
     flex: 0 0 36px !important;
   }
 
-  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"]) main {
+  #crmApp:is([data-page="Dashboard"],[data-page="Aprovações"],[data-page="Histórico"]) main {
     padding-left: 18px !important;
     padding-right: 18px !important;
   }

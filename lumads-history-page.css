@@ -1,0 +1,296 @@
+/* Conteúdo interno da página Histórico. O shell continua no Design System global. */
+#crmApp[data-page="Histórico"] .history-approved-page {
+  display: grid;
+  gap: 18px;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-card {
+  min-height: 118px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--lumads-light-line);
+  border-radius: 18px;
+  background: var(--lumads-light-panel);
+  box-shadow: 0 10px 26px rgba(20, 35, 80, .07);
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-label {
+  margin-bottom: 10px;
+  color: #34415f;
+  font: 600 14px/1.2 Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-value {
+  display: block;
+  color: #0d172d;
+  font: 800 29px/1 Outfit, Geist, sans-serif;
+  letter-spacing: -.03em;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-sub {
+  margin-top: 8px;
+  color: #8290a8;
+  font: 500 12px/1.3 Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  box-shadow: 0 14px 24px rgba(45, 92, 210, .12), inset 0 1px 0 rgba(255, 255, 255, .95);
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon svg {
+  width: 29px;
+  height: 29px;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.blue { background: linear-gradient(145deg, #eef3ff, #d8e5ff); }
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.blue svg { stroke: #2454da; }
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.purple { background: linear-gradient(145deg, #f5efff, #e9dcff); }
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.purple svg { stroke: #7c3aed; }
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.green { background: linear-gradient(145deg, #eafff0, #d5ffe2); }
+#crmApp[data-page="Histórico"] .history-approved-kpi-icon.green svg { stroke: #16a34a; }
+
+#crmApp[data-page="Histórico"] .history-approved-panel {
+  overflow: hidden;
+  border: 1px solid var(--lumads-light-line);
+  border-radius: 20px;
+  background: var(--lumads-light-panel);
+  box-shadow: 0 10px 26px rgba(20, 35, 80, .07);
+}
+
+#crmApp[data-page="Histórico"] .history-approved-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px;
+  border-bottom: 1px solid var(--lumads-light-line);
+}
+
+#crmApp[data-page="Histórico"] .history-approved-panel-head h2 {
+  margin: 0 0 6px;
+  color: var(--lumads-light-title);
+  font: 600 19px/1.2 Outfit, Geist, sans-serif;
+  letter-spacing: -.02em;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-panel-head p {
+  margin: 0;
+  color: #6d7891;
+  font: 500 13px/1.4 Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-filters {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 165px 145px 145px;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--lumads-light-line);
+  background: #fbfcff;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-search,
+#crmApp[data-page="Histórico"] .history-approved-filters .filter-select {
+  height: 42px;
+  min-width: 0;
+  border: 1px solid #dce3ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #27324d;
+  font: 600 12px Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-search svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  fill: none;
+  stroke: #8090a7;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #34405a;
+  font: 500 12px Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-search input::placeholder { color: #9aa4b5; }
+
+#crmApp[data-page="Histórico"] .history-approved-filters .filter-select { padding: 0 12px; outline: 0; }
+
+#crmApp[data-page="Histórico"] .history-approved-table-wrap { overflow-x: auto; }
+
+#crmApp[data-page="Histórico"] .history-approved-table {
+  width: 100%;
+  min-width: 960px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table th {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--lumads-light-line);
+  color: #27324d;
+  font: 800 11px/1.2 Outfit, Geist, sans-serif;
+  letter-spacing: .02em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(1) { width: 17%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(2) { width: 18%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(3) { width: 12%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(4) { width: 15%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(5) { width: 12%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(6) { width: 10%; }
+#crmApp[data-page="Histórico"] .history-approved-table th:nth-child(7) { width: 16%; }
+
+#crmApp[data-page="Histórico"] .history-approved-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid #edf0f5;
+  color: #4e5a72;
+  font: 500 12px/1.3 Outfit, Geist, sans-serif;
+  vertical-align: middle;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table tbody tr:last-child td { border-bottom: 0; }
+
+#crmApp[data-page="Histórico"] .history-approved-table .client-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table .company-dot {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #eef3ff, #dbe6ff);
+  color: #1b46c7;
+  box-shadow: 0 8px 15px rgba(34, 78, 210, .10);
+  font: 800 11px Outfit, Geist, sans-serif;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table .client-name,
+#crmApp[data-page="Histórico"] .history-approved-table .content-title {
+  display: block;
+  color: #17233c;
+  font-weight: 700;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-table .client-company,
+#crmApp[data-page="Histórico"] .history-approved-table .content-type {
+  display: block;
+  margin-top: 4px;
+  color: #8a95a9;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+#crmApp[data-page="Histórico"] .history-reminder-count {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e7ef;
+  border-radius: 10px;
+  background: #f0f3f8;
+  color: #34405a;
+  font-weight: 800;
+}
+
+#crmApp[data-page="Histórico"] .history-approved-empty {
+  padding: 22px;
+  color: var(--lumads-light-muted);
+  text-align: center;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-kpi-card,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-panel {
+  border-color: var(--lumads-dark-panel-line);
+  background: var(--lumads-dark-panel);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, .16);
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-kpi-label,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-kpi-value,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-panel-head h2,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table th,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table .client-name,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table .content-title { color: var(--lumads-dark-title); }
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-kpi-sub,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-panel-head p,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table td,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table .client-company,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table .content-type,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-empty { color: var(--lumads-dark-muted); }
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-panel-head,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-filters,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table th { border-color: var(--lumads-dark-inner-line); }
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-filters { background: transparent; }
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-search,
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-filters .filter-select {
+  border-color: #2b3e5d;
+  background: var(--lumads-dark-field);
+  color: #eef2fa;
+}
+
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-search input { color: #eef2fa; }
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-search input::placeholder { color: #8fa0bb; }
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-search svg { stroke: #94a3b8; }
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-approved-table td { border-color: #182641; }
+:root[data-theme="dark"] #crmApp[data-page="Histórico"] .history-reminder-count { border-color: #2a3c59; background: #14243d; color: #e9eef8; }
+
+@media (max-width: 1180px) {
+  #crmApp[data-page="Histórico"] .history-approved-kpis { grid-template-columns: 1fr; }
+  #crmApp[data-page="Histórico"] .history-approved-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #crmApp[data-page="Histórico"] .history-approved-search { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  #crmApp[data-page="Histórico"] .history-approved-page { gap: 14px; }
+  #crmApp[data-page="Histórico"] .history-approved-kpi-card { min-height: 112px; }
+  #crmApp[data-page="Histórico"] .history-approved-panel-head { padding: 18px 14px; }
+  #crmApp[data-page="Histórico"] .history-approved-filters { grid-template-columns: 1fr; padding: 12px 14px; }
+  #crmApp[data-page="Histórico"] .history-approved-search { grid-column: auto; }
+  #crmApp[data-page="Histórico"] .history-approved-table-wrap { overflow-x: auto; }
+}

@@ -614,12 +614,17 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
     const map = { Dashboard: ['Visão geral', `${greeting()}, ${state.currentUser.name}.`], Aprovações: ['Fluxo de aprovação', 'Aprovações'], Clientes: ['Base de clientes', 'Clientes'], Histórico: ['Resultados concluídos', 'Histórico'], Configurações: ['Administração', 'Configurações'] };
     $('#pageEyebrow').textContent = map[page][0]; $('#pageTitle').textContent = map[page][1];
     const action = page === 'Clientes' ? '<button class="primary" data-action="new-client">+ Novo cliente</button>' : page === 'Configurações' ? '' : '<button class="primary" data-action="new-approval">+ Nova aprovação</button>';
-    const usesDashboardShell = page === 'Dashboard' || page === 'Aprovações';
+  const usesDashboardShell = page === 'Dashboard' || page === 'Aprovações';
+  const isHistory = page === 'Histórico';
     const dashboardTools = usesDashboardShell ? '<button class="icon-btn" data-action="dashboard-filter" aria-label="Pesquisar aprovações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="6.25"/><path d="m16 16 4.25 4.25"/></svg></button>' : '';
     const notifications = '<button class="icon-btn" data-action="notifications" aria-label="Notificações"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>';
     const themeControl = '<button class="icon-btn theme-button" id="themeButton" aria-label="Alterar tema"></button>';
-    const date = usesDashboardShell ? `<span class="date" id="currentDate">${formatDashboardDate(new Date())}</span>` : `<span class="date" id="currentDate">${formatLongDate(new Date())}</span>`;
-    $('#headerActions').innerHTML = usesDashboardShell ? `${dashboardTools}${notifications}${themeControl}${date}${action}` : `${date}${themeControl}${notifications}${action}`;
+  const date = usesDashboardShell || isHistory ? `<span class="date" id="currentDate">${formatDashboardDate(new Date())}</span>` : `<span class="date" id="currentDate">${formatLongDate(new Date())}</span>`;
+  $('#headerActions').innerHTML = usesDashboardShell
+    ? `${dashboardTools}${notifications}${themeControl}${date}${action}`
+    : isHistory
+      ? `${notifications}${themeControl}${date}${action}`
+      : `${date}${themeControl}${notifications}${action}`;
     renderThemeUI();
   }
   function dashboardRow(approval) {
@@ -734,6 +739,16 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
       const count = $('#clientContactCount'); if (count) count.textContent = '—';
     }
   }
+  function renderHistoryRows(records) {
+    return records.map(approval => {
+      const client = approvalClientById(approval.clientId);
+      const reminders = Number(approval.reminders) || 0;
+      const contentType = approval.type ? text(approval.type) : '—';
+      const approvalDate = approval.approvedAt || approval.finalizedAt || approval.statusChangedAt;
+      return `<tr><td>${clientCell(client)}</td><td><span class="content-title">${text(approval.content)}</span><span class="content-type">${contentType}</span></td><td class="date-cell">${formatDate(approval.createdAt)}</td><td class="date-cell">${formatDateTime(approvalDate)}</td><td class="date-cell">${approval.publishedAt ? formatDate(approval.publishedAt) : '—'}</td><td><span class="history-reminder-count">${reminders}</span></td><td>${badge(approval.status)}</td></tr>`;
+    }).join('');
+  }
+
   function renderHistory() {
     if (clientsLoading || approvalsLoading) {
       $('#dynamicContent').innerHTML = '<div class="empty-note" style="display:block">Carregando histórico…</div>';
@@ -743,10 +758,41 @@ import { loadClientContactHistory, loadCommunicationSettings, loadMessageTemplat
       $('#dynamicContent').innerHTML = '<div class="empty-note" style="display:block">Não foi possível carregar o histórico. <button class="secondary" data-action="retry-data">Tentar novamente</button></div>';
       return;
     }
+    const now = new Date();
+    const completedThisMonth = validApprovals().filter(approval => {
+      if (!isFinal(approval)) return false;
+      const finalizedAt = new Date(approval.finalizedAt || approval.statusChangedAt);
+      return finalizedAt.getMonth() === now.getMonth() && finalizedAt.getFullYear() === now.getFullYear();
+    }).length;
+    const currentMonth = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(now);
     const clientOptions = approvalClients().map(client => `<option value="${client.id}">${text(client.name)}${client.isActive === false ? ' (arquivado)' : ''}</option>`).join('');
-    $('#dynamicContent').innerHTML = `<section class="history-kpi"><div class="metric"><div class="metric-label">Finalizadas no mês</div><div class="metric-line"><strong class="metric-value">${validApprovals().filter(a => isFinal(a) && new Date(a.finalizedAt || a.statusChangedAt).getMonth() === new Date().getMonth()).length}</strong><span class="mini blue">✓</span></div></div><div class="metric"><div class="metric-label">Tempo médio de aprovação</div><div class="metric-line"><strong class="metric-value">${averageApprovalTime()}d</strong><span class="mini violet">◷</span></div></div><div class="metric"><div class="metric-label">Concluídas sem lembrete</div><div class="metric-line"><strong class="metric-value">${completedWithoutReminder()}%</strong><span class="mini mint">↑</span></div></div></section><section class="page-section"><div class="page-intro"><div><h2>Histórico de aprovações</h2><p>Registros concluídos, aprovados ou publicados.</p></div></div><div class="filter-panel"><input id="historySearch" class="search-input" placeholder="Buscar cliente ou conteúdo"/><select id="historyClient" class="filter-select"><option value="">Todos os clientes</option>${clientOptions}</select><select id="historyPeriod" class="filter-select"><option value="">Todo o período</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select><select id="historyStatus" class="filter-select"><option value="">Todos os status</option><option value="approved">Aprovado</option><option value="published">Publicado</option><option value="closed">Encerrado</option></select></div><div class="table-wrap"><table class="page-table"><thead><tr><th>Cliente</th><th>Conteúdo</th><th>Data de início</th><th>Data de aprovação</th><th>Publicação</th><th>Lembretes</th><th>Status final</th></tr></thead><tbody id="historyBody"></tbody></table></div></section>`;
-    const update = () => { const q = $('#historySearch').value.toLowerCase(), c = $('#historyClient').value, p = Number($('#historyPeriod').value || 0), s = $('#historyStatus').value; const cutoff = p ? Date.now() - p * 86400000 : 0; const found = validApprovals().filter(a => isFinal(a) && (!q || `${approvalClientById(a.clientId).name} ${a.content}`.toLowerCase().includes(q)) && (!c || a.clientId === c) && (!s || a.status === s) && (!cutoff || new Date(a.finalizedAt || a.statusChangedAt) >= cutoff)); $('#historyBody').innerHTML = found.map(a => `<tr><td>${clientCell(approvalClientById(a.clientId))}</td><td><div class="content-title">${text(a.content)}</div></td><td class="date-cell">${formatDate(a.createdAt)}</td><td class="date-cell">${a.approvedAt ? formatDateTime(a.approvedAt) : formatDateTime(a.finalizedAt || a.statusChangedAt)}</td><td class="date-cell">${a.publishedAt ? formatDateTime(a.publishedAt) : '—'}</td><td class="next-action">${a.reminders}</td><td>${badge(a.status)}</td></tr>`).join('') || '<tr><td colspan="7" class="next-action">Nenhum registro encontrado.</td></tr>'; };
-    ['historySearch', 'historyClient', 'historyPeriod', 'historyStatus'].forEach(id => $("#" + id).addEventListener('input', update)); update();
+    const historyIcon = {
+      complete: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12 2.3 2.3 4.8-5"></path></svg>',
+      time: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>',
+      growth: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6"></path><path d="m7 11 5-5 5 5"></path></svg>',
+      search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="5.8"></circle><path d="m15.2 15.2 4.3 4.3"></path></svg>'
+    };
+    $('#dynamicContent').innerHTML = `<section class="history-approved-page"><section class="history-approved-kpis"><article class="history-approved-kpi-card"><div><div class="history-approved-kpi-label">Finalizadas no mês</div><strong class="history-approved-kpi-value">${completedThisMonth}</strong><div class="history-approved-kpi-sub">Aprovações concluídas em ${text(currentMonth)}</div></div><span class="history-approved-kpi-icon blue">${historyIcon.complete}</span></article><article class="history-approved-kpi-card"><div><div class="history-approved-kpi-label">Tempo médio de aprovação</div><strong class="history-approved-kpi-value">${averageApprovalTime()}d</strong><div class="history-approved-kpi-sub">Média das aprovações concluídas</div></div><span class="history-approved-kpi-icon purple">${historyIcon.time}</span></article><article class="history-approved-kpi-card"><div><div class="history-approved-kpi-label">Concluídas sem lembrete</div><strong class="history-approved-kpi-value">${completedWithoutReminder()}%</strong><div class="history-approved-kpi-sub">Aprovações resolvidas sem cobrança</div></div><span class="history-approved-kpi-icon green">${historyIcon.growth}</span></article></section><section class="history-approved-panel"><header class="history-approved-panel-head"><div><h2>Histórico de aprovações</h2><p>Registros concluídos, aprovados ou publicados.</p></div></header><div class="history-approved-filters"><label class="history-approved-search">${historyIcon.search}<input id="historySearch" type="search" placeholder="Buscar cliente ou conteúdo"/></label><select id="historyClient" class="filter-select"><option value="">Todos os clientes</option>${clientOptions}</select><select id="historyPeriod" class="filter-select"><option value="">Todo o período</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select><select id="historyStatus" class="filter-select"><option value="">Todos os status</option><option value="approved">Aprovado</option><option value="published">Publicado</option><option value="closed">Encerrado</option></select></div><div class="table-wrap history-approved-table-wrap"><table class="page-table history-approved-table"><thead><tr><th>Cliente</th><th>Conteúdo</th><th>Data de início</th><th>Data de aprovação</th><th>Publicação</th><th>Lembretes</th><th>Status final</th></tr></thead><tbody id="historyBody"></tbody></table></div></section></section>`;
+    const update = () => {
+      const query = $('#historySearch').value.toLowerCase();
+      const clientId = $('#historyClient').value;
+      const period = Number($('#historyPeriod').value || 0);
+      const status = $('#historyStatus').value;
+      const cutoff = period ? Date.now() - period * 86400000 : 0;
+      const found = validApprovals().filter(approval => {
+        const client = approvalClientById(approval.clientId);
+        const finalizedAt = approval.finalizedAt || approval.statusChangedAt;
+        const searchable = `${client?.name || ''} ${client?.company || ''} ${approval.content || ''}`.toLowerCase();
+        return isFinal(approval) && (!query || searchable.includes(query)) && (!clientId || approval.clientId === clientId) && (!status || approval.status === status) && (!cutoff || new Date(finalizedAt) >= cutoff);
+      });
+      $('#historyBody').innerHTML = renderHistoryRows(found) || '<tr><td colspan="7" class="history-approved-empty">Nenhum registro encontrado.</td></tr>';
+    };
+    ['historySearch', 'historyClient', 'historyPeriod', 'historyStatus'].forEach(id => {
+      const control = $("#" + id);
+      control.addEventListener('input', update);
+      control.addEventListener('change', update);
+    });
+    update();
   }
   function averageApprovalTime() { const records = validApprovals().filter(isFinal); if (!records.length) return '0,0'; const days = records.reduce((total, record) => total + (new Date(record.finalizedAt || record.statusChangedAt) - new Date(record.createdAt)) / 86400000, 0) / records.length; return days.toFixed(1).replace('.', ','); }
   function completedWithoutReminder() { const records = validApprovals().filter(isFinal); return records.length ? Math.round(records.filter(record => !record.reminders).length / records.length * 100) : 0; }
