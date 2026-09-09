@@ -1,0 +1,109 @@
+/* Configurações — subtelas funcionais.
+   O shell global permanece no Design System aprovado. */
+
+#crmApp[data-page="Configurações"] #settingsSubpageHeaderBack{
+  display:inline-flex;align-items:center;gap:6px;margin:0 0 14px;padding:0;border:0;background:transparent;
+  color:var(--lumads-muted);font:600 12px/1 Outfit,Geist,sans-serif;text-decoration:none;cursor:pointer;
+}
+#crmApp[data-page="Configurações"] #settingsSubpageHeaderBack:hover{color:var(--lumads-title)}
+
+#crmApp[data-page="Configurações"] .settings-subpage-content{max-width:980px;margin:0 auto}
+#crmApp[data-page="Configurações"] .settings-subpage-content.is-wide{max-width:1120px}
+#crmApp[data-page="Configurações"] .settings-subpage-panel{overflow:hidden;border:1px solid #e4e9f2;border-radius:20px;background:#fff;box-shadow:0 10px 26px rgba(20,35,80,.07)}
+#crmApp[data-page="Configurações"] .settings-subpage-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 22px;border-bottom:1px solid #e4e9f2}
+#crmApp[data-page="Configurações"] .settings-subpage-title-wrap{display:flex;align-items:center;gap:14px;min-width:0}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon{width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;border-radius:17px;box-shadow:0 14px 24px rgba(45,92,210,.10),inset 0 1px 0 rgba(255,255,255,.95)}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.purple{background:linear-gradient(145deg,#f6efff,#eadcff);color:#7c3aed}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.cyan{background:linear-gradient(145deg,#e8fbff,#d4f5ff);color:#087aa0}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.orange{background:linear-gradient(145deg,#fff4df,#ffe5b7);color:#d97706}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.violet{background:linear-gradient(145deg,#f0efff,#dddfff);color:#4f46e5}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.green{background:linear-gradient(145deg,#eafff0,#d5ffe2);color:#16a34a}
+#crmApp[data-page="Configurações"] .settings-subpage-head-icon.pink{background:linear-gradient(145deg,#fff0f7,#ffd9ea);color:#db2777}
+#crmApp[data-page="Configurações"] .settings-subpage-head h2{margin:0 0 5px;color:#111827;font:700 18px/1.2 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-subpage-head p{margin:0;color:#73809a;font:500 12px/1.45 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-subpage-status{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#2849cf;font:700 11px/1 Outfit,Geist,sans-serif;white-space:nowrap}
+#crmApp[data-page="Configurações"] .settings-subpage-body{padding:22px}
+#crmApp[data-page="Configurações"] .settings-subpage-section-title{margin:0 0 5px;color:#1d2942;font:700 14px/1.25 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-subpage-section-sub{margin:0 0 18px;color:#7e8aa0;font:500 12px/1.5 Outfit,Geist,sans-serif}
+
+#crmApp[data-page="Configurações"] .settings-subpage-form{display:grid;gap:18px}
+#crmApp[data-page="Configurações"] .settings-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#crmApp[data-page="Configurações"] .settings-field{display:grid;gap:7px;min-width:0}
+#crmApp[data-page="Configurações"] .settings-field.full{grid-column:1/-1}
+#crmApp[data-page="Configurações"] .settings-field label{color:#25314a;font:700 12px/1.2 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-field input,
+#crmApp[data-page="Configurações"] .settings-field select,
+#crmApp[data-page="Configurações"] .settings-field textarea{width:100%;box-sizing:border-box;border:1px solid #dce3ee;border-radius:13px;background:#fbfcff;color:#1a2440;font:500 13px/1.45 Outfit,Geist,sans-serif;outline:none;transition:.18s ease}
+#crmApp[data-page="Configurações"] .settings-field input,
+#crmApp[data-page="Configurações"] .settings-field select{height:44px;padding:0 14px}
+#crmApp[data-page="Configurações"] .settings-field textarea{min-height:112px;padding:12px 14px;resize:vertical}
+#crmApp[data-page="Configurações"] .settings-field input:focus,
+#crmApp[data-page="Configurações"] .settings-field select:focus,
+#crmApp[data-page="Configurações"] .settings-field textarea:focus{border-color:#879eff;box-shadow:0 0 0 4px rgba(0,2,253,.08);background:#fff}
+#crmApp[data-page="Configurações"] .settings-field input[readonly]{background:#f5f7fb;color:#7c879c;cursor:default}
+#crmApp[data-page="Configurações"] .settings-field-help{color:#8a95a8;font:500 11px/1.45 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-form-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-top:4px}
+#crmApp[data-page="Configurações"] .settings-save-button{min-height:42px;padding:0 17px;border:0;border-radius:13px;background:linear-gradient(135deg,#0002FD,#2257ff);color:#fff;font:700 13px/1 Outfit,Geist,sans-serif;cursor:pointer;box-shadow:0 10px 20px rgba(0,2,253,.18);transition:.18s ease}
+#crmApp[data-page="Configurações"] .settings-save-button:hover{transform:translateY(-1px);box-shadow:0 13px 24px rgba(0,2,253,.24)}
+#crmApp[data-page="Configurações"] .settings-save-button:disabled{opacity:.62;cursor:wait;transform:none}
+#crmApp[data-page="Configurações"] .settings-subpage-feedback{display:none;margin-right:auto;padding:9px 11px;border-radius:11px;background:#eaf8ee;color:#188449;font:700 11px/1.25 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-subpage-feedback.is-visible{display:block}
+#crmApp[data-page="Configurações"] .settings-subpage-feedback.is-error{background:#fff0f0;color:#c53545}
+
+#crmApp[data-page="Configurações"] .settings-loading{min-height:180px;display:grid;place-items:center;text-align:center;color:#7e8aa0;font:600 12px/1.5 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-loading b{display:block;margin-bottom:5px;color:#25314a;font-size:14px}
+
+#crmApp[data-page="Configurações"] .settings-template-channels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+#crmApp[data-page="Configurações"] .settings-template-channel{display:grid;gap:12px;min-width:0}
+#crmApp[data-page="Configurações"] .settings-template-channel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px}
+#crmApp[data-page="Configurações"] .settings-template-channel-head h3{margin:0;color:#1d2942;font:700 14px/1.2 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-template-channel-head span{padding:5px 8px;border-radius:999px;background:#f3f6fb;color:#758198;font:700 10px/1 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-template-card{padding:15px;border:1px solid #e2e7f0;border-radius:16px;background:#fbfcff}
+#crmApp[data-page="Configurações"] .settings-template-label{margin:0 0 11px;color:#25314a;font:700 12px/1.2 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-template-card .settings-field textarea{min-height:92px}
+
+#crmApp[data-page="Configurações"] .settings-info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#crmApp[data-page="Configurações"] .settings-info-card{min-height:128px;padding:17px;border:1px solid #e2e7f0;border-radius:17px;background:#fbfcff}
+#crmApp[data-page="Configurações"] .settings-info-card small{display:block;margin-bottom:7px;color:#8c97aa;font:700 10px/1 Outfit,Geist,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+#crmApp[data-page="Configurações"] .settings-info-card strong{display:block;margin-bottom:7px;color:#1d2942;font:700 14px/1.25 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-info-card p{margin:0;color:#73809a;font:500 12px/1.5 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-channel-note{margin-top:16px;padding:14px 16px;border:1px solid #dfe6f3;border-radius:16px;background:#f8faff;color:#66758e;font:500 12px/1.5 Outfit,Geist,sans-serif}
+#crmApp[data-page="Configurações"] .settings-channel-note strong{color:#25314a}
+
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] #settingsSubpageHeaderBack{color:#9cafc9}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] #settingsSubpageHeaderBack:hover{color:#fff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-panel{background:linear-gradient(180deg,#10213a 0%,#0d1c33 100%);border-color:#263a58;box-shadow:0 16px 34px rgba(0,0,0,.16)}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-head{border-color:#263957}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-head h2,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-section-title,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field label,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-loading b,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-template-channel-head h3,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-template-label,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-info-card strong,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-channel-note strong{color:#eef3fb}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-head p,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-section-sub,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field-help,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-loading,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-info-card p{color:#9cafc9}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-subpage-status{background:#17366f;color:#c8d6ff}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field input,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field select,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field textarea{background:#0c182a;border-color:#2b3b5b;color:#eef2fa}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-field input[readonly]{background:#0a1526;color:#8390a7}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-template-card,
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-info-card{background:#0f1d33;border-color:#2a3d5b}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-template-channel-head span{background:#14233a;color:#9cafc9}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .settings-channel-note{background:#0f1d33;border-color:#2a3d5b;color:#9cafc9}
+
+@media(max-width:900px){
+  #crmApp[data-page="Configurações"] .settings-template-channels{grid-template-columns:1fr}
+  #crmApp[data-page="Configurações"] .settings-info-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  #crmApp[data-page="Configurações"] .settings-form-grid{grid-template-columns:1fr}
+  #crmApp[data-page="Configurações"] .settings-field.full{grid-column:auto}
+  #crmApp[data-page="Configurações"] .settings-subpage-head{align-items:flex-start}
+}
