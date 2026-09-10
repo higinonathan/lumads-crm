@@ -1,0 +1,92 @@
+/* LUMADS CRM — profundidade única dos controles.
+   Aplica o mesmo relevo visual em todas as páginas sem alterar layout, sidebar ou conteúdo. */
+
+#crmApp :is(.date,.icon-btn,.secondary,.row-action,.lumads-clients-sort,.lumads-client-more,.settings-btn.secondary){
+  background:linear-gradient(180deg,#ffffff 0%,#f8faff 100%)!important;
+  border-color:#dfe5ee!important;
+  box-shadow:
+    0 8px 18px rgba(24,36,69,.085),
+    0 2px 4px rgba(24,36,69,.045),
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 -1px 0 rgba(83,98,128,.055)!important;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease!important;
+}
+
+#crmApp :is(.icon-btn,.secondary,.row-action,.lumads-clients-sort,.lumads-client-more,.settings-btn.secondary):hover{
+  transform:translateY(-1px)!important;
+  border-color:#cdd6e6!important;
+  box-shadow:
+    0 11px 22px rgba(24,36,69,.11),
+    0 3px 6px rgba(24,36,69,.055),
+    inset 0 1px 0 #fff,
+    inset 0 -1px 0 rgba(83,98,128,.055)!important;
+}
+
+#crmApp :is(.icon-btn,.secondary,.row-action,.lumads-clients-sort,.lumads-client-more,.settings-btn.secondary):active{
+  transform:translateY(1px)!important;
+  box-shadow:
+    0 4px 9px rgba(24,36,69,.07),
+    inset 0 1px 0 #fff!important;
+}
+
+#crmApp :is(.primary,.settings-btn.primary){
+  background:linear-gradient(180deg,#3158ff 0%,#111eff 48%,#0002d2 100%)!important;
+  border:1px solid #0002d8!important;
+  box-shadow:
+    0 11px 22px rgba(0,2,253,.21),
+    0 3px 6px rgba(0,2,145,.13),
+    inset 0 1px 0 rgba(255,255,255,.31),
+    inset 0 -2px 0 rgba(0,0,90,.16)!important;
+  transition:transform .16s ease,box-shadow .16s ease!important;
+}
+#crmApp :is(.primary,.settings-btn.primary):hover{
+  transform:translateY(-1px)!important;
+  box-shadow:
+    0 14px 27px rgba(0,2,253,.25),
+    0 4px 8px rgba(0,2,145,.15),
+    inset 0 1px 0 rgba(255,255,255,.34),
+    inset 0 -2px 0 rgba(0,0,90,.16)!important;
+}
+#crmApp :is(.primary,.settings-btn.primary):active{
+  transform:translateY(1px)!important;
+  box-shadow:0 6px 13px rgba(0,2,253,.17),inset 0 1px 0 rgba(255,255,255,.24)!important;
+}
+
+/* Setas dos cards de Configurações seguem o mesmo botão elevado. */
+#crmApp[data-page="Configurações"] .setting-card .back-link::after{
+  background:linear-gradient(180deg,#ffffff 0%,#f3f6fb 100%)!important;
+  border-color:#dfe5ee!important;
+  box-shadow:
+    0 6px 13px rgba(24,36,69,.08),
+    0 2px 4px rgba(24,36,69,.04),
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 -1px 0 rgba(83,98,128,.06)!important;
+}
+#crmApp[data-page="Configurações"] .setting-card:hover .back-link::after{
+  transform:translate(2px,-1px)!important;
+  border-color:#cdd8ff!important;
+  background:linear-gradient(180deg,#f9faff,#eef2ff)!important;
+  box-shadow:0 9px 17px rgba(24,36,69,.10),inset 0 1px 0 #fff!important;
+}
+
+/* Texto da Central de Configurações alinhado ao pré-design aprovado. */
+#crmApp[data-page="Configurações"] .setting-card:nth-child(3) .back-link::before{content:"Equipe e acessos"!important}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(6) .back-link::before{content:"Modo assistido"!important}
+#crmApp[data-page="Configurações"] .setting-card:nth-child(7) .back-link::before{content:"Modo assistido"!important}
+
+:root[data-theme="dark"] #crmApp :is(.date,.icon-btn,.secondary,.row-action,.lumads-clients-sort,.lumads-client-more,.settings-btn.secondary){
+  background:linear-gradient(180deg,#14213a 0%,#0d182b 100%)!important;
+  border-color:#263657!important;
+  color:#dfe6f5!important;
+  box-shadow:
+    0 9px 19px rgba(0,0,0,.24),
+    0 2px 5px rgba(0,0,0,.15),
+    inset 0 1px 0 rgba(255,255,255,.055),
+    inset 0 -1px 0 rgba(0,0,0,.13)!important;
+}
+:root[data-theme="dark"] #crmApp[data-page="Configurações"] .setting-card .back-link::after{
+  background:linear-gradient(180deg,#14213a,#0c182a)!important;
+  border-color:#263657!important;
+  color:#cbd6e7!important;
+  box-shadow:0 8px 17px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
