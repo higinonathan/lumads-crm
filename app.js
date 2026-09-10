@@ -16,3 +16,4 @@ import './lumads-settings-subviews.js';
 import './lumads-settings-landing-sync.js';
 import './lumads-clients-controller.js';
 import './lumads-clients-final-fixes.js';
+import './lumads-google-auth.js';
