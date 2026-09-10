@@ -26,10 +26,22 @@
     if (target.textContent !== value) target.textContent = value;
   }
 
+  function clearSubviewOutsideSettings(crm) {
+    if (!crm || crm.dataset.page === 'Configurações') return;
+    document.getElementById('settingsSubviewBack')?.remove();
+    if (crm.dataset.settingsView) delete crm.dataset.settingsView;
+  }
+
   function syncLanding() {
     syncApprovedDate();
     const crm = document.querySelector('#crmApp');
-    if (!crm || crm.dataset.page !== 'Configurações' || crm.dataset.settingsView) return;
+    if (!crm) return;
+    if (crm.dataset.page !== 'Configurações') {
+      clearSubviewOutsideSettings(crm);
+      return;
+    }
+    if (crm.dataset.settingsView) return;
+    document.getElementById('settingsSubviewBack')?.remove();
     COPY.forEach((description, action) => {
       const card = document.querySelector(`.setting-card[data-action="${action}"]`);
       const paragraph = card?.querySelector('p');
