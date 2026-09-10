@@ -8,6 +8,8 @@ import './lumads-settings-page.css';
 import './lumads-ui-cleanup.css';
 import './lumads-settings-appearance.css';
 import './lumads-settings-subviews.css';
+import './lumads-controls-depth.css';
 import './app-core.js';
 import './lumads-settings-appearance.js';
 import './lumads-settings-subviews.js';
+import './lumads-settings-landing-sync.js';
