@@ -14,5 +14,5 @@ import './app-core.js';
 import './lumads-settings-appearance.js';
 import './lumads-settings-subviews.js';
 import './lumads-settings-landing-sync.js';
-import './lumads-clients-antigravity.js';
+import './lumads-clients-controller.js';
 import './lumads-clients-final-fixes.js';

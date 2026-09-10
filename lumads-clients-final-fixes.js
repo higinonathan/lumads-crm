@@ -1,18 +1,12 @@
 (() => {
   'use strict';
 
-  const crm = document.querySelector('#crmApp');
-  const dynamic = document.querySelector('#dynamicContent');
-  if (!crm || !dynamic) return;
-
+  if (document.querySelector('#lumads-clients-final-fixes')) return;
   const style = document.createElement('style');
   style.id = 'lumads-clients-final-fixes';
   style.textContent = `
-    /* Ajustes finais de Clientes: legibilidade e navegação direta pelo card. */
+    /* Ajustes finais já aprovados para legibilidade de Clientes. */
     #crmApp[data-page="Clientes"] .clients-ag-card{cursor:pointer}
-    #crmApp[data-page="Clientes"] .clients-ag-open,
-    #crmApp[data-page="Clientes"] .clients-ag-round.add{display:none!important}
-
     #crmApp[data-page="Clientes"] .clients-ag-lead{font-size:16px}
     #crmApp[data-page="Clientes"] .clients-ag-segmented button{font-size:12px}
     #crmApp[data-page="Clientes"] .clients-ag-search input,
@@ -65,126 +59,4 @@
     }
   `;
   document.head.appendChild(style);
-
-  const isInteractive = target => Boolean(target.closest('button, a, input, select, textarea, label, [role="menuitem"]'));
-  const safe = value => String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[char]);
-
-  function prepareCards(root = dynamic) {
-    root.querySelectorAll?.('.clients-ag-card').forEach(card => {
-      card.querySelector('.clients-ag-open')?.remove();
-      card.querySelector('.clients-ag-round.add')?.remove();
-      card.tabIndex = 0;
-      card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', `Abrir cliente ${card.querySelector('.clients-ag-identity strong')?.textContent || ''}`.trim());
-    });
-  }
-
-  function prepareDetailHeader(clientId) {
-    document.querySelector('#clientDetailHeaderBack')?.remove();
-    const eyebrow = document.querySelector('#pageEyebrow');
-    const title = document.querySelector('#pageTitle');
-    if (eyebrow) {
-      eyebrow.insertAdjacentHTML('beforebegin', '<button class="back-link client-detail-back-approved" id="clientDetailHeaderBack" data-action="back-clients">← Voltar para clientes</button>');
-      eyebrow.textContent = 'Base de clientes';
-    }
-    if (title) title.textContent = 'Detalhe do cliente';
-
-    const headerPrimary = document.querySelector('#headerActions .primary');
-    if (headerPrimary) {
-      headerPrimary.dataset.action = 'new-approval';
-      headerPrimary.dataset.client = clientId;
-      headerPrimary.textContent = '+ Nova aprovação';
-    }
-  }
-
-  let recoveryActive = false;
-
-  function hasAdaptedClientsView() {
-    return Boolean(dynamic.querySelector(':scope > .clients-ag-page, :scope > .clients-ag-detail'));
-  }
-
-  function kickClientsAdapter() {
-    const marker = document.createElement('span');
-    marker.hidden = true;
-    marker.dataset.clientsAdapterKick = 'true';
-    dynamic.appendChild(marker);
-    queueMicrotask(() => marker.remove());
-  }
-
-  function recoverAdaptedView(attempt = 0) {
-    if (crm.dataset.page !== 'Clientes') {
-      recoveryActive = false;
-      return;
-    }
-
-    if (hasAdaptedClientsView()) {
-      recoveryActive = false;
-      prepareCards();
-      return;
-    }
-
-    if (attempt >= 8) {
-      recoveryActive = false;
-      return;
-    }
-
-    kickClientsAdapter();
-    setTimeout(() => recoverAdaptedView(attempt + 1), 45);
-  }
-
-  function ensureAdaptedView() {
-    if (crm.dataset.page !== 'Clientes' || hasAdaptedClientsView() || recoveryActive) return;
-    recoveryActive = true;
-    recoverAdaptedView(0);
-  }
-
-  function openClientFromCard(card) {
-    const clientId = card?.dataset?.client;
-    if (!clientId) return;
-
-    prepareDetailHeader(clientId);
-    dynamic.classList.add('client-detail-approved');
-    dynamic.innerHTML = `<span hidden data-client="${safe(clientId)}" data-clients-ag-detail-marker="true"></span><div class="clients-ag-detail-loading" aria-live="polite">Carregando cliente…</div>`;
-    recoveryActive = false;
-    ensureAdaptedView();
-  }
-
-  document.addEventListener('click', event => {
-    const card = event.target.closest?.('.clients-ag-card');
-    if (!card || crm.dataset.page !== 'Clientes' || isInteractive(event.target)) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    openClientFromCard(card);
-  }, true);
-
-  document.addEventListener('keydown', event => {
-    const card = event.target.closest?.('.clients-ag-card');
-    if (!card || crm.dataset.page !== 'Clientes' || isInteractive(event.target)) return;
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    openClientFromCard(card);
-  }, true);
-
-  const observer = new MutationObserver(() => {
-    prepareCards();
-
-    if (crm.dataset.page !== 'Clientes') {
-      recoveryActive = false;
-      return;
-    }
-
-    /*
-      O app-core ainda pode renderizar a tela legada quando os dados terminam
-      de carregar. Antes, se isso acontecesse enquanto o adaptador estava em
-      ownRender, a mutação era ignorada e a tela antiga permanecia. Aqui nós
-      detectamos qualquer retorno ao HTML legado e provocamos uma nova mutação
-      após o ciclo atual, até a visão adaptada voltar a ser a raiz da página.
-    */
-    if (!hasAdaptedClientsView()) ensureAdaptedView();
-  });
-
-  observer.observe(dynamic, { childList: true, subtree: false });
-  prepareCards();
-  ensureAdaptedView();
 })();
