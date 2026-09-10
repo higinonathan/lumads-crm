@@ -8,9 +8,10 @@
   const style = document.createElement('style');
   style.id = 'lumads-clients-final-fixes';
   style.textContent = `
-    /* Ajustes finais de Clientes: somente legibilidade e navegação dos cards. */
+    /* Ajustes finais de Clientes: legibilidade e navegação direta pelo card. */
     #crmApp[data-page="Clientes"] .clients-ag-card{cursor:pointer}
-    #crmApp[data-page="Clientes"] .clients-ag-open{display:none!important}
+    #crmApp[data-page="Clientes"] .clients-ag-open,
+    #crmApp[data-page="Clientes"] .clients-ag-round.add{display:none!important}
 
     #crmApp[data-page="Clientes"] .clients-ag-lead{font-size:16px}
     #crmApp[data-page="Clientes"] .clients-ag-segmented button{font-size:12px}
@@ -53,33 +54,62 @@
       outline:2px solid var(--lumads-accent);
       outline-offset:3px;
     }
+
+    #crmApp[data-page="Clientes"] .clients-ag-detail-loading{
+      min-height:220px;
+      display:grid;
+      place-items:center;
+      color:var(--lumads-muted,#727a90);
+      font-size:13px;
+      font-weight:600;
+    }
   `;
   document.head.appendChild(style);
 
   const isInteractive = target => Boolean(target.closest('button, a, input, select, textarea, label, [role="menuitem"]'));
+  const safe = value => String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[char]);
 
   function prepareCards(root = dynamic) {
     root.querySelectorAll?.('.clients-ag-card').forEach(card => {
+      card.querySelector('.clients-ag-open')?.remove();
+      card.querySelector('.clients-ag-round.add')?.remove();
       card.tabIndex = 0;
       card.setAttribute('role', 'button');
       card.setAttribute('aria-label', `Abrir cliente ${card.querySelector('.clients-ag-identity strong')?.textContent || ''}`.trim());
     });
   }
 
+  function prepareDetailHeader(clientId) {
+    document.querySelector('#clientDetailHeaderBack')?.remove();
+    const eyebrow = document.querySelector('#pageEyebrow');
+    const title = document.querySelector('#pageTitle');
+    if (eyebrow) {
+      eyebrow.insertAdjacentHTML('beforebegin', '<button class="back-link client-detail-back-approved" id="clientDetailHeaderBack" data-action="back-clients">← Voltar para clientes</button>');
+      eyebrow.textContent = 'Base de clientes';
+    }
+    if (title) title.textContent = 'Detalhe do cliente';
+
+    const headerPrimary = document.querySelector('#headerActions .primary');
+    if (headerPrimary) {
+      headerPrimary.dataset.action = 'new-approval';
+      headerPrimary.dataset.client = clientId;
+      headerPrimary.textContent = '+ Nova aprovação';
+    }
+  }
+
   function openClientFromCard(card) {
     const clientId = card?.dataset?.client;
     if (!clientId) return;
 
-    dynamic.dataset.clientsAgPendingId = clientId;
-
-    const proxy = document.createElement('button');
-    proxy.type = 'button';
-    proxy.hidden = true;
-    proxy.dataset.action = 'client-detail';
-    proxy.dataset.client = clientId;
-    document.body.appendChild(proxy);
-    proxy.click();
-    proxy.remove();
+    /*
+      Não chamamos mais data-action="client-detail".
+      Essa ação acionava primeiro o renderClientDetail antigo do app-core e
+      causava a tela antiga aparecer antes da nova. Entregamos diretamente
+      o id ao adaptador atual de Clientes, que já observa #dynamicContent.
+    */
+    prepareDetailHeader(clientId);
+    dynamic.classList.add('client-detail-approved');
+    dynamic.innerHTML = `<span hidden data-client="${safe(clientId)}" data-clients-ag-detail-marker="true"></span><div class="clients-ag-detail-loading" aria-live="polite">Carregando cliente…</div>`;
   }
 
   document.addEventListener('click', event => {
@@ -99,30 +129,7 @@
     openClientFromCard(card);
   }, true);
 
-  const observer = new MutationObserver(() => {
-    prepareCards();
-
-    const clientId = dynamic.dataset.clientsAgPendingId;
-    if (!clientId) return;
-
-    if (dynamic.querySelector(':scope > .clients-ag-detail')) {
-      delete dynamic.dataset.clientsAgPendingId;
-      return;
-    }
-
-    const oldDetailVisible = dynamic.classList.contains('client-detail-approved') || Boolean(dynamic.querySelector('#clientDetailHeaderBack'));
-    if (!oldDetailVisible) return;
-
-    let marker = dynamic.querySelector('[data-clients-ag-detail-marker]');
-    if (!marker) {
-      marker = document.createElement('span');
-      marker.hidden = true;
-      marker.dataset.clientsAgDetailMarker = 'true';
-      marker.dataset.client = clientId;
-      dynamic.appendChild(marker);
-    }
-  });
-
+  const observer = new MutationObserver(() => prepareCards());
   observer.observe(dynamic, { childList: true, subtree: false });
   prepareCards();
 })();
