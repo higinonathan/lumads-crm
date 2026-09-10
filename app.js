@@ -20,3 +20,4 @@ import './lumads-clients-final-fixes.js';
 import './lumads-google-auth.js';
 import './lumads-whatsapp-groups.js';
 import './lumads-approval-group-field.js';
+import './lumads-manual-channel-fixes.js';
