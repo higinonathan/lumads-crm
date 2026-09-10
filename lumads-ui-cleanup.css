@@ -4,3 +4,20 @@
 #crmApp .top-actions [data-action="dashboard-filter"]{
   display:none!important;
 }
+
+/* Impede que o retorno de uma subtela de Configurações apareça fora dela. */
+#crmApp:not([data-page="Configurações"]) #settingsSubviewBack{
+  display:none!important;
+}
+
+/* Replica em Clientes e Histórico o mesmo comportamento mobile já aprovado
+   para o CTA do Dashboard/Aprovações em telas de até 420px. */
+@media (max-width:420px){
+  #crmApp:is([data-page="Clientes"],[data-page="Histórico"]) .top-actions{
+    grid-template-columns:repeat(3,40px)!important;
+  }
+
+  #crmApp:is([data-page="Clientes"],[data-page="Histórico"]) .top-actions .primary{
+    grid-column:1 / -1!important;
+  }
+}
