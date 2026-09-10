@@ -9,7 +9,25 @@
     ['settings-email-info', 'Modo assistido: assunto e mensagem prontos, com envio confirmado por você.'],
   ]);
 
+  function approvedDate() {
+    const value = new Intl.DateTimeFormat('pt-BR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date());
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  function syncApprovedDate() {
+    const target = document.getElementById('currentDate');
+    if (!target) return;
+    const value = approvedDate();
+    if (target.textContent !== value) target.textContent = value;
+  }
+
   function syncLanding() {
+    syncApprovedDate();
     const crm = document.querySelector('#crmApp');
     if (!crm || crm.dataset.page !== 'Configurações' || crm.dataset.settingsView) return;
     COPY.forEach((description, action) => {
@@ -22,6 +40,11 @@
   const dynamic = document.querySelector('#dynamicContent');
   if (dynamic) {
     new MutationObserver(syncLanding).observe(dynamic, { childList: true, subtree: true });
+  }
+
+  const headerActions = document.querySelector('#headerActions');
+  if (headerActions) {
+    new MutationObserver(syncApprovedDate).observe(headerActions, { childList: true, subtree: true, characterData: true });
   }
 
   window.addEventListener('hashchange', () => requestAnimationFrame(syncLanding));
