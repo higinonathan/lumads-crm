@@ -1,3 +1,4 @@
+import './lumads-favicon.js';
 import './lumads-design-system.css';
 import './lumads-approval-status.css';
 import './lumads-approval-actions.css';
