@@ -9,6 +9,7 @@ import './lumads-ui-cleanup.css';
 import './lumads-settings-appearance.css';
 import './lumads-settings-subviews.css';
 import './lumads-controls-depth.css';
+import './lumads-date-approved.css';
 import './app-core.js';
 import './lumads-settings-appearance.js';
 import './lumads-settings-subviews.js';
