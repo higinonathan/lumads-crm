@@ -97,19 +97,56 @@
     }
   }
 
+  let recoveryActive = false;
+
+  function hasAdaptedClientsView() {
+    return Boolean(dynamic.querySelector(':scope > .clients-ag-page, :scope > .clients-ag-detail'));
+  }
+
+  function kickClientsAdapter() {
+    const marker = document.createElement('span');
+    marker.hidden = true;
+    marker.dataset.clientsAdapterKick = 'true';
+    dynamic.appendChild(marker);
+    queueMicrotask(() => marker.remove());
+  }
+
+  function recoverAdaptedView(attempt = 0) {
+    if (crm.dataset.page !== 'Clientes') {
+      recoveryActive = false;
+      return;
+    }
+
+    if (hasAdaptedClientsView()) {
+      recoveryActive = false;
+      prepareCards();
+      return;
+    }
+
+    if (attempt >= 8) {
+      recoveryActive = false;
+      return;
+    }
+
+    kickClientsAdapter();
+    setTimeout(() => recoverAdaptedView(attempt + 1), 45);
+  }
+
+  function ensureAdaptedView() {
+    if (crm.dataset.page !== 'Clientes' || hasAdaptedClientsView() || recoveryActive) return;
+    recoveryActive = true;
+    recoverAdaptedView(0);
+  }
+
   function openClientFromCard(card) {
     const clientId = card?.dataset?.client;
     if (!clientId) return;
 
-    /*
-      Não chamamos mais data-action="client-detail".
-      Essa ação acionava primeiro o renderClientDetail antigo do app-core e
-      causava a tela antiga aparecer antes da nova. Entregamos diretamente
-      o id ao adaptador atual de Clientes, que já observa #dynamicContent.
-    */
     prepareDetailHeader(clientId);
     dynamic.classList.add('client-detail-approved');
     dynamic.innerHTML = `<span hidden data-client="${safe(clientId)}" data-clients-ag-detail-marker="true"></span><div class="clients-ag-detail-loading" aria-live="polite">Carregando cliente…</div>`;
+    recoveryActive = false;
+    ensureAdaptedView();
   }
 
   document.addEventListener('click', event => {
@@ -129,7 +166,25 @@
     openClientFromCard(card);
   }, true);
 
-  const observer = new MutationObserver(() => prepareCards());
+  const observer = new MutationObserver(() => {
+    prepareCards();
+
+    if (crm.dataset.page !== 'Clientes') {
+      recoveryActive = false;
+      return;
+    }
+
+    /*
+      O app-core ainda pode renderizar a tela legada quando os dados terminam
+      de carregar. Antes, se isso acontecesse enquanto o adaptador estava em
+      ownRender, a mutação era ignorada e a tela antiga permanecia. Aqui nós
+      detectamos qualquer retorno ao HTML legado e provocamos uma nova mutação
+      após o ciclo atual, até a visão adaptada voltar a ser a raiz da página.
+    */
+    if (!hasAdaptedClientsView()) ensureAdaptedView();
+  });
+
   observer.observe(dynamic, { childList: true, subtree: false });
   prepareCards();
+  ensureAdaptedView();
 })();
