@@ -39,7 +39,7 @@ import { supabase } from './supabase.js';
   }
 
   async function copyPreparedMessage(content) {
-    const message = content.querySelector('textarea[readonly]')?.value || '';
+    const message = content?.querySelector('textarea[readonly]')?.value || '';
     if (!message || !navigator.clipboard?.writeText) return false;
     try {
       await navigator.clipboard.writeText(message);
@@ -54,10 +54,19 @@ import { supabase } from './supabase.js';
     const title = content.querySelector('.modal-head h2')?.textContent || '';
     if (!/Enviar por WhatsApp/i.test(title) || !lastApprovalId) return;
 
-    const groupUrl = await groupUrlForApproval(lastApprovalId);
-    if (!groupUrl || !content.isConnected) return;
+    if (content.querySelector('[data-manual-group-open]')) {
+      content.querySelectorAll('[data-whatsapp-group-open]').forEach(button => {
+        button.hidden = true;
+      });
+      return;
+    }
 
-    content.dataset.manualDestination = 'group';
+    if (content.dataset.manualGroupLoading === 'true') return;
+    content.dataset.manualGroupLoading = 'true';
+
+    const groupUrl = await groupUrlForApproval(lastApprovalId);
+    delete content.dataset.manualGroupLoading;
+    if (!groupUrl || !content.isConnected) return;
 
     const recipientField = [...content.querySelectorAll('.field')].find(field =>
       /Destinatário/i.test(field.querySelector('label')?.textContent || '')
@@ -74,17 +83,14 @@ import { supabase } from './supabase.js';
       button.hidden = true;
     });
 
-    let groupButton = content.querySelector('[data-manual-group-open]');
-    if (!groupButton) {
-      groupButton = document.createElement('button');
-      groupButton.type = 'button';
-      groupButton.className = 'secondary';
-      groupButton.dataset.manualGroupOpen = 'true';
-      groupButton.textContent = 'Abrir grupo';
-      const confirmButton = content.querySelector('[data-communication-action="confirm"]');
-      confirmButton?.insertAdjacentElement('beforebegin', groupButton);
-    }
+    const groupButton = document.createElement('button');
+    groupButton.type = 'button';
+    groupButton.className = 'secondary';
+    groupButton.dataset.manualGroupOpen = 'true';
     groupButton.dataset.groupUrl = groupUrl;
+    groupButton.textContent = 'Abrir grupo';
+    const confirmButton = content.querySelector('[data-communication-action="confirm"]');
+    confirmButton?.insertAdjacentElement('beforebegin', groupButton);
 
     const info = content.querySelector('.modal-info p');
     if (info) {
@@ -114,18 +120,17 @@ import { supabase } from './supabase.js';
     if (!content?.isConnected) return;
     const title = content.querySelector('.modal-head h2')?.textContent || '';
     if (!/Enviar por E-mail/i.test(title)) return;
+    if (content.querySelector('[data-manual-gmail-open]')) return;
 
     const regularOpen = content.querySelector('[data-communication-action="open"]');
     if (regularOpen) regularOpen.textContent = 'Abrir app de e-mail';
 
-    if (!content.querySelector('[data-manual-gmail-open]')) {
-      const gmailButton = document.createElement('button');
-      gmailButton.type = 'button';
-      gmailButton.className = 'secondary';
-      gmailButton.dataset.manualGmailOpen = 'true';
-      gmailButton.textContent = 'Abrir Gmail';
-      regularOpen?.insertAdjacentElement('beforebegin', gmailButton);
-    }
+    const gmailButton = document.createElement('button');
+    gmailButton.type = 'button';
+    gmailButton.className = 'secondary';
+    gmailButton.dataset.manualGmailOpen = 'true';
+    gmailButton.textContent = 'Abrir Gmail';
+    regularOpen?.insertAdjacentElement('beforebegin', gmailButton);
 
     const info = content.querySelector('.modal-info p');
     if (info) {
