@@ -197,6 +197,30 @@ import { supabase } from './supabase.js';
     return localStorage.getItem(avatarKey(userId)) || '';
   }
 
+  function googleAvatarFor(user) {
+    return user?.user_metadata?.avatar_url || user?.user_metadata?.picture || '';
+  }
+
+  function resolvedAvatarFor(user) {
+    return avatarFor(user?.id) || googleAvatarFor(user);
+  }
+
+  function avatarMarkup(photo, name, alt = '') {
+    const fallback = initials(name || 'Usuário');
+    return photo
+      ? `<img class="settings-avatar-image" src="${escapeHtml(photo)}" alt="${escapeHtml(alt)}" data-avatar-fallback="${escapeHtml(fallback)}">`
+      : escapeHtml(fallback);
+  }
+
+  document.addEventListener('error', event => {
+    const image = event.target;
+    if (!(image instanceof HTMLImageElement) || !image.classList.contains('settings-avatar-image')) return;
+    const avatar = image.closest('.settings-user-avatar, .settings-upload-preview.is-avatar, #userMenuButton .avatar');
+    if (!avatar) return;
+    avatar.classList.remove('has-settings-photo');
+    avatar.textContent = image.dataset.avatarFallback || initials('Usuário');
+  }, true);
+
   function saveAvatar(userId, dataUrl) {
     const key = avatarKey(userId);
     if (dataUrl) localStorage.setItem(key, dataUrl);
@@ -226,13 +250,15 @@ import { supabase } from './supabase.js';
       }
       const avatar = document.querySelector('#userMenuButton .avatar');
       if (!avatar || !currentAuthUser) return;
-      const photo = avatarFor(currentAuthUser.id);
+      const name = currentMember?.display_name || currentAuthUser.email || 'Usuário';
+      const photo = resolvedAvatarFor(currentAuthUser);
       if (!photo) {
         avatar.classList.remove('has-settings-photo');
+        avatar.textContent = initials(name);
         return;
       }
       avatar.classList.add('has-settings-photo');
-      avatar.innerHTML = `<img src="${photo}" alt="Foto do usuário">`;
+      avatar.innerHTML = avatarMarkup(photo, name, 'Foto do usuário');
     } catch (_) {}
   }
 
@@ -288,12 +314,12 @@ import { supabase } from './supabase.js';
 
   function realMemberRow(member, user) {
     const id = member.user_id;
-    const photo = avatarFor(id);
+    const photo = id === user.id ? resolvedAvatarFor(user) : avatarFor(id);
     const email = id === user.id ? user.email : '';
     const name = member.display_name || email || 'Usuário';
     return `<div class="settings-user-row">
       <div class="settings-user-identity">
-        <div class="settings-user-avatar">${photo ? `<img src="${photo}" alt="">` : escapeHtml(initials(name))}</div>
+        <div class="settings-user-avatar">${avatarMarkup(photo, name)}</div>
         <div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(email || 'Acesso vinculado ao CRM')}</span></div>
       </div>
       <span class="settings-role-pill">${escapeHtml(roleLabel(member.role))}</span>
@@ -540,11 +566,11 @@ import { supabase } from './supabase.js';
       });
       return;
     }
-    const photo = avatarFor(user.id);
+    const photo = resolvedAvatarFor(user);
     const body = `
       <form class="settings-form" data-settings-modal-form="real-user">
         <div class="settings-upload">
-          <div class="settings-upload-preview is-avatar" id="settingsUserPhotoPreview">${photo ? `<img src="${photo}" alt="">` : escapeHtml(initials(member.display_name || user.email))}</div>
+          <div class="settings-upload-preview is-avatar" id="settingsUserPhotoPreview">${avatarMarkup(photo, member.display_name || user.email)}</div>
           <div class="settings-upload-copy">
             <strong>Foto do usuário</strong>
             <p>A foto aparece nesta lista e também no card inferior da sidebar.</p>
@@ -783,12 +809,9 @@ import { supabase } from './supabase.js';
     if (event.target.closest?.('[data-settings-remove-user-photo]') && currentAuthUser) {
       saveAvatar(currentAuthUser.id, '');
       const preview = $('#settingsUserPhotoPreview');
-      if (preview) preview.textContent = initials(currentMember?.display_name || currentAuthUser.email);
-      const avatar = document.querySelector('#userMenuButton .avatar');
-      if (avatar) {
-        avatar.classList.remove('has-settings-photo');
-        avatar.textContent = initials(currentMember?.display_name || currentAuthUser.email);
-      }
+      const name = currentMember?.display_name || currentAuthUser.email;
+      if (preview) preview.innerHTML = avatarMarkup(resolvedAvatarFor(currentAuthUser), name);
+      applyCurrentSidebarAvatar();
       return;
     }
 
