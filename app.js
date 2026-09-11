@@ -19,5 +19,5 @@ import './lumads-clients-controller.js';
 import './lumads-clients-final-fixes.js';
 import './lumads-google-auth.js';
 import './lumads-whatsapp-flow.js';
-import './lumads-whatsapp-share-test.js';
+import './lumads-communication-modal-stability.js';
 import './lumads-approval-group-field.js';
